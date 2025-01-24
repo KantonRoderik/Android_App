@@ -26,13 +26,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
         android:background="@drawable/adatok_tabla"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -41,10 +44,10 @@
             android:id="@+id/textView_kaloria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Kalória"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:gravity="center" />
+            android:textSize="16sp" />
 
         <!-- Első ProgressBar -->
         <ProgressBar
@@ -61,11 +64,11 @@
             android:id="@+id/textView_szenhidrat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:text="Szénhidrát"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginTop="8dp" />
+            android:textSize="16sp" />
 
         <!-- Második ProgressBar -->
         <ProgressBar
@@ -76,18 +79,18 @@
             android:layout_marginTop="4dp"
             android:indeterminateOnly="false"
             android:progress="30"
-            android:progressTint="@color/white"/>
+            android:progressTint="@color/white" />
 
         <!-- Harmadik szöveg -->
         <TextView
             android:id="@+id/textView_feherje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:text="Fehérje"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginTop="8dp" />
+            android:textSize="16sp" />
 
         <!-- Harmadik ProgressBar -->
         <ProgressBar
@@ -98,18 +101,18 @@
             android:layout_marginTop="4dp"
             android:indeterminateOnly="false"
             android:progress="70"
-            android:progressTint="@color/white"/>
+            android:progressTint="@color/white" />
 
         <!-- Negyedik szöveg -->
         <TextView
             android:id="@+id/textView_zsir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:text="Zsír"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginTop="8dp" />
+            android:textSize="16sp" />
 
         <!-- Negyedik ProgressBar -->
         <ProgressBar
@@ -123,5 +126,20 @@
             android:progressTint="@color/white" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/Profile_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="364dp"
+        android:background="@drawable/rounded_corner"
+        android:textColor="@color/black"
+        android:text="Profile"
+        android:onClick="Profile"
+        app:backgroundTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

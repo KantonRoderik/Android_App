@@ -7,35 +7,24 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
     android:padding="16dp"
-    tools:context=".Register">
+    tools:context=".ProfileSzerkesztes">
 
-    <ImageView
-        android:id="@+id/icon_account"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="28dp"
-        android:src="@drawable/login_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/Email_input"
+    <Button
+        android:id="@+id/kep"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="24sp"
+        android:padding="18dp"
+        android:text="Kép feltöltése"
+        android:textColor="#312A3C"
+        android:textSize="20sp"
+        app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon_account" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/teljes_nev"
@@ -43,8 +32,39 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
-        android:hint="Név"
-        android:inputType="textEmailAddress"
+        android:hint="Teljes név"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kep" />
+
+    <EditText
+        android:id="@+id/Email_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:hint="Email"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teljes_nev" />
+
+    <EditText
+        android:id="@+id/jelszo_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:hint="Jelszó"
         android:padding="16dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
@@ -55,103 +75,98 @@
         app:layout_constraintTop_toBottomOf="@+id/Email_input" />
 
     <EditText
-        android:id="@+id/Password_input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_corner"
-        android:hint="Jelszó"
-        android:inputType="textPassword"
-        android:padding="16dp"
-        android:paddingLeft="18dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/teljes_nev" />
-
-    <EditText
-        android:id="@+id/Password_Verify_input"
+        android:id="@+id/jelszoVerify_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner"
         android:hint="Jelszó Ismét"
-        android:inputType="textPassword"
         android:padding="16dp"
-        android:paddingLeft="18dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password_input" />
+        app:layout_constraintTop_toBottomOf="@+id/jelszo_input" />
 
-
-    <Button
-        android:id="@+id/Register_Button"
+    <EditText
+        android:id="@+id/suly_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:hint="Súly"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jelszoVerify_input" />
+
+    <EditText
+        android:id="@+id/magassag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:padding="16dp"
+        android:hint="Magasság"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/suly_input" />
+
+    <EditText
+        android:id="@+id/kor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:padding="16dp"
+        android:hint="Kor"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/magassag" />
+
+    <Spinner
+        android:id="@+id/gender_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corner"
+        android:padding="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kor" />
+
+    <Button
+        android:id="@+id/Mentes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_corner"
         android:padding="18dp"
-        android:text="Regisztráció"
+        android:text="Adatok mentése"
         android:textColor="#312A3C"
         android:textSize="20sp"
         app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password_Verify_input" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/Login_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:text="Jelentkezzen be itt!"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Register_Button" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Vagy jelentkezzen be google-el!"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Login_Button" />
-
-    <LinearLayout
-        android:id="@+id/google_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Register_Button">
-
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_margin="16dp"
-            android:src="@drawable/google" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

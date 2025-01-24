@@ -3,6 +3,7 @@ package com.example.szakdolgozat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         TextView szenhidrat = findViewById(R.id.textView_szenhidrat);
         TextView feherje = findViewById(R.id.textView_feherje);
         TextView zsir = findViewById(R.id.textView_zsir);
+
+        Button Profile = findViewById(R.id.Profile_btn);
 
         // Személyre szabott adatok (ez lehet szerverről érkező adat is)
         int progressValue1 = 60;
@@ -54,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
     public void Logout(View view){
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(MainActivity.this, Login.class));
+        finish();
+    }
+    public void Profile(View view){
+        startActivity(new Intent(MainActivity.this, Profile.class));
         finish();
     }
 
