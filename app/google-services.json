@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "302436214690",
+    "project_id": "szakdolgozat-7365e",
+    "storage_bucket": "szakdolgozat-7365e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302436214690:android:098baa83a87731f13ef4fb",
+        "android_client_info": {
+          "package_name": "com.example.szakdolgozat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxdZA0I1OMvIfHAKLFI8lO3goYIPFEIvI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

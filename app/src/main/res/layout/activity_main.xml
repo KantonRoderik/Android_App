@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/Logout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:onClick="Logout"
+        android:padding="18dp"
+        android:text="Kijelentkezés"
+        android:textColor="#312A3C"
+        android:textSize="20sp"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/adatok_tabla"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Első szöveg -->
+        <TextView
+            android:id="@+id/textView_kaloria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kalória"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center" />
+
+        <!-- Első ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBar_kaloria"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminateOnly="false"
+            android:progress="50"
+            android:progressTint="@color/white" />
+
+        <!-- Második szöveg -->
+        <TextView
+            android:id="@+id/textView_szenhidrat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Szénhidrát"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <!-- Második ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBar_szenhidrat"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:indeterminateOnly="false"
+            android:progress="30"
+            android:progressTint="@color/white"/>
+
+        <!-- Harmadik szöveg -->
+        <TextView
+            android:id="@+id/textView_feherje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fehérje"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <!-- Harmadik ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBar_feherje"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:indeterminateOnly="false"
+            android:progress="70"
+            android:progressTint="@color/white"/>
+
+        <!-- Negyedik szöveg -->
+        <TextView
+            android:id="@+id/textView_zsir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zsír"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <!-- Negyedik ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBar_zsir"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:indeterminateOnly="false"
+            android:progress="90"
+            android:progressTint="@color/white" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
