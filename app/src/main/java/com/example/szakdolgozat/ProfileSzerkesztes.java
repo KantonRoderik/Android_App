@@ -1,6 +1,7 @@
 package com.example.szakdolgozat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,31 +11,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
+
+
 
 public class ProfileSzerkesztes extends AppCompatActivity {
 
 
-    EditText Email, TeljesNev, Suly, Magassag, Kor, Password, PasswordVerify;
+    EditText TeljesNev, Suly, Magassag, Kor, Password, PasswordVerify;
     Spinner Nem;
     Button Mentes;
 
@@ -43,6 +39,7 @@ public class ProfileSzerkesztes extends AppCompatActivity {
     FirebaseAuth mAuth;
     String userID;
     FirebaseFirestore db;
+    boolean PasswordError = false;
 
 
     @Override
@@ -55,7 +52,6 @@ public class ProfileSzerkesztes extends AppCompatActivity {
         String[] genders = {"Férfi", "Nő"};
 
 
-        Email = findViewById(R.id.Email_input);
         TeljesNev = findViewById(R.id.teljes_nev);
         Suly = findViewById(R.id.suly_input);
         Magassag = findViewById(R.id.magassag);
@@ -79,56 +75,129 @@ public class ProfileSzerkesztes extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email = Email.getText().toString().trim();
+
                 String teljesnev = TeljesNev.getText().toString().trim();
-                String suly = Suly.getText().toString().trim();
-                String magassag = Magassag.getText().toString().trim();
-                String kor = Kor.getText().toString().trim();
+                String sulyStr = Suly.getText().toString().trim();
+                String magassagStr = Magassag.getText().toString().trim();
+                String korStr = Kor.getText().toString().trim();
                 String nem = Nem.getSelectedItem().toString().trim();
-                String password = Password.getText().toString().trim();
-                String passwordVerify = PasswordVerify.getText().toString().trim();
+                String NewPassword = Password.getText().toString().trim();
+                String NewPasswordVerify = PasswordVerify.getText().toString().trim();
 
 
 
 
-                if (TextUtils.isEmpty(password)) {
-                    Password.setError("Jelszó megadása kötelező!");
-                    return;
-                }
-                if (password.length() < 6) {
+
+                if (!TextUtils.isEmpty(NewPassword) && NewPassword.length() < 6) {
                     Password.setError("Legalább 6 karakteres jelszónak kell lennie!");
+                    PasswordError = true;
                     return;
                 }
 
 
-                if (!TextUtils.equals(password, passwordVerify)) {
+                if (!TextUtils.equals(NewPassword, NewPasswordVerify)) {
                     PasswordVerify.setError("A megadott jelszavak nem egyeznek!");
                     Password.setError("A megadott jelszavak nem egyeznek!");
+                    PasswordError = true;
                     return;
                 }
 
 
-                db.collection("users").document(userID).update("email", email);
-                mAuth.getCurrentUser().updateEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                /**
+                 *
+                 * Miért vették ki az updateEmail funkciót???????
+                 *
+                 * Itt igazából az aljáig csak a változtatásokat mentem el
+                 *
+                 */
+
+
+                if(PasswordError == false && !TextUtils.isEmpty(NewPassword) && !TextUtils.isEmpty(NewPasswordVerify)){
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    assert user != null;{
+                        user.updatePassword(NewPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    Toast.makeText(ProfileSzerkesztes.this, "Jelszó sikeresen megváltoztatva!", Toast.LENGTH_SHORT).show();
 
-                                    Log.d("Email", "Email sikeresen frissítve!");
-                                } else {
-
-                                    Log.d("Email", "Hiba, Email frissítés sikertelen: " + task.getException().getMessage());
+                                }
+                                else {
+                                    Toast.makeText(ProfileSzerkesztes.this, "Jelszó megváltoztatása sikertelen!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
+                    }
+                }
 
 
-                db.collection("users").document(userID).update("nev", teljesnev);
-                db.collection("users").document(userID).update("suly", suly);
-                db.collection("users").document(userID).update("magassag", magassag);
-                db.collection("users").document(userID).update("kor", kor);
-                db.collection("users").document(userID).update("nem", nem);
+                if (!TextUtils.isEmpty(sulyStr)) {
+                    try {
+                        int suly = Integer.parseInt(sulyStr);
+
+                        if (suly <= 0 || suly >= 500) {
+                            Suly.setError("A súlynak 0 és 500 között kell lennie!");
+                            return;
+                        }
+                        else{
+                            db.collection("users").document(userID).update("suly", sulyStr);
+                        }
+                    } catch (NumberFormatException e) {
+                        Suly.setError("Érvényes számot adj meg!");
+                    }
+                }
+
+
+                if (!TextUtils.isEmpty(magassagStr)) {
+                    try {
+                        int magassag = Integer.parseInt(magassagStr);
+
+                        if (magassag <= 0 || magassag >= 300) {
+                            Magassag.setError("A magasságnak 0 és 300 között kell lennie!");
+                            return;
+                        }
+                        else{
+                            db.collection("users").document(userID).update("magassag", magassagStr);
+                        }
+                    } catch (NumberFormatException e) {
+                        Magassag.setError("Érvényes számot adj meg!");
+                    }
+                }
+
+
+
+                if (!TextUtils.isEmpty(korStr)) {
+                    try {
+                        int kor = Integer.parseInt(korStr);
+
+                        if (kor <= 0 || kor >= 100) {
+                            Kor.setError("A kornak 0 és 100 között kell lennie!");
+                            return;
+                        }
+                        else{
+                            db.collection("users").document(userID).update("kor", korStr);
+                        }
+                    } catch (NumberFormatException e) {
+                        Kor.setError("Érvényes számot adj meg!");
+                    }
+                }
+
+
+
+
+
+
+
+
+
+                if(!TextUtils.isEmpty(teljesnev)){
+                    db.collection("users").document(userID).update("nev", teljesnev);
+                }
+
+
+                if(!TextUtils.isEmpty(nem)){
+                    db.collection("users").document(userID).update("nem", nem);
+                }
 
 
                 startActivity(new Intent(ProfileSzerkesztes.this, Profile.class));

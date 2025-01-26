@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 public class Profile extends AppCompatActivity {
 
     TextView TeljesNev,Email,Suly,Magassag,Kor,Nem;
+
+    ImageButton backButton;
 
     FirebaseAuth mAuth;
     String userID;
@@ -71,6 +74,11 @@ public class Profile extends AppCompatActivity {
 
     public void Szerkeszt(View view){
         startActivity(new Intent(Profile.this, ProfileSzerkesztes.class));
+        finish();
+    }
+
+    public void Vissza(View view){
+        startActivity(new Intent(Profile.this, MainActivity.class));
         finish();
     }
 }
