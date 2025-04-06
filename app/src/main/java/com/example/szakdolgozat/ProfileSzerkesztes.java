@@ -119,6 +119,7 @@ public class ProfileSzerkesztes extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    db.collection("users").document(userID).update("password", NewPassword);
                                     Toast.makeText(ProfileSzerkesztes.this, "Jelszó sikeresen megváltoztatva!", Toast.LENGTH_SHORT).show();
 
                                 }

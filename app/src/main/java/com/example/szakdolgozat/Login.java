@@ -2,6 +2,7 @@ package com.example.szakdolgozat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -28,6 +29,9 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +44,11 @@ public class Login extends AppCompatActivity {
         Register_btn = findViewById(R.id.Register_btn);
         google_signup = findViewById(R.id.google_signup);
         mAuth = FirebaseAuth.getInstance();
+
+
+
+        LoadingDialog loadingDialog = new LoadingDialog(Login.this);
+
 
 
         Login_btn.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +74,19 @@ public class Login extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        //Kötelező loading animáció
+
+                        loadingDialog.startLoadingDialog();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dialog.dismiss();
+                            }
+                        }, 10000);
+
+
                         if(task.isSuccessful()){
                             Toast.makeText(Login.this, "Bejelentkezés sikeres!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(Login.this, MainActivity.class));
