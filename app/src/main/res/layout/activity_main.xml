@@ -14,35 +14,16 @@
         android:padding="16dp"
         tools:context=".MainActivity">
 
-        <Button
-            android:id="@+id/Logout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/rounded_corner"
-            android:onClick="Logout"
-            android:padding="18dp"
-            android:text="Kijelentkezés"
-            android:textColor="#312A3C"
-            android:textSize="20sp"
-            app:backgroundTint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Profile_btn" />
-
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="104dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/adatok_tabla"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -51,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Kalória"
+                android:text="Kalória: 0/0 kcal (0%)"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -60,8 +41,9 @@
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:max="100"
                 android:indeterminateOnly="false"
-                android:progress="50"
+                android:progress="0"
                 android:progressTint="@color/white" />
 
             <TextView
@@ -70,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Szénhidrát"
+                android:text="Szénhidrát: 0/0 g (0%)"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -80,8 +62,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:max="100"
                 android:indeterminateOnly="false"
-                android:progress="30"
+                android:progress="0"
                 android:progressTint="@color/white" />
 
             <TextView
@@ -90,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Fehérje"
+                android:text="Fehérje: 0/0 g (0%)"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -100,8 +83,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:max="100"
                 android:indeterminateOnly="false"
-                android:progress="70"
+                android:progress="0"
                 android:progressTint="@color/white" />
 
             <TextView
@@ -110,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Zsír"
+                android:text="Zsír: 0/0 g (0%)"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -120,25 +104,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:max="100"
                 android:indeterminateOnly="false"
-                android:progress="90"
+                android:progress="0"
                 android:progressTint="@color/white" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/Profile_btn"
-            android:layout_width="wrap_content"
+            android:id="@+id/add_food_btn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="328dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
-            android:onClick="Profile"
-            android:text="Profile"
-            android:textColor="@color/black"
+            android:text="Étel hozzáadása"
+            android:textColor="#312A3C"
+            android:textSize="20sp"
+            android:onClick="openAddFoodActivity"
             app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        <Button
+            android:id="@+id/Profile_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Profil"
+            android:textColor="#312A3C"
+            android:textSize="20sp"
+            android:onClick="Profile"
+            app:backgroundTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_food_btn" />
+
+        <Button
+            android:id="@+id/Logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Kijelentkezés"
+            android:textColor="#312A3C"
+            android:textSize="20sp"
+            android:onClick="Logout"
+            app:backgroundTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Profile_btn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

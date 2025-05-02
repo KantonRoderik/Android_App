@@ -28,25 +28,24 @@ import java.util.Map;
 
 public class Register extends AppCompatActivity {
 
-     EditText Email;
-     EditText TeljesNev;
-     EditText Password;
-     EditText PasswordVerify;
+    EditText Email;
+    EditText TeljesNev;
+    EditText Password;
+    EditText PasswordVerify;
 
-     Button RegisterBtn;
-     TextView LoginBtn;
-     FirebaseAuth mAuth;
-     String userID;
-     FirebaseFirestore db;
+    Button RegisterBtn;
+    TextView LoginBtn;
+    FirebaseAuth mAuth;
+    String userID;
+    FirebaseFirestore db;
 
-     public static final String TAG = "TAG";
+    public static final String TAG = "TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
-
 
         Email = findViewById(R.id.Email_input);
         TeljesNev = findViewById(R.id.teljes_nev);
@@ -58,16 +57,13 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-
         if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(Register.this, MainActivity.class));
         }
 
-
         RegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String email = Email.getText().toString().trim();
                 String teljesnev = TeljesNev.getText().toString().trim();
                 String password = Password.getText().toString().trim();
@@ -79,7 +75,7 @@ public class Register extends AppCompatActivity {
                 }
 
                 if (TextUtils.isEmpty(teljesnev)) {
-                    Email.setError("Név megadása kötelező!");
+                    TeljesNev.setError("Név megadása kötelező!");  // Javítottam: Email helyett TeljesNev
                     return;
                 }
 
@@ -92,15 +88,11 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-
                 if (!TextUtils.equals(password, passwordVerify)) {
                     PasswordVerify.setError("A megadott jelszavak nem egyeznek!");
                     Password.setError("A megadott jelszavak nem egyeznek!");
                     return;
                 }
-
-
-                //Adatbázisba töltés
 
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -109,6 +101,7 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "Regisztráció sikeres!", Toast.LENGTH_SHORT).show();
                             userID = mAuth.getCurrentUser().getUid();
                             DocumentReference dbUsers = db.collection("users").document(userID);
+
                             Map<String, Object> user = new HashMap<>();
                             user.put("email", email);
                             user.put("nev", teljesnev);
@@ -119,10 +112,18 @@ public class Register extends AppCompatActivity {
                             user.put("nem", "férfi");
 
 
+                            // ÚJ: Alapértelmezett napi célok hozzáadása
+                            Map<String, Object> dailyGoals = new HashMap<>();
+                            dailyGoals.put("calories", 2000);
+                            dailyGoals.put("carbs", 250);
+                            dailyGoals.put("protein", 120);
+                            dailyGoals.put("fat", 80);
+                            user.put("dailyGoals", dailyGoals);
+
                             dbUsers.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Log.d(TAG, "onSuccess: user profile is created for" + userID);
+                                    Log.d(TAG, "onSuccess: user profile is created for " + userID);
                                     Toast.makeText(Register.this, "Adatok sikeresen feltöltve!", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -136,14 +137,11 @@ public class Register extends AppCompatActivity {
             }
         });
 
-
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), Login.class));
             }
-
         });
     }
 }
-
