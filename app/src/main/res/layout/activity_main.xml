@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/login_background"
         android:padding="16dp"
-        tools:context=".MainActivity">
+        tools:context=".UI.main.MainActivity">
 
         <LinearLayout
             android:id="@+id/linearLayout"

@@ -1,20 +1,22 @@
-package com.example.szakdolgozat;
+package com.example.szakdolgozat.helpers;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
 
+import com.example.szakdolgozat.R;
+
 public class LoadingDialog {
 
     Activity activity;
-    AlertDialog dialog;
+    public AlertDialog dialog;
 
-    LoadingDialog(Activity myActivity){
+    public LoadingDialog(Activity myActivity){
         activity = myActivity;
     }
 
 
-    void startLoadingDialog(){
+    public void startLoadingDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();

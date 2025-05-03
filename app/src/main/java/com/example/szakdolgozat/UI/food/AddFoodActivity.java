@@ -1,4 +1,4 @@
-package com.example.szakdolgozat;
+package com.example.szakdolgozat.UI.food;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.szakdolgozat.models.FoodItem;
+import com.example.szakdolgozat.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;

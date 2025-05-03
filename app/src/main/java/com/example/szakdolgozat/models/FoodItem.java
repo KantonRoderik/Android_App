@@ -1,4 +1,4 @@
-package com.example.szakdolgozat;
+package com.example.szakdolgozat.models;
 
 public class FoodItem {
     private String id;

@@ -1,4 +1,4 @@
-package com.example.szakdolgozat;
+package com.example.szakdolgozat.models;
 
 public class ConsumedFood {
     private String foodId;

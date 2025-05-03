@@ -1,7 +1,10 @@
-package com.example.szakdolgozat;
+package com.example.szakdolgozat.UI.food;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.szakdolgozat.models.FoodItem;
+import com.example.szakdolgozat.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Arrays;
 import java.util.List;

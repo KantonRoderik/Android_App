@@ -1,4 +1,4 @@
-package com.example.szakdolgozat;
+package com.example.szakdolgozat.UI.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.szakdolgozat.models.DailyEntry;
+import com.example.szakdolgozat.models.DailyGoals;
+import com.example.szakdolgozat.UI.profile.Profile;
+import com.example.szakdolgozat.R;
+import com.example.szakdolgozat.UI.auth.Login;
+import com.example.szakdolgozat.UI.food.AddFoodActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -169,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Profile(View view) {
-        startActivity(new Intent(MainActivity.this,Profile.class));
+        startActivity(new Intent(MainActivity.this, Profile.class));
     }
 
 }

@@ -1,9 +1,6 @@
-package com.example.szakdolgozat;
+package com.example.szakdolgozat.models;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DailyEntry {

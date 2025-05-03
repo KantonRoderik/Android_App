@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/login_background"
         android:padding="16dp"
-        tools:context=".ProfileSzerkesztes">
+        tools:context=".UI.profile.ProfileSzerkesztes">
 
         <Button
             android:id="@+id/kep"
