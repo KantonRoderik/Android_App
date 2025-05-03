@@ -11,6 +11,16 @@ import java.util.List;
 
 public class FoodUploadActivity extends AppCompatActivity {
 
+    /**
+     Nincs használva (.xml-je sincs!!!)
+     **/
+
+
+
+/*
+
+
+
     private FirebaseFirestore db;
 
     @Override
@@ -39,4 +49,7 @@ public class FoodUploadActivity extends AppCompatActivity {
                     });
         }
     }
+
+
+ */
 }

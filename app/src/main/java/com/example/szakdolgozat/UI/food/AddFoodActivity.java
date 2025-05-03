@@ -150,7 +150,7 @@ public class AddFoodActivity extends AppCompatActivity {
                                     .collection("dailyEntries").document(today)
                                     .update(updates)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(this, "ANYÁD", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(this, "Sikeres Frissítés", Toast.LENGTH_SHORT).show();
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {
@@ -173,7 +173,7 @@ public class AddFoodActivity extends AppCompatActivity {
                                     .collection("dailyEntries").document(today)
                                     .set(dailyEntry)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(this, "FAAASZ!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(this, "Sikeres létrehozás!", Toast.LENGTH_SHORT).show();
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {
