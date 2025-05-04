@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String userId;
 
+    private TextView tvCurrentDate;
+    private Calendar currentDate = Calendar.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,24 @@ public class MainActivity extends AppCompatActivity {
         initializeUI();
         initializeFirebase();
         loadDailyData();
+
+
+
+        // Dátum kezelése
+        updateDateDisplay();
+
+
+    }
+
+    private void updateDateDisplay() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = sdf.format(currentDate.getTime());
+        tvCurrentDate.setText(formattedDate);
+    }
+
+    private String getSelectedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return sdf.format(currentDate.getTime());
     }
 
     private void initializeUI() {
@@ -50,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         textViewSzenhidrat = findViewById(R.id.textView_szenhidrat);
         textViewFeherje = findViewById(R.id.textView_feherje);
         textViewZsir = findViewById(R.id.textView_zsir);
+
+        tvCurrentDate = findViewById(R.id.tv_current_date);
     }
 
     private void initializeFirebase() {
@@ -59,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDailyData() {
-        String today = getCurrentDate();
+        String selectedDate = getSelectedDate();
 
         // 1. Napi bejegyzés betöltése
         db.collection("users").document(userId)
-                .collection("dailyEntries").document(today)
+                .collection("dailyEntries").document(selectedDate)
                 .get()
                 .addOnSuccessListener(dailyEntrySnapshot -> {
                     if (dailyEntrySnapshot.exists()) {
@@ -190,6 +215,25 @@ public class MainActivity extends AppCompatActivity {
     public void Profile(View view) {
         startActivity(new Intent(this, Profile.class));
     }
+
+
+
+    public void nextDay(View view) {
+        currentDate.add(Calendar.DAY_OF_YEAR, 1);
+        updateDateDisplay();
+        loadDailyData();
+    }
+
+
+    public void previousDay(View view) {
+        currentDate.add(Calendar.DAY_OF_YEAR, -1);
+        updateDateDisplay();
+        loadDailyData();
+    }
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();

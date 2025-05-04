@@ -18,12 +18,13 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="108dp"
             android:background="@drawable/adatok_tabla"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -41,8 +42,8 @@
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="100"
                 android:indeterminateOnly="false"
+                android:max="100"
                 android:progress="0"
                 android:progressTint="@color/white" />
 
@@ -62,8 +63,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:max="100"
                 android:indeterminateOnly="false"
+                android:max="100"
                 android:progress="0"
                 android:progressTint="@color/white" />
 
@@ -83,8 +84,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:max="100"
                 android:indeterminateOnly="false"
+                android:max="100"
                 android:progress="0"
                 android:progressTint="@color/white" />
 
@@ -104,10 +105,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:max="100"
                 android:indeterminateOnly="false"
+                android:max="100"
                 android:progress="0"
                 android:progressTint="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <Button
+                android:id="@+id/btn_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="previousDay"
+                android:text="◄" />
+
+            <TextView
+                android:id="@+id/tv_current_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="nextDay"
+                android:text="►" />
         </LinearLayout>
 
         <Button
