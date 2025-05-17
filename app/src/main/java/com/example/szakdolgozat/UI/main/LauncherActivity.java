@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.szakdolgozat.UI.auth.Login;
+import com.example.szakdolgozat.notification.NotificationScheduler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,6 +18,9 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        NotificationScheduler.scheduleExactAlarms(this);
 
         if (user != null) {
             startActivity(new Intent(this, MainActivity.class));

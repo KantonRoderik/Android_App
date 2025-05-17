@@ -1,11 +1,16 @@
 package com.example.szakdolgozat.UI.main;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
         initializeUI();
         initializeFirebase();
         loadDailyData();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+
+
 
         // Dátum kezelése
         updateDateDisplay();
@@ -238,4 +251,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         loadDailyData();
     }
+
+
+
+
 }

@@ -4,8 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+
 
     <application
         android:allowBackup="true"
@@ -18,12 +22,37 @@
         android:theme="@style/Theme.SZAKDOLGOZAT"
         tools:targetApi="31">
 
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <receiver
+            android:name=".notification.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".notification.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true" />     <!--Ennek true-nak kell lennie -->
+
         <activity
             android:name=".UI.food.FoodUploadActivity"
             android:exported="false" />
         <activity
             android:name=".UI.food.AddFoodActivity"
             android:exported="false" />
+
+
+        <service android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync"/>
 
 
         <activity
