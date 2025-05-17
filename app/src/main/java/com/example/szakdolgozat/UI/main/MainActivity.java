@@ -1,10 +1,11 @@
 package com.example.szakdolgozat.UI.main;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +19,6 @@ import com.example.szakdolgozat.UI.profile.Profile;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.example.szakdolgozat.models.DailyGoals;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -44,12 +44,8 @@ public class MainActivity extends AppCompatActivity {
         initializeFirebase();
         loadDailyData();
 
-
-
         // Dátum kezelése
         updateDateDisplay();
-
-
     }
 
     private void updateDateDisplay() {
@@ -128,16 +124,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateProgressBars(DailyEntry entry, DailyGoals goals) {
-        progressBarKaloria.setProgress(calculateSafeProgress(entry.getTotalCalories(), goals.getCalories()));
-        progressBarSzenhidrat.setProgress(calculateSafeProgress(entry.getTotalCarbs(), goals.getCarbs()));
-        progressBarFeherje.setProgress(calculateSafeProgress(entry.getTotalProtein(), goals.getProtein()));
-        progressBarZsir.setProgress(calculateSafeProgress(entry.getTotalFat(), goals.getFat()));
+        int kaloriaProgress = calculateSafeProgress(entry.getTotalCalories(), goals.getCalories());
+        int szenhidratProgress = calculateSafeProgress(entry.getTotalCarbs(), goals.getCarbs());
+        int feherjeProgress = calculateSafeProgress(entry.getTotalProtein(), goals.getProtein());
+        int zsirProgress = calculateSafeProgress(entry.getTotalFat(), goals.getFat());
+
+        animateProgressBar(progressBarKaloria, kaloriaProgress);
+        animateProgressBar(progressBarSzenhidrat, szenhidratProgress);
+        animateProgressBar(progressBarFeherje, feherjeProgress);
+        animateProgressBar(progressBarZsir, zsirProgress);
+    }
+
+    private void animateProgressBar(ProgressBar progressBar, int targetProgress) {
+        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(progressBar, "progress",
+                progressBar.getProgress(), targetProgress);
+
+        progressAnimator.setDuration(800);
+        progressAnimator.setInterpolator(new DecelerateInterpolator());
+        progressAnimator.start();
     }
 
     private int calculateSafeProgress(double actual, double goal) {
         if (goal <= 0) return 0;
         int progress = (int) ((actual / goal) * 100);
-        return Math.min(progress, 100); // Maximum 100%
+        return Math.min(progress, 100);
     }
 
     private void updateTextViews(DailyEntry entry, DailyGoals goals) {
@@ -181,10 +191,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private String getCurrentDate() {
-        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-    }
-
     private void setDefaultUIValues() {
         progressBarKaloria.setProgress(0);
         progressBarSzenhidrat.setProgress(0);
@@ -201,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Hiba az adatok betöltésekor", Toast.LENGTH_SHORT).show();
     }
 
-    // UI eseménykezelők (változatlanok)
     public void Logout(View view) {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(this, Login.class));
@@ -216,14 +221,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, Profile.class));
     }
 
-
-
     public void nextDay(View view) {
         currentDate.add(Calendar.DAY_OF_YEAR, 1);
         updateDateDisplay();
         loadDailyData();
     }
-
 
     public void previousDay(View view) {
         currentDate.add(Calendar.DAY_OF_YEAR, -1);
@@ -231,13 +233,9 @@ public class MainActivity extends AppCompatActivity {
         loadDailyData();
     }
 
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
-        loadDailyData(); // Új adatok betöltése minden alkalommal, amikor az Activity láthatóvá válik
+        loadDailyData();
     }
-
 }
