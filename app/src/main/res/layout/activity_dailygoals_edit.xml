@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/login_background"
         android:padding="16dp"
-        tools:context=".UI.profile.Profile">
+        tools:context=".UI.profile.ProfileSzerkesztes">
 
-        <TextView
+        <Button
+            android:id="@+id/kep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_corner"
+            android:padding="18dp"
+            android:text="Kép feltöltése"
+            android:textColor="#312A3C"
+            android:textSize="20sp"
+            app:backgroundTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
             android:id="@+id/teljes_nev"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
+            android:hint="Teljes név"
             android:padding="16dp"
-            android:text="Teljes név"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/kep" />
 
-        <TextView
-            android:id="@+id/Email_input"
+        <EditText
+            android:id="@+id/jelszo_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
+            android:hint="Jelszó"
             android:padding="16dp"
-            android:text="Email"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
@@ -46,64 +63,80 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/teljes_nev" />
 
-
-
-        <TextView
-            android:id="@+id/suly"
+        <EditText
+            android:id="@+id/jelszoVerify_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
+            android:hint="Jelszó Ismét"
             android:padding="16dp"
-            android:text="Súly"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Email_input" />
+            app:layout_constraintTop_toBottomOf="@+id/jelszo_input" />
 
-        <TextView
+        <EditText
+            android:id="@+id/suly_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_corner"
+            android:hint="Súly"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="24sp"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/jelszoVerify_input" />
+
+        <EditText
             android:id="@+id/magassag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
             android:padding="16dp"
-            android:text="Magasság"
+            android:hint="Magasság"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
+            android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/suly" />
+            app:layout_constraintTop_toBottomOf="@+id/suly_input" />
 
-        <TextView
+        <EditText
             android:id="@+id/kor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
             android:padding="16dp"
-            android:text="Kor"
+            android:hint="Kor"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
+            android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/magassag" />
 
-        <TextView
-            android:id="@+id/nem"
+        <Spinner
+            android:id="@+id/gender_spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
             android:padding="16dp"
-            android:text="nem"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
@@ -113,54 +146,21 @@
             app:layout_constraintTop_toBottomOf="@+id/kor" />
 
         <Button
-            android:id="@+id/Szerkeszt"
+            android:id="@+id/Mentes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/rounded_corner"
-            android:onClick="Szerkeszt"
             android:padding="18dp"
-            android:text="Adatok módosítása"
-            android:textColor="#312A3C"
-            android:textSize="20sp"
-            app:backgroundTint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/celok"
-            app:layout_constraintVertical_bias="1.0" />
-
-
-        <Button
-            android:id="@+id/celok"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:background="@drawable/rounded_corner"
-            android:onClick="Szerkeszt"
-            android:padding="18dp"
-            android:text="Napi célok szerkesztése"
+            android:text="Adatok mentése"
             android:textColor="#312A3C"
             android:textSize="20sp"
             app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nem" />
-
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="28dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Vissza gomb"
-            android:onClick="Vissza"
-            android:padding="10dp"
-            android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

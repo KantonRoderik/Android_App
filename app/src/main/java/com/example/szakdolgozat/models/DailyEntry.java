@@ -10,6 +10,7 @@ public class DailyEntry {
     private double totalCarbs;
     private double totalFat;
     private double totalProtein;
+    private double totalWater;
 
     public DailyEntry() {
         consumedFoods = new HashMap<>(); // Inicializálás HashMap-kel
@@ -29,6 +30,9 @@ public class DailyEntry {
     public void setConsumedFoods(Map<String, ConsumedFood> consumedFoods) {
         this.consumedFoods = consumedFoods;
     }
+
+    public double getTotalwater() { return totalWater; }
+    public void setTotalwater(double totalwater) { this.totalWater = totalwater; }
     public double getTotalCalories() { return totalCalories; }
     public void setTotalCalories(double totalCalories) { this.totalCalories = totalCalories; }
     public double getTotalCarbs() { return totalCarbs; }
@@ -44,12 +48,14 @@ public class DailyEntry {
         totalCarbs = 0;
         totalFat = 0;
         totalProtein = 0;
+        totalWater = 0;
 
         for (ConsumedFood food : consumedFoods.values()) {
             totalCalories += food.getCalories();
             totalCarbs += food.getCarbs();
             totalFat += food.getFat();
             totalProtein += food.getProtein();
+
         }
     }
 }

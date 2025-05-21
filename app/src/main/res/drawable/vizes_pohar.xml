@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Pohár körvonala -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M6,2h12l-1.5,18.5c-0.1,1.1 -1,1.5 -1.5,1.5h-6c-0.5,0 -1.4,-0.4 -1.5,-1.5L6,2zM8.1,4l0.3,4h7.2l0.3,-4H8.1z" />
+</vector>

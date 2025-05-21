@@ -109,6 +109,28 @@
                 android:max="100"
                 android:progress="0"
                 android:progressTint="@color/white" />
+
+
+            <TextView
+                android:id="@+id/textView_viz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Víz: 0/0 g (0%)"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar_viz"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:indeterminateOnly="false"
+                android:max="100"
+                android:progress="0"
+                android:progressTint="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -147,18 +169,20 @@
                 android:text="►" />
         </LinearLayout>
 
+
         <Button
             android:id="@+id/add_food_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_width="298dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="36dp"
             android:background="@drawable/rounded_corner"
+            android:onClick="openAddFoodActivity"
             android:text="Étel hozzáadása"
             android:textColor="#312A3C"
             android:textSize="20sp"
-            android:onClick="openAddFoodActivity"
             app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -166,14 +190,15 @@
             android:id="@+id/Profile_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="236dp"
             android:background="@drawable/rounded_corner"
+            android:onClick="Profile"
             android:text="Profil"
             android:textColor="#312A3C"
             android:textSize="20sp"
-            android:onClick="Profile"
             app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_food_btn" />
 
@@ -181,18 +206,33 @@
             android:id="@+id/Logout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/rounded_corner"
+            android:onClick="Logout"
             android:text="Kijelentkezés"
             android:textColor="#312A3C"
             android:textSize="20sp"
-            android:onClick="Logout"
             app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Profile_btn" />
 
+        <ImageButton
+            android:id="@+id/vizGomb"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="Víz hozzáadása"
+            app:backgroundTint="@color/white"
+            android:onClick="viz"
+            android:padding="10dp"
+            android:background="@drawable/rounded_corner"
+            android:src="@drawable/water_medium_48dp_e3e3e3_fill0_wght400_grad0_opsz48"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/add_food_btn"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

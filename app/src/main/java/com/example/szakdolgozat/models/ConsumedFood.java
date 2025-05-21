@@ -9,6 +9,7 @@ public class ConsumedFood {
     private double fat;
     private double protein;
 
+
     public ConsumedFood() {}
 
     public ConsumedFood(FoodItem foodItem, double quantity) {
@@ -77,4 +78,6 @@ public class ConsumedFood {
     public void setProtein(double protein) {
         this.protein = protein;
     }
+
+
 }

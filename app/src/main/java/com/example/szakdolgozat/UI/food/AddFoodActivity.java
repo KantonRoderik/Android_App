@@ -82,11 +82,6 @@ public class AddFoodActivity extends AppCompatActivity {
     private void addSelectedFood() {
         String quantityStr = quantityInput.getText().toString().trim();
 
-
-
-
-
-
         // Mennyiség ellenőrzése
         if (quantityStr.isEmpty()) {
             Toast.makeText(this, "Adja meg a mennyiséget!", Toast.LENGTH_SHORT).show();
@@ -125,6 +120,7 @@ public class AddFoodActivity extends AppCompatActivity {
             consumedFood.put("fat", fat);
             consumedFood.put("protein", protein);
 
+
             // Dátum formázása
             String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -145,6 +141,7 @@ public class AddFoodActivity extends AppCompatActivity {
                             updates.put("totalCarbs", FieldValue.increment(carbs));
                             updates.put("totalFat", FieldValue.increment(fat));
                             updates.put("totalProtein", FieldValue.increment(protein));
+                            updates.put("totalWater", FieldValue.increment(0));
 
                             db.collection("users").document(userId)
                                     .collection("dailyEntries").document(today)
@@ -164,6 +161,7 @@ public class AddFoodActivity extends AppCompatActivity {
                             dailyEntry.put("totalCarbs", carbs);
                             dailyEntry.put("totalFat", fat);
                             dailyEntry.put("totalProtein", protein);
+                            dailyEntry.put("totalWater", 0);
 
                             Map<String, Object> consumedFoods = new HashMap<>();
                             consumedFoods.put(String.valueOf(System.currentTimeMillis()), consumedFood);

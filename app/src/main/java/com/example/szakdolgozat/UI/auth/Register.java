@@ -119,6 +119,7 @@ public class Register extends AppCompatActivity {
                             dailyGoals.put("carbs", 250);
                             dailyGoals.put("protein", 120);
                             dailyGoals.put("fat", 80);
+                            dailyGoals.put("water", 2000);
                             user.put("dailyGoals", dailyGoals);
 
                             dbUsers.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {

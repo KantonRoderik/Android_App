@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.UI.auth.Login;
 import com.example.szakdolgozat.UI.food.AddFoodActivity;
+import com.example.szakdolgozat.UI.food.AddWater;
 import com.example.szakdolgozat.UI.profile.Profile;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.example.szakdolgozat.models.DailyGoals;
@@ -33,10 +34,11 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressBar progressBarKaloria, progressBarSzenhidrat, progressBarFeherje, progressBarZsir;
-    private TextView textViewKaloria, textViewSzenhidrat, textViewFeherje, textViewZsir;
+    private ProgressBar progressBarKaloria, progressBarSzenhidrat, progressBarFeherje, progressBarZsir, progressBarViz;
+    private TextView textViewKaloria, textViewSzenhidrat, textViewFeherje, textViewZsir, textViewViz;
     private FirebaseFirestore db;
     private String userId;
+    private AddWater waterHelper;
 
     private TextView tvCurrentDate;
     private Calendar currentDate = Calendar.getInstance();
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         initializeUI();
         initializeFirebase();
         loadDailyData();
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PERMISSION_GRANTED) {
@@ -77,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
         progressBarSzenhidrat = findViewById(R.id.progressBar_szenhidrat);
         progressBarFeherje = findViewById(R.id.progressBar_feherje);
         progressBarZsir = findViewById(R.id.progressBar_zsir);
+        progressBarViz = findViewById(R.id.progressBar_viz);
 
         textViewKaloria = findViewById(R.id.textView_kaloria);
         textViewSzenhidrat = findViewById(R.id.textView_szenhidrat);
         textViewFeherje = findViewById(R.id.textView_feherje);
         textViewZsir = findViewById(R.id.textView_zsir);
+        textViewViz = findViewById(R.id.textView_viz);
 
         tvCurrentDate = findViewById(R.id.tv_current_date);
     }
@@ -141,11 +146,13 @@ public class MainActivity extends AppCompatActivity {
         int szenhidratProgress = calculateSafeProgress(entry.getTotalCarbs(), goals.getCarbs());
         int feherjeProgress = calculateSafeProgress(entry.getTotalProtein(), goals.getProtein());
         int zsirProgress = calculateSafeProgress(entry.getTotalFat(), goals.getFat());
+        int vizProgress = calculateSafeProgress(entry.getTotalwater(), goals.getWater());
 
         animateProgressBar(progressBarKaloria, kaloriaProgress);
         animateProgressBar(progressBarSzenhidrat, szenhidratProgress);
         animateProgressBar(progressBarFeherje, feherjeProgress);
         animateProgressBar(progressBarZsir, zsirProgress);
+        animateProgressBar(progressBarViz, vizProgress);
     }
 
     private void animateProgressBar(ProgressBar progressBar, int targetProgress) {
@@ -191,6 +198,13 @@ public class MainActivity extends AppCompatActivity {
                 goals.getFat(),
                 "g"
         ));
+
+        textViewViz.setText(formatNutritionText(
+                "Víz",
+                entry.getTotalwater(),
+                goals.getWater(),
+                "ml"
+        ));
     }
 
     private String formatNutritionText(String label, double actual, double goal, String unit) {
@@ -209,16 +223,26 @@ public class MainActivity extends AppCompatActivity {
         progressBarSzenhidrat.setProgress(0);
         progressBarFeherje.setProgress(0);
         progressBarZsir.setProgress(0);
+        progressBarViz.setProgress(0);
 
         textViewKaloria.setText("Kalória: 0/0 kcal (0%)");
         textViewSzenhidrat.setText("Szénhidrát: 0/0 g (0%)");
         textViewFeherje.setText("Fehérje: 0/0 g (0%)");
         textViewZsir.setText("Zsír: 0/0 g (0%)");
+        textViewViz.setText("Víz: 0/0 ml (0%)");
     }
 
     private void showErrorToast() {
         Toast.makeText(this, "Hiba az adatok betöltésekor", Toast.LENGTH_SHORT).show();
     }
+
+
+    public void viz(View view) {
+        waterHelper = new AddWater();
+        waterHelper.addWater(this);
+        loadDailyData();
+    }
+
 
     public void Logout(View view) {
         FirebaseAuth.getInstance().signOut();
