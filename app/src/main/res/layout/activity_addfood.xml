@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Új étel hozzáadása"
+        android:text="@string/addFoodTitle"
         android:textSize="24sp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Válassz ételt:"
+        android:text="@string/addFoodString1"
         android:textSize="18sp"
         android:textColor="@color/black"
         android:layout_marginBottom="8dp"/>
@@ -41,7 +41,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mennyiség (gramm):"
+        android:text="@string/addFoodString2"
         android:textSize="18sp"
         android:textColor="@color/black"
         android:layout_marginBottom="8dp"/>
@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:hint="Adja meg a mennyiséget"
+        android:hint="@string/addFoodAmount"
         android:background="@drawable/edittext_background"
         android:padding="12dp"
         android:layout_marginBottom="32dp"/>
@@ -61,7 +61,7 @@
         android:id="@+id/add_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Étel hozzáadása"
+        android:text="@string/addFoodDone"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:background="@drawable/button_background"

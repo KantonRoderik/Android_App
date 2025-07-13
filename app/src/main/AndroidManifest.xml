@@ -25,7 +25,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />
+            android:value="@reminder/default_notification_channel_id" />
 
         <receiver
             android:name=".notification.BootReceiver"
@@ -48,6 +48,10 @@
         <activity
             android:name=".UI.food.AddFoodActivity"
             android:exported="false" />
+        <activity
+            android:name=".UI.profile.DailyGoalsSzerkesztes"
+            android:exported="false" />
+
 
 
         <service android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"

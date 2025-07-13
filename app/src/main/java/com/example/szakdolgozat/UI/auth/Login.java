@@ -87,7 +87,7 @@ public class Login extends AppCompatActivity {
                             public void run() {
                                 loadingDialog.dialog.dismiss();
                             }
-                        }, 10000);
+                        }, 5000);
 
 
                         if(task.isSuccessful()){

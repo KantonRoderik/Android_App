@@ -72,6 +72,11 @@ public class Profile extends AppCompatActivity {
         finish();
     }
 
+    public void Daily(View view){
+        startActivity(new Intent(Profile.this, DailyGoalsSzerkesztes.class));
+        finish();
+    }
+
     public void Vissza(View view){
         startActivity(new Intent(Profile.this, MainActivity.class));
         finish();

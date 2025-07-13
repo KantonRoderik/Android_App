@@ -276,7 +276,9 @@ public class MainActivity extends AppCompatActivity {
         loadDailyData();
     }
 
-
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadDailyData();
+    }
 }

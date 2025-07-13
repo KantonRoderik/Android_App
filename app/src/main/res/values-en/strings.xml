@@ -5,24 +5,31 @@
     <string name="addFoodString2">Quantity (grams):</string>
     <string name="addFoodAmount">Enter the quantity</string>
     <string name="addFoodDone">Add food</string>
+
     <string name="dailyGoalsCalorie">Calories</string>
     <string name="dailyGoalsCarbs">Carbohydrates</string>
     <string name="dailyGoalsFat">Fat</string>
     <string name="dailyGoalsProtein">Protein</string>
     <string name="dailyGoalsWater">Water</string>
     <string name="dailyGoalsSave">Save</string>
+
     <string name="loginEmail">Email</string>
     <string name="loginPassword">Password</string>
     <string name="loginLogin">Log in</string>
     <string name="loginQuestion">Not registered yet?</string>
     <string name="loginRegister">Register</string>
     <string name="loginOrGoogle">Sign in with Google</string>
+
+    <string name="profileFullName">Full name</string>
     <string name="profileEmail">Email</string>
     <string name="profileWeight">Weight</string>
+    <string name="profileHeight">Height</string>
     <string name="profileAge">Age</string>
     <string name="profileGender">Gender</string>
     <string name="profileDaily">Edit daily goals</string>
     <string name="profileEdit">Edit data</string>
+
+    <string name="profileEditFullName">Full name</string>
     <string name="profileEditPassword1">New password</string>
     <string name="profileEditPassword2">Repeat new password</string>
     <string name="profileEditWeight">Weight</string>
@@ -30,6 +37,7 @@
     <string name="profileEditAge">Age</string>
     <string name="profileEditGender">Gender</string>
     <string name="profileEditSave">Save data</string>
+
     <string name="registerEmail">Email</string>
     <string name="registerName">Full name</string>
     <string name="registerPassword1">Password</string>
@@ -37,8 +45,6 @@
     <string name="registerRegister">Register</string>
     <string name="registerLogin">Log in here!</string>
     <string name="registerText">Or sign in with Google!</string>
+
     <string name="customDialog">Please wait</string>
-    <string name="profileFullName">Full name</string>
-    <string name="profileEditFullName">Full name</string>
-    <string name="profileHeight">Height</string>
 </resources>

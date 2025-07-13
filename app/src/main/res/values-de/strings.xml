@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="addFoodTitle">Neues Essen hinzufügen</string>
+    <string name="addFoodString1">Wähle ein Lebensmittel:</string>
+    <string name="addFoodString2">Menge (Gramm):</string>
+    <string name="addFoodAmount">Geben Sie die Menge ein</string>
+    <string name="addFoodDone">Essen hinzufügen</string>
+
+    <string name="dailyGoalsCalorie">Kalorien</string>
+    <string name="dailyGoalsCarbs">Kohlenhydrate</string>
+    <string name="dailyGoalsFat">Fett</string>
+    <string name="dailyGoalsProtein">Eiweiß</string>
+    <string name="dailyGoalsWater">Wasser</string>
+    <string name="dailyGoalsSave">Speichern</string>
+
+    <string name="loginEmail">E-Mail</string>
+    <string name="loginPassword">Passwort</string>
+    <string name="loginLogin">Anmelden</string>
+    <string name="loginQuestion">Noch nicht registriert?</string>
+    <string name="loginRegister">Registrieren</string>
+    <string name="loginOrGoogle">Mit Google anmelden</string>
+
+    <string name="profileFullName">Vollständiger Name</string>
+    <string name="profileEmail">E-Mail</string>
+    <string name="profileWeight">Gewicht</string>
+    <string name="profileHeight">Größe</string>
+    <string name="profileAge">Alter</string>
+    <string name="profileGender">Geschlecht</string>
+    <string name="profileDaily">Tagesziele bearbeiten</string>
+    <string name="profileEdit">Daten bearbeiten</string>
+
+    <string name="profileEditFullName">Vollständiger Name</string>
+    <string name="profileEditPassword1">Neues Passwort</string>
+    <string name="profileEditPassword2">Neues Passwort wiederholen</string>
+    <string name="profileEditWeight">Gewicht</string>
+    <string name="profileEditHeight">Größe</string>
+    <string name="profileEditAge">Alter</string>
+    <string name="profileEditGender">Geschlecht</string>
+    <string name="profileEditSave">Daten speichern</string>
+
+    <string name="registerEmail">E-Mail</string>
+    <string name="registerName">Vollständiger Name</string>
+    <string name="registerPassword1">Passwort</string>
+    <string name="registerPassword2">Passwort wiederholen</string>
+    <string name="registerRegister">Registrieren</string>
+    <string name="registerLogin">Hier anmelden!</string>
+    <string name="registerText">Oder mit Google anmelden!</string>
+
+    <string name="customDialog">Bitte warten</string>
+</resources>

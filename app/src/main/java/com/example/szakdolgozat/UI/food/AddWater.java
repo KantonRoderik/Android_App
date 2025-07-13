@@ -1,5 +1,6 @@
 package com.example.szakdolgozat.UI.food;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,9 +61,13 @@ public class AddWater{
             return null;
         }).addOnSuccessListener(aVoid -> {
             Toast.makeText(context, "+100ml víz hozzáadva! 💧", Toast.LENGTH_SHORT).show();
+            ((Activity) context).recreate();
+
         }).addOnFailureListener(e -> {
             Toast.makeText(context, "Hiba: " + e.getMessage(), Toast.LENGTH_LONG).show();
         });
     }
+
+
 
 }

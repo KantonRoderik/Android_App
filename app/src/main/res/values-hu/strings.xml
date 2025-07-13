@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="addFoodTitle">Új étel hozzáadása</string>
+    <string name="addFoodString1">Válassz ételt:</string>
+    <string name="addFoodString2">Mennyiség (gramm):</string>
+    <string name="addFoodAmount">Adja meg a mennyiséget</string>
+    <string name="addFoodDone">Étel hozzáadása</string>
+
+    <string name="dailyGoalsCalorie">Kalória</string>
+    <string name="dailyGoalsCarbs">Szénhidrát</string>
+    <string name="dailyGoalsFat">Zsír</string>
+    <string name="dailyGoalsProtein">Fehérje</string>
+    <string name="dailyGoalsWater">Víz</string>
+    <string name="dailyGoalsSave">Mentés</string>">
+
+    <string name="loginEmail">Email</string>">
+    <string name="loginPassword">Jelszó</string>">
+    <string name="loginLogin">Bejelentkezés</string>">
+    <string name="loginQuestion">Nincs Regisztrálva még?</string>">
+    <string name="loginRegister">Regisztráljon</string>">
+    <string name="loginOrGoogle">Jelentkezz be Google-el</string>">
+
+    <string name="profileFullName">Teljes név</string>">
+    <string name="profileEmail">Email</string>">
+    <string name="profileWeight">Súly</string>">
+    <string name="profileHeight">Magasság</string>">
+    <string name="profileAge">Kor</string>">
+    <string name="profileGender">Nem</string>">
+    <string name="profileDaily">Napi célok szerkesztése</string>">
+    <string name="profileEdit">Adatok módosítása</string>">
+
+    <string name="profileEditFullName">Teljes név</string>">
+    <string name="profileEditPassword1">Új Jelszó</string>">
+    <string name="profileEditPassword2">Új Jelszó Ismét</string>">
+    <string name="profileEditWeight">Súly</string>">
+    <string name="profileEditHeight">Magasság</string>">
+    <string name="profileEditAge">Kor</string>">
+    <string name="profileEditGender">Nem</string>">
+    <string name="profileEditSave">Adatok mentése</string>">
+
+    <string name="registerEmail">Email</string>">
+    <string name="registerName">Teljes név</string>">
+    <string name="registerPassword1">Jelszó</string>">
+    <string name="registerPassword2">Jelszó Újra</string>">
+    <string name="registerRegister">Regisztráció</string>">
+    <string name="registerLogin">Jelentkezzen be itt!</string>">
+    <string name="registerText">Vagy jelentkezzen be google-el!</string>"
+
+    <string name="customDialog">Kérem Várjon</string>
+
+</resources>

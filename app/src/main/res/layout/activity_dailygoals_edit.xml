@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,77 +14,65 @@
         android:padding="16dp"
         tools:context=".UI.profile.ProfileSzerkesztes">
 
-        <Button
-            android:id="@+id/kep"
+
+        <EditText
+            android:id="@+id/caloria"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="252dp"
             android:background="@drawable/rounded_corner"
-            android:padding="18dp"
-            android:text="Kép feltöltése"
-            android:textColor="#312A3C"
-            android:textSize="20sp"
-            app:backgroundTint="@color/white"
+            android:hint="@string/dailyGoalsCalorie"
+            android:inputType="number"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/teljes_nev"
+            android:id="@+id/carbs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
-            android:hint="Teljes név"
+            android:hint="@string/dailyGoalsCarbs"
             android:padding="16dp"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/kep" />
+            app:layout_constraintTop_toBottomOf="@+id/caloria" />
 
         <EditText
-            android:id="@+id/jelszo_input"
+            android:id="@+id/fat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
-            android:hint="Jelszó"
+            android:hint="@string/dailyGoalsFat"
             android:padding="16dp"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/teljes_nev" />
+            app:layout_constraintTop_toBottomOf="@+id/carbs" />
 
         <EditText
-            android:id="@+id/jelszoVerify_input"
+            android:id="@+id/protein"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
-            android:hint="Jelszó Ismét"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jelszo_input" />
-
-        <EditText
-            android:id="@+id/suly_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="Súly"
+            android:hint="@string/dailyGoalsProtein"
             android:padding="16dp"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
@@ -94,16 +81,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jelszoVerify_input" />
+            app:layout_constraintTop_toBottomOf="@+id/fat" />
 
         <EditText
-            android:id="@+id/magassag"
+            android:id="@+id/water"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
             android:padding="16dp"
-            android:hint="Magasság"
+            android:hint="@string/dailyGoalsWater"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="24sp"
@@ -111,56 +98,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/suly_input" />
+            app:layout_constraintTop_toBottomOf="@+id/protein" />
 
-        <EditText
-            android:id="@+id/kor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="Kor"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/magassag" />
 
-        <Spinner
-            android:id="@+id/gender_spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/kor" />
 
         <Button
             android:id="@+id/Mentes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/rounded_corner"
             android:padding="18dp"
-            android:text="Adatok mentése"
+            android:onClick="Daily"
+            android:text="@string/dailyGoalsSave"
             android:textColor="#312A3C"
             android:textSize="20sp"
             app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/water" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
