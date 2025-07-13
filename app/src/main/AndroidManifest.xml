@@ -25,7 +25,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@reminder/default_notification_channel_id" />
+            android:value="Nutrition tracking reminders_channel_id" />
 
         <receiver
             android:name=".notification.BootReceiver"
