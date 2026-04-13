@@ -2,113 +2,147 @@ package com.example.szakdolgozat.UI.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Button;
-import android.widget.TextView;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.szakdolgozat.UI.main.MainActivity;
 import com.example.szakdolgozat.R;
-import com.example.szakdolgozat.helpers.LoadingDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.szakdolgozat.UI.main.MainActivity;
+import com.example.szakdolgozat.databinding.ActivityLoginBinding;
+import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Activity for user login.
+ */
 public class Login extends AppCompatActivity {
 
-    EditText Email;
-    EditText Password;
-    Button Login_btn;
-    TextView Register_btn;
-    TextView google_signup;
-    FirebaseAuth mAuth;
+    private static final String TAG = "LoginActivity";
+    private ActivityLoginBinding binding;
+    private FirestoreRepository repository;
+    private GoogleSignInClient googleSignInClient;
 
-
-
-
+    private final ActivityResultLauncher<Intent> googleSignInLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        if (account != null) {
+                            firebaseAuthWithGoogle(account.getIdToken());
+                        }
+                    } catch (ApiException e) {
+                        Log.w(TAG, "Google sign in failed", e);
+                        Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Email = findViewById(R.id.Email_input);
-        Password = findViewById(R.id.Password_input);
-        Login_btn = findViewById(R.id.login_btn);
-        Register_btn = findViewById(R.id.Register_btn);
-        google_signup = findViewById(R.id.google_signup);
-        mAuth = FirebaseAuth.getInstance();
+        repository = FirestoreRepository.getInstance();
 
+        // Check if user is already logged in
+        if (repository.getCurrentUser() != null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
 
+        setupGoogleSignIn();
 
-        LoadingDialog loadingDialog = new LoadingDialog(Login.this);
+        binding.loginBtn.setOnClickListener(v -> performLogin());
+        binding.RegisterBtn.setOnClickListener(v -> startActivity(new Intent(this, Register.class)));
+        
+        // Click on the Google Icon Layout
+        binding.googleLayout.setOnClickListener(v -> signInWithGoogle());
+        // Click on the "Or sign in with Google" text
+        binding.googleSignup.setOnClickListener(v -> signInWithGoogle());
+    }
 
+    private void setupGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
 
-        Login_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        googleSignInLauncher.launch(signInIntent);
+    }
 
-                String email = Email.getText().toString().trim();
-                String password = Password.getText().toString().trim();
+    private void firebaseAuthWithGoogle(String idToken) {
+        repository.signInWithGoogle(idToken).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser user = repository.getCurrentUser();
+                checkIfProfileExists(user);
+            } else {
+                Toast.makeText(Login.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-                if (TextUtils.isEmpty(email)) {
-                    Email.setError("Email megadása kötelező!");
-                    return;
-                }
-                if (TextUtils.isEmpty(password)) {
-                    Password.setError("Jelszó megadása kötelező!");
-                    return;
-                }
-
-
-
-                //Adatok Autentikálása
-
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        //Kötelező loading animáció
-
-                        loadingDialog.startLoadingDialog();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingDialog.dialog.dismiss();
-                            }
-                        }, 5000);
-
-
-                        if(task.isSuccessful()){
-                            Toast.makeText(Login.this, "Bejelentkezés sikeres!", Toast.LENGTH_SHORT).show();
+    private void checkIfProfileExists(FirebaseUser user) {
+        repository.getUserData().addOnSuccessListener(documentSnapshot -> {
+            if (!documentSnapshot.exists()) {
+                // If profile doesn't exist, create it (happens on first Google login)
+                repository.createUserProfile(user.getEmail(), user.getDisplayName())
+                        .addOnSuccessListener(unused -> {
                             startActivity(new Intent(Login.this, MainActivity.class));
-                        }
-                        else{
-                            Toast.makeText(Login.this, "Bejelentkezés sikertelen!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                            finish();
+                        });
+            } else {
+                startActivity(new Intent(Login.this, MainActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(e -> {
+            startActivity(new Intent(Login.this, MainActivity.class));
+            finish();
+        });
+    }
+
+    private void performLogin() {
+        String email = binding.EmailInput.getText().toString().trim();
+        String password = binding.PasswordInput.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            binding.EmailInput.setError(getString(R.string.error_email_required));
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            binding.PasswordInput.setError(getString(R.string.error_password_required));
+            return;
+        }
+
+        repository.login(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(Login.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Login.this, MainActivity.class));
+                finish();
+            } else {
+                String error = task.getException() != null ? task.getException().getMessage() : getString(R.string.error_generic);
+                Toast.makeText(Login.this, getString(R.string.login_failed) + ": " + error, Toast.LENGTH_SHORT).show();
             }
         });
-
-        Register_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Register.class));
-            }
-        });
-
-
     }
 }

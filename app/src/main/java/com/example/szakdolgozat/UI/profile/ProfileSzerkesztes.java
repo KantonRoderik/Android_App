@@ -3,233 +3,128 @@ package com.example.szakdolgozat.UI.profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
+import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.example.szakdolgozat.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.szakdolgozat.databinding.ActivityProfileSzerkesztesBinding;
+import com.example.szakdolgozat.helpers.FirestoreRepository;
 
+import java.util.HashMap;
+import java.util.Map;
 
-
-
+/**
+ * Activity for editing user profile information.
+ */
 public class ProfileSzerkesztes extends AppCompatActivity {
 
+    private static final String TAG = "ProfileSzerkesztes";
 
-    EditText TeljesNev, Suly, Magassag, Kor, Password, PasswordVerify;
-    Spinner Nem;
-    Button Mentes;
-
-
-
-    FirebaseAuth mAuth;
-    String userID;
-    FirebaseFirestore db;
-    boolean PasswordError = false;
-
+    private ActivityProfileSzerkesztesBinding binding;
+    private FirestoreRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_profile_szerkesztes);
+        binding = ActivityProfileSzerkesztesBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        // Nemi lehetőségek
-        String[] genders = {"Férfi", "Nő"};
+        repository = FirestoreRepository.getInstance();
 
+        setupGenderSpinner();
 
-        TeljesNev = findViewById(R.id.teljes_nev);
-        Suly = findViewById(R.id.suly_input);
-        Magassag = findViewById(R.id.magassag);
-        Kor = findViewById(R.id.kor);
-        Nem = findViewById(R.id.gender_spinner);
-        Mentes = findViewById(R.id.Mentes);
-        Password = findViewById(R.id.jelszo_input);
-        PasswordVerify = findViewById(R.id.jelszoVerify_input);
-
-
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        userID = mAuth.getCurrentUser().getUid();
-
-
-
-
-
-
-        Mentes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                String teljesnev = TeljesNev.getText().toString().trim();
-                String sulyStr = Suly.getText().toString().trim();
-                String magassagStr = Magassag.getText().toString().trim();
-                String korStr = Kor.getText().toString().trim();
-                String nem = Nem.getSelectedItem().toString().trim();
-                String NewPassword = Password.getText().toString().trim();
-                String NewPasswordVerify = PasswordVerify.getText().toString().trim();
-
-
-
-
-
-                if (!TextUtils.isEmpty(NewPassword) && NewPassword.length() < 6) {
-                    Password.setError("Legalább 6 karakteres jelszónak kell lennie!");
-                    PasswordError = true;
-                    return;
-                }
-
-
-                if (!TextUtils.equals(NewPassword, NewPasswordVerify)) {
-                    PasswordVerify.setError("A megadott jelszavak nem egyeznek!");
-                    Password.setError("A megadott jelszavak nem egyeznek!");
-                    PasswordError = true;
-                    return;
-                }
-
-
-                /**
-                 *
-                 * Miért vették ki az updateEmail funkciót???????
-                 *
-                 * Itt igazából az aljáig csak a változtatásokat mentem el
-                 *
-                 */
-
-
-                if(PasswordError == false && !TextUtils.isEmpty(NewPassword) && !TextUtils.isEmpty(NewPasswordVerify)){
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    assert user != null;{
-                        user.updatePassword(NewPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    db.collection("users").document(userID).update("password", NewPassword);
-                                    Toast.makeText(ProfileSzerkesztes.this, "Jelszó sikeresen megváltoztatva!", Toast.LENGTH_SHORT).show();
-
-                                }
-                                else {
-                                    Toast.makeText(ProfileSzerkesztes.this, "Jelszó megváltoztatása sikertelen!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                }
-
-
-                if (!TextUtils.isEmpty(sulyStr)) {
-                    try {
-                        int suly = Integer.parseInt(sulyStr);
-
-                        if (suly <= 0 || suly >= 500) {
-                            Suly.setError("A súlynak 0 és 500 között kell lennie!");
-                            return;
-                        }
-                        else{
-                            db.collection("users").document(userID).update("suly", sulyStr);
-                        }
-                    } catch (NumberFormatException e) {
-                        Suly.setError("Érvényes számot adj meg!");
-                    }
-                }
-
-
-                if (!TextUtils.isEmpty(magassagStr)) {
-                    try {
-                        int magassag = Integer.parseInt(magassagStr);
-
-                        if (magassag <= 0 || magassag >= 300) {
-                            Magassag.setError("A magasságnak 0 és 300 között kell lennie!");
-                            return;
-                        }
-                        else{
-                            db.collection("users").document(userID).update("magassag", magassagStr);
-                        }
-                    } catch (NumberFormatException e) {
-                        Magassag.setError("Érvényes számot adj meg!");
-                    }
-                }
-
-
-
-                if (!TextUtils.isEmpty(korStr)) {
-                    try {
-                        int kor = Integer.parseInt(korStr);
-
-                        if (kor <= 0 || kor >= 100) {
-                            Kor.setError("A kornak 0 és 100 között kell lennie!");
-                            return;
-                        }
-                        else{
-                            db.collection("users").document(userID).update("kor", korStr);
-                        }
-                    } catch (NumberFormatException e) {
-                        Kor.setError("Érvényes számot adj meg!");
-                    }
-                }
-
-
-
-
-
-
-
-
-
-                if(!TextUtils.isEmpty(teljesnev)){
-                    db.collection("users").document(userID).update("nev", teljesnev);
-                }
-
-
-                if(!TextUtils.isEmpty(nem)){
-                    db.collection("users").document(userID).update("nem", nem);
-                }
-
-
-                startActivity(new Intent(ProfileSzerkesztes.this, Profile.class));
-                finish();
-
-            }
-        });
-
-
-
-
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genders);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Nem.setAdapter(adapter);
-
-        // Kiválasztott elem kezelése
-        Nem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedGender = genders[position];
-                Toast.makeText(ProfileSzerkesztes.this, "Kiválasztott nem: " + selectedGender, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Ha nincs kiválasztva semmi, akkor nem történik semmi
-            }
-        });
-
+        binding.Mentes.setOnClickListener(v -> onSaveButtonClicked());
     }
 
+    private void setupGenderSpinner() {
+        String[] genders = {getString(R.string.gender_male), getString(R.string.gender_female)};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genders);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.genderSpinner.setAdapter(adapter);
+    }
 
+    private void onSaveButtonClicked() {
+        String fullName = binding.teljesNev.getText().toString().trim();
+        String weightStr = binding.sulyInput.getText().toString().trim();
+        String heightStr = binding.magassag.getText().toString().trim();
+        String ageStr = binding.kor.getText().toString().trim();
+        String gender = binding.genderSpinner.getSelectedItem().toString();
+        String newPassword = binding.jelszoInput.getText().toString().trim();
+        String verifyPassword = binding.jelszoVerifyInput.getText().toString().trim();
+
+        // 1. Password validation
+        if (!TextUtils.isEmpty(newPassword)) {
+            if (newPassword.length() < 6) {
+                binding.jelszoInput.setError(getString(R.string.error_password_length));
+                return;
+            }
+            if (!newPassword.equals(verifyPassword)) {
+                binding.jelszoVerifyInput.setError(getString(R.string.error_passwords_dont_match));
+                return;
+            }
+            updatePassword(newPassword);
+        }
+
+        // 2. Profile data validation and collection
+        Map<String, Object> profileUpdates = new HashMap<>();
+        
+        if (!TextUtils.isEmpty(fullName)) profileUpdates.put("nev", fullName);
+        profileUpdates.put("nem", gender);
+
+        if (validateAndAddNumber(weightStr, binding.sulyInput, "suly", 0, 500, profileUpdates) &&
+            validateAndAddNumber(heightStr, binding.magassag, "magassag", 0, 300, profileUpdates) &&
+            validateAndAddNumber(ageStr, binding.kor, "kor", 0, 100, profileUpdates)) {
+            
+            saveProfileUpdates(profileUpdates);
+        }
+    }
+
+    private boolean validateAndAddNumber(String valueStr, android.widget.EditText editText, String key, int min, int max, Map<String, Object> updates) {
+        if (TextUtils.isEmpty(valueStr)) return true;
+        try {
+            int value = Integer.parseInt(valueStr);
+            if (value <= min || value >= max) {
+                editText.setError(getString(R.string.error_invalid_value_range, min, max));
+                return false;
+            }
+            updates.put(key, valueStr);
+            return true;
+        } catch (NumberFormatException e) {
+            editText.setError(getString(R.string.error_invalid_number));
+            return false;
+        }
+    }
+
+    private void updatePassword(String password) {
+        repository.updatePassword(password)
+                .addOnSuccessListener(aVoid -> Toast.makeText(this, getString(R.string.password_changed_success), Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this, getString(R.string.password_changed_failed), Toast.LENGTH_SHORT).show());
+    }
+
+    private void saveProfileUpdates(Map<String, Object> updates) {
+        if (updates.isEmpty()) {
+            navigateBack();
+            return;
+        }
+
+        repository.updateProfile(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, getString(R.string.update_success), Toast.LENGTH_SHORT).show();
+                    navigateBack();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Update failed", e);
+                    Toast.makeText(this, getString(R.string.food_add_error), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void navigateBack() {
+        startActivity(new Intent(this, Profile.class));
+        finish();
+    }
 }

@@ -3,9 +3,12 @@ package com.example.szakdolgozat.models;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a user's nutritional intake for a specific day.
+ */
 public class DailyEntry {
-    private String date; // Formátum: "yyyy-MM-dd"
-    private Map<String, ConsumedFood> consumedFoods;
+    private String date; // Format: "yyyy-MM-dd"
+    private Map<String, ConsumedFood> consumedFoods = new HashMap<>();
     private double totalCalories;
     private double totalCarbs;
     private double totalFat;
@@ -13,49 +16,86 @@ public class DailyEntry {
     private double totalWater;
 
     public DailyEntry() {
-        consumedFoods = new HashMap<>(); // Inicializálás HashMap-kel
+        // Required for Firebase
     }
 
     public DailyEntry(String date) {
-        this();
         this.date = date;
     }
 
-    // Getterek és setterek
-    public String getDate() { return date; }
-    public void setDate(String date) { this.date = date; }
+    public String getDate() {
+        return date;
+    }
 
-    // Getterek és setterek
-    public Map<String, ConsumedFood> getConsumedFoods() { return consumedFoods; }
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Map<String, ConsumedFood> getConsumedFoods() {
+        return consumedFoods;
+    }
+
     public void setConsumedFoods(Map<String, ConsumedFood> consumedFoods) {
         this.consumedFoods = consumedFoods;
     }
 
-    public double getTotalwater() { return totalWater; }
-    public void setTotalwater(double totalwater) { this.totalWater = totalwater; }
-    public double getTotalCalories() { return totalCalories; }
-    public void setTotalCalories(double totalCalories) { this.totalCalories = totalCalories; }
-    public double getTotalCarbs() { return totalCarbs; }
-    public void setTotalCarbs(double totalCarbs) { this.totalCarbs = totalCarbs; }
-    public double getTotalFat() { return totalFat; }
-    public void setTotalFat(double totalFat) { this.totalFat = totalFat; }
-    public double getTotalProtein() { return totalProtein; }
-    public void setTotalProtein(double totalProtein) { this.totalProtein = totalProtein; }
+    public double getTotalWater() {
+        return totalWater;
+    }
 
-    // Segédmetódus az összesítések frissítéséhez
+    public void setTotalWater(double totalWater) {
+        this.totalWater = totalWater;
+    }
+
+    public double getTotalCalories() {
+        return totalCalories;
+    }
+
+    public void setTotalCalories(double totalCalories) {
+        this.totalCalories = totalCalories;
+    }
+
+    public double getTotalCarbs() {
+        return totalCarbs;
+    }
+
+    public void setTotalCarbs(double totalCarbs) {
+        this.totalCarbs = totalCarbs;
+    }
+
+    public double getTotalFat() {
+        return totalFat;
+    }
+
+    public void setTotalFat(double totalFat) {
+        this.totalFat = totalFat;
+    }
+
+    public double getTotalProtein() {
+        return totalProtein;
+    }
+
+    public void setTotalProtein(double totalProtein) {
+        this.totalProtein = totalProtein;
+    }
+
+    /**
+     * Recalculates all nutritional totals based on the consumed foods map.
+     */
     public void calculateTotals() {
-        totalCalories = 0;
-        totalCarbs = 0;
-        totalFat = 0;
-        totalProtein = 0;
-        totalWater = 0;
+        this.totalCalories = 0;
+        this.totalCarbs = 0;
+        this.totalFat = 0;
+        this.totalProtein = 0;
+        // Note: totalWater is usually handled separately as it's often added directly
+        
+        if (consumedFoods == null) return;
 
         for (ConsumedFood food : consumedFoods.values()) {
-            totalCalories += food.getCalories();
-            totalCarbs += food.getCarbs();
-            totalFat += food.getFat();
-            totalProtein += food.getProtein();
-
+            this.totalCalories += food.getCalories();
+            this.totalCarbs += food.getCarbs();
+            this.totalFat += food.getFat();
+            this.totalProtein += food.getProtein();
         }
     }
 }

@@ -1,15 +1,9 @@
 package com.example.szakdolgozat.UI.profile;
 
-import static com.example.szakdolgozat.UI.auth.Register.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,178 +11,76 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.szakdolgozat.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.szakdolgozat.databinding.ActivityDailygoalsEditBinding;
+import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.models.DailyGoals;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * Activity for editing daily nutritional goals.
+ */
+public class DailyGoalsSzerkesztes extends AppCompatActivity {
 
-public class DailyGoalsSzerkesztes  extends AppCompatActivity {
+    private static final String TAG = "DailyGoalsSzerkesztes";
 
-
-    EditText Kaloria, Szenhidrat, Zsir, Feherje, Viz;
-
-    Button Mentes;
-
-
-    FirebaseAuth mAuth;
-    String userID;
-    FirebaseFirestore db;
-
-    int kcal;
-    int carbs;
-    int protein;
-    int fat;
-    int water;
-
+    private ActivityDailygoalsEditBinding binding;
+    private FirestoreRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_dailygoals_edit);
+        binding = ActivityDailygoalsEditBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        repository = FirestoreRepository.getInstance();
 
-        Kaloria = findViewById(R.id.caloria);
-        Szenhidrat = findViewById(R.id.carbs);
-        Zsir = findViewById(R.id.fat);
-        Feherje = findViewById(R.id.protein);
-        Viz = findViewById(R.id.water);
-        Mentes = findViewById(R.id.Mentes);
+        loadCurrentGoals();
 
+        binding.Mentes.setOnClickListener(v -> onSaveButtonClicked());
+    }
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        userID = mAuth.getCurrentUser().getUid();
-
-
-        Mentes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                String kaloria = Kaloria.getText().toString().trim();
-                String szenhidrat = Szenhidrat.getText().toString().trim();
-                String zsir = Zsir.getText().toString().trim();
-                String feherje = Feherje.getText().toString().trim();
-                String viz = Viz.getText().toString().trim();
-
-
-
-                db.collection("users").document(userID)
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    // A dailyGoals HashMap kinyerése
-                                    Map<String, Object> dailyGoals = (Map<String, Object>) document.get("dailyGoals");
-
-                                    if (dailyGoals != null) {
-                                        // Adatok használata például:
-                                         kcal = ((Long) dailyGoals.get("calories")).intValue();
-                                         carbs = ((Long) dailyGoals.get("carbs")).intValue();
-                                         protein = ((Long) dailyGoals.get("protein")).intValue();
-                                         fat = ((Long) dailyGoals.get("fat")).intValue();
-                                         water = ((Long) dailyGoals.get("water")).intValue();
-
-                                        Log.d(TAG, "Minden adat kinyerve: " + kcal + " " + carbs + " " + protein + " " + fat + " " + water);
-                                    } else {
-                                        Log.d(TAG, "A dailyGoals még nincs beállítva");
-                                    }
-                                }
-                            } else {
-                                Log.w(TAG, "Hiba történt a lekérdezésben", task.getException());
-                            }
-                        });
-
-
-                // ÚJ: Alapértelmezett napi célok hozzáadása
-                Map<String, Object> dailyGoals = new HashMap<>();
-                dailyGoals.put("calories", kcal);
-                dailyGoals.put("carbs", carbs);
-                dailyGoals.put("protein", protein);
-                dailyGoals.put("fat", fat);
-                dailyGoals.put("water", water);
-
-
-
-                if (!TextUtils.isEmpty(kaloria)) {
-                    try {
-                        int mennyiseg = Integer.parseInt(kaloria);
-                        //    db.collection("users").document(userID).update("suly", kaloria);
-                        dailyGoals.put("calories", mennyiseg);
-                    } catch (NumberFormatException e) {
-                        Kaloria.setError("Érvényes számot adj meg!");
-                    }
+    private void loadCurrentGoals() {
+        repository.getUserData().addOnSuccessListener(document -> {
+            if (document.exists()) {
+                DailyGoals goals = document.get("dailyGoals", DailyGoals.class);
+                if (goals != null) {
+                    binding.caloria.setText(String.valueOf((int) goals.getCalories()));
+                    binding.carbs.setText(String.valueOf((int) goals.getCarbs()));
+                    binding.protein.setText(String.valueOf((int) goals.getProtein()));
+                    binding.fat.setText(String.valueOf((int) goals.getFat()));
+                    binding.water.setText(String.valueOf((int) goals.getWater()));
                 }
-
-
-                if (!TextUtils.isEmpty(szenhidrat)) {
-                    try {
-                        int mennyiseg = Integer.parseInt(szenhidrat);
-                        //  db.collection("users").document(userID).update("suly", szenhidrat);
-                        dailyGoals.put("carbs", mennyiseg);
-                    } catch (NumberFormatException e) {
-                        Szenhidrat.setError("Érvényes számot adj meg!");
-                    }
-                }
-
-
-                if (!TextUtils.isEmpty(zsir)) {
-                    try {
-                        int mennyiseg = Integer.parseInt(zsir);
-                        // db.collection("users").document(userID).update("magassag", zsir);
-                        dailyGoals.put("fat", mennyiseg);
-                    } catch (NumberFormatException e) {
-                        Zsir.setError("Érvényes számot adj meg!");
-                    }
-                }
-
-
-                if (!TextUtils.isEmpty(feherje)) {
-                    try {
-                        int mennyiseg = Integer.parseInt(feherje);
-                        //db.collection("users").document(userID).update("kor", feherje);
-                        dailyGoals.put("protein", mennyiseg);
-                    } catch (NumberFormatException e) {
-                        Feherje.setError("Érvényes számot adj meg!");
-                    }
-                }
-
-                if (!TextUtils.isEmpty(viz)) {
-                    try {
-                        int mennyiseg = Integer.parseInt(viz);
-                        //db.collection("users").document(userID).update("kor", viz);
-                        dailyGoals.put("water", mennyiseg);
-                    } catch (NumberFormatException e) {
-                        Viz.setError("Érvényes számot adj meg!");
-                    }
-                }
-
-                db.collection("users").document(userID)
-                        .update("dailyGoals", dailyGoals)
-                        .addOnSuccessListener(aVoid -> {
-                            // Az Activity kontextusának lekérése (pl. MyActivity.this)
-                            Toast.makeText(DailyGoalsSzerkesztes.this, "Sikeres frissítés!", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(DailyGoalsSzerkesztes.this, "Hiba történt: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
-
-
-
-
-
-                startActivity(new Intent(DailyGoalsSzerkesztes.this, Profile.class));
-                finish();
-
             }
-        });
+        }).addOnFailureListener(e -> Log.e(TAG, "Failed to load goals: " + e.getMessage()));
+    }
 
+    private void onSaveButtonClicked() {
+        try {
+            DailyGoals newGoals = new DailyGoals();
+            newGoals.setCalories(parseInput(binding.caloria));
+            newGoals.setCarbs(parseInput(binding.carbs));
+            newGoals.setProtein(parseInput(binding.protein));
+            newGoals.setFat(parseInput(binding.fat));
+            newGoals.setWater(parseInput(binding.water));
 
+            repository.updateDailyGoals(newGoals)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, getString(R.string.update_success), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, Profile.class));
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Update failed: " + e.getMessage());
+                        Toast.makeText(this, getString(R.string.error_generic), Toast.LENGTH_SHORT).show();
+                    });
+
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, getString(R.string.error_invalid_number), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private double parseInput(EditText editText) {
+        String text = editText.getText().toString().trim();
+        return TextUtils.isEmpty(text) ? 0 : Double.parseDouble(text);
     }
 }
-
-

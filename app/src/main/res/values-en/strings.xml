@@ -1,35 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">SZAKDOLGOZAT</string>
+
+    <!-- UI - General -->
+    <string name="error_loading_data">Error loading data</string>
+    <string name="error_generic">An error occurred</string>
+    <string name="save_success">Successfully saved!</string>
+    <string name="update_success">Successfully updated!</string>
+    <string name="unit_kcal">kcal</string>
+    <string name="unit_g">g</string>
+    <string name="unit_ml">ml</string>
+    <string name="unit_kg">kg</string>
+    <string name="unit_cm">cm</string>
+    <string name="unit_years">years</string>
+
+    <!-- Main Activity -->
+    <string name="label_calories">Calories</string>
+    <string name="label_carbs">Carbohydrates</string>
+    <string name="label_protein">Protein</string>
+    <string name="label_fat">Fat</string>
+    <string name="label_water">Water</string>
+    <string name="water_added_toast">+100ml water added! 💧</string>
+    <string name="nutrition_format">%1$s: %2$.0f/%3$.0f %4$s (%5$d%%)</string>
+    <string name="nutrition_default_format">%1$s: 0/0 %2$s (0%%)</string>
+    <string name="main_add_food">Add Food</string>
+    <string name="main_profile">Profile</string>
+    <string name="main_logout">Logout</string>
+
+    <!-- Auth -->
+    <string name="login_success">Login successful!</string>
+    <string name="login_failed">Login failed</string>
+    <string name="register_success">Registration successful!</string>
+    <string name="register_failed">Registration failed</string>
+    <string name="error_email_required">Email is required!</string>
+    <string name="error_password_required">Password is required!</string>
+    <string name="error_name_required">Name is required!</string>
+    <string name="error_password_length">Password must be at least 6 characters long!</string>
+    <string name="error_passwords_dont_match">Passwords do not match!</string>
+    <string name="error_invalid_number">Invalid number format!</string>
+    <string name="error_invalid_value_range">Invalid value (%1$d-%2$d)</string>
+
+    <!-- Profile -->
+    <string name="password_changed_success">Password changed successfully!</string>
+    <string name="password_changed_failed">Failed to change password!</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="label_bmr">BMR (Basal Metabolic Rate): %1$.0f kcal</string>
+
+    <!-- Food -->
+    <string name="food_load_error">Error loading food items</string>
+    <string name="food_add_success">Successfully added!</string>
+    <string name="food_add_error">Error saving</string>
+    <string name="error_quantity_required">Please specify the quantity!</string>
+    <string name="error_invalid_quantity">Quantity cannot be zero or negative!</string>
+    <string name="error_no_food_selected">No food selected!</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Daily Reminder</string>
+    <string name="notification_channel_desc">Reminder to log your meals</string>
+    <string name="notification_reminder_text">Don\'t forget to log your meals today!</string>
+    <string name="notification_reminder_text_with_time">Don\'t forget to log your meals today! (%s)</string>
+
     <string name="addFoodTitle">New Consumed Food</string>
     <string name="addFoodString1">Pick a Food</string>
     <string name="addFoodString2">Quantity (grams):</string>
     <string name="addFoodAmount">Enter the quantity</string>
     <string name="addFoodDone">Add food</string>
-
     <string name="dailyGoalsCalorie">Calories</string>
     <string name="dailyGoalsCarbs">Carbohydrates</string>
     <string name="dailyGoalsFat">Fat</string>
     <string name="dailyGoalsProtein">Protein</string>
     <string name="dailyGoalsWater">Water</string>
     <string name="dailyGoalsSave">Save</string>
-
     <string name="loginEmail">Email</string>
     <string name="loginPassword">Password</string>
     <string name="loginLogin">Log in</string>
     <string name="loginQuestion">Not registered yet?</string>
     <string name="loginRegister">Register</string>
     <string name="loginOrGoogle">Sign in with Google</string>
-
-    <string name="profileFullName">Full name</string>
     <string name="profileEmail">Email</string>
     <string name="profileWeight">Weight</string>
-    <string name="profileHeight">Height</string>
     <string name="profileAge">Age</string>
     <string name="profileGender">Gender</string>
     <string name="profileDaily">Edit daily goals</string>
     <string name="profileEdit">Edit data</string>
-
-    <string name="profileEditFullName">Full name</string>
     <string name="profileEditPassword1">New password</string>
     <string name="profileEditPassword2">Repeat new password</string>
     <string name="profileEditWeight">Weight</string>
@@ -37,7 +91,6 @@
     <string name="profileEditAge">Age</string>
     <string name="profileEditGender">Gender</string>
     <string name="profileEditSave">Save data</string>
-
     <string name="registerEmail">Email</string>
     <string name="registerName">Full name</string>
     <string name="registerPassword1">Password</string>
@@ -45,6 +98,8 @@
     <string name="registerRegister">Register</string>
     <string name="registerLogin">Log in here!</string>
     <string name="registerText">Or sign in with Google!</string>
-
     <string name="customDialog">Please wait</string>
+    <string name="profileFullName">Full name</string>
+    <string name="profileEditFullName">Full name</string>
+    <string name="profileHeight">Height</string>
 </resources>

@@ -3,57 +3,59 @@ package com.example.szakdolgozat.UI.food;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.szakdolgozat.models.FoodItem;
 import com.example.szakdolgozat.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.szakdolgozat.databinding.ActivityAddfoodBinding;
+import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.models.ConsumedFood;
+import com.example.szakdolgozat.models.FoodItem;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+/**
+ * Activity for adding a consumed food item to the daily log.
+ */
 public class AddFoodActivity extends AppCompatActivity {
 
-    private Spinner foodSpinner;
-    private EditText quantityInput;
-    private Button addButton;
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
-    private List<FoodItem> foodItems = new ArrayList<>();
+    private static final String TAG = "AddFoodActivity";
+
+    private ActivityAddfoodBinding binding;
+    private FirestoreRepository repository;
+    private final List<FoodItem> foodItems = new ArrayList<>();
+    private String selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addfood);
+        binding = ActivityAddfoodBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+        repository = FirestoreRepository.getInstance();
 
-        foodSpinner = findViewById(R.id.food_spinner);
-        quantityInput = findViewById(R.id.quantity_input);
-        addButton = findViewById(R.id.add_button);
+        // Get the date passed from MainActivity, default to today if not provided
+        selectedDate = getIntent().getStringExtra("selected_date");
+        if (selectedDate == null) {
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        }
 
         loadFoodItems();
 
-        addButton.setOnClickListener(v -> addSelectedFood());
+        binding.addButton.setOnClickListener(v -> onAddButtonClicked());
     }
 
     private void loadFoodItems() {
-        db.collection("foods").get()
+        repository.getAllFoods()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         foodItems.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             FoodItem food = document.toObject(FoodItem.class);
@@ -62,7 +64,7 @@ public class AddFoodActivity extends AppCompatActivity {
                         }
                         setupSpinner();
                     } else {
-                        Toast.makeText(this, "Hiba az ételek betöltésekor", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.food_load_error), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -76,117 +78,49 @@ public class AddFoodActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, foodNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        foodSpinner.setAdapter(adapter);
+        binding.foodSpinner.setAdapter(adapter);
     }
 
-    private void addSelectedFood() {
-        String quantityStr = quantityInput.getText().toString().trim();
+    private void onAddButtonClicked() {
+        String quantityStr = binding.quantityInput.getText().toString().trim();
 
-        // Mennyiség ellenőrzése
         if (quantityStr.isEmpty()) {
-            Toast.makeText(this, "Adja meg a mennyiséget!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_quantity_required), Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
             double quantity = Double.parseDouble(quantityStr);
             if (quantity <= 0) {
-                Toast.makeText(this, "A mennyiség nem lehet nulla vagy negatív!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_invalid_quantity), Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            FoodItem selectedFood = foodItems.get(foodSpinner.getSelectedItemPosition());
-
-            // Ellenőrizd, hogy a felhasználó be van-e jelentkezve
-            if (mAuth.getCurrentUser() == null) {
-                Toast.makeText(this, "Nincs bejelentkezve!", Toast.LENGTH_SHORT).show();
+            int selectedPosition = binding.foodSpinner.getSelectedItemPosition();
+            if (selectedPosition == Spinner.INVALID_POSITION || foodItems.isEmpty()) {
+                Toast.makeText(this, getString(R.string.error_no_food_selected), Toast.LENGTH_SHORT).show();
                 return;
             }
-            String userId = mAuth.getCurrentUser().getUid();
 
-            // Tápanyagok kiszámolása
-            double calories = selectedFood.getCalories() * quantity / 100;
-            double carbs = selectedFood.getCarbs() * quantity / 100;
-            double fat = selectedFood.getFat() * quantity / 100;
-            double protein = selectedFood.getProtein() * quantity / 100;
-
-            // ConsumedFood létrehozása
-            Map<String, Object> consumedFood = new HashMap<>();
-            consumedFood.put("foodId", selectedFood.getId());
-            consumedFood.put("foodName", selectedFood.getName());
-            consumedFood.put("quantity", quantity);
-            consumedFood.put("calories", calories);
-            consumedFood.put("carbs", carbs);
-            consumedFood.put("fat", fat);
-            consumedFood.put("protein", protein);
-
-
-            // Dátum formázása
-            String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
-            Log.d("Firestore", "Dátum: " + today); // Ellenőrizd a Logcat-ben
-
-
-
-            // Firestore műveletek
-            db.collection("users").document(userId)
-                    .collection("dailyEntries").document(today)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            // FRISSÍTÉS: Létező nap frissítése
-                            Map<String, Object> updates = new HashMap<>();
-                            updates.put("consumedFoods." + System.currentTimeMillis(), consumedFood);
-                            updates.put("totalCalories", FieldValue.increment(calories));
-                            updates.put("totalCarbs", FieldValue.increment(carbs));
-                            updates.put("totalFat", FieldValue.increment(fat));
-                            updates.put("totalProtein", FieldValue.increment(protein));
-                            updates.put("totalWater", FieldValue.increment(0));
-
-                            db.collection("users").document(userId)
-                                    .collection("dailyEntries").document(today)
-                                    .update(updates)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(this, "Sikeres Frissítés", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Hiba a frissítéskor: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                    });
-                        } else {
-                            // LÉTREHOZÁS: Új nap indítása
-                            Map<String, Object> dailyEntry = new HashMap<>();
-                            dailyEntry.put("date", today);
-                            dailyEntry.put("totalCalories", calories);
-                            dailyEntry.put("totalCarbs", carbs);
-                            dailyEntry.put("totalFat", fat);
-                            dailyEntry.put("totalProtein", protein);
-                            dailyEntry.put("totalWater", 0);
-
-                            Map<String, Object> consumedFoods = new HashMap<>();
-                            consumedFoods.put(String.valueOf(System.currentTimeMillis()), consumedFood);
-                            dailyEntry.put("consumedFoods", consumedFoods);
-
-                            db.collection("users").document(userId)
-                                    .collection("dailyEntries").document(today)
-                                    .set(dailyEntry)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(this, "Sikeres létrehozás!", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Hiba a létrehozáskor: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Hiba az ellenőrzéskor: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
+            FoodItem selectedFood = foodItems.get(selectedPosition);
+            saveConsumedFood(selectedFood, quantity);
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Érvénytelen számformátum!", Toast.LENGTH_SHORT).show();
-        } catch (IndexOutOfBoundsException e) {
-            Toast.makeText(this, "Nincs kiválasztva étel!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_invalid_number), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveConsumedFood(FoodItem foodItem, double quantity) {
+        ConsumedFood consumedFood = new ConsumedFood(foodItem, quantity);
+
+        repository.addConsumedFood(selectedDate, consumedFood)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, getString(R.string.food_add_success), Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error adding food: " + e.getMessage());
+                    Toast.makeText(this, getString(R.string.food_add_error) + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 }

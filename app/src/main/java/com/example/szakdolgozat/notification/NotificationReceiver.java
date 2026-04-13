@@ -13,6 +13,9 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import com.example.szakdolgozat.R;
 
+/**
+ * Receiver for daily notifications.
+ */
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID = "daily_reminder_channel";
     private static final String TAG = "NotificationReceiver";
@@ -45,7 +48,6 @@ public class NotificationReceiver extends BroadcastReceiver {
             NotificationManager manager = context.getSystemService(NotificationManager.class);
             if (manager != null) {
                 manager.createNotificationChannel(channel);
-                Log.d(TAG, "Notification channel created");
             }
         }
     }
@@ -53,8 +55,8 @@ public class NotificationReceiver extends BroadcastReceiver {
     private Notification buildNotification(Context context, Intent intent) {
         String time = intent.getStringExtra("time");
         String contentText = time != null ?
-                String.format("Ne felejtsd el rögzíteni a mai étkezéseidet! (%s)", time) :
-                "Ne felejtsd el rögzíteni a mai étkezéseidet!";
+                context.getString(R.string.notification_reminder_text_with_time, time) :
+                context.getString(R.string.notification_reminder_text);
 
         return new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -64,7 +66,6 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();
     }
 
@@ -73,7 +74,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         if (manager != null) {
             int notificationId = (int) System.currentTimeMillis();
             manager.notify(notificationId, notification);
-            Log.d(TAG, "Notification shown with id: " + notificationId);
         }
     }
 }

@@ -4,145 +4,167 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.szakdolgozat.UI.main.MainActivity;
 import com.example.szakdolgozat.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.szakdolgozat.UI.main.MainActivity;
+import com.example.szakdolgozat.databinding.ActivityRegisterBinding;
+import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Activity for user registration.
+ */
 public class Register extends AppCompatActivity {
 
-    EditText Email;
-    EditText TeljesNev;
-    EditText Password;
-    EditText PasswordVerify;
+    private static final String TAG = "RegisterActivity";
 
-    Button RegisterBtn;
-    TextView LoginBtn;
-    FirebaseAuth mAuth;
-    String userID;
-    FirebaseFirestore db;
+    private ActivityRegisterBinding binding;
+    private FirestoreRepository repository;
+    private GoogleSignInClient googleSignInClient;
 
-    public static final String TAG = "TAG";
+    private final ActivityResultLauncher<Intent> googleSignInLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        if (account != null) {
+                            firebaseAuthWithGoogle(account.getIdToken());
+                        }
+                    } catch (ApiException e) {
+                        Log.w(TAG, "Google sign in failed", e);
+                        Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_register);
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Email = findViewById(R.id.Email_input);
-        TeljesNev = findViewById(R.id.teljes_nev);
-        Password = findViewById(R.id.Password_input);
-        PasswordVerify = findViewById(R.id.Password_Verify_input);
-        RegisterBtn = findViewById(R.id.Register_Button);
-        LoginBtn = findViewById(R.id.Login_Button);
+        repository = FirestoreRepository.getInstance();
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-
-        if (mAuth.getCurrentUser() != null) {
+        if (repository.getCurrentUser() != null) {
             startActivity(new Intent(Register.this, MainActivity.class));
+            finish();
         }
 
-        RegisterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = Email.getText().toString().trim();
-                String teljesnev = TeljesNev.getText().toString().trim();
-                String password = Password.getText().toString().trim();
-                String passwordVerify = PasswordVerify.getText().toString().trim();
+        setupGoogleSignIn();
 
-                if (TextUtils.isEmpty(email)) {
-                    Email.setError("Email megadása kötelező!");
-                    return;
-                }
+        binding.RegisterButton.setOnClickListener(v -> performRegistration());
+        binding.LoginButton.setOnClickListener(v -> startActivity(new Intent(this, Login.class)));
+        
+        // Google login buttons in Register
+        binding.googleLayout.setOnClickListener(v -> signInWithGoogle());
+    }
 
-                if (TextUtils.isEmpty(teljesnev)) {
-                    TeljesNev.setError("Név megadása kötelező!");  // Javítottam: Email helyett TeljesNev
-                    return;
-                }
+    private void setupGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
-                if (TextUtils.isEmpty(password)) {
-                    Password.setError("Jelszó megadása kötelező!");
-                    return;
-                }
-                if (password.length() < 6) {
-                    Password.setError("Legalább 6 karakteres jelszónak kell lennie!");
-                    return;
-                }
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
 
-                if (!TextUtils.equals(password, passwordVerify)) {
-                    PasswordVerify.setError("A megadott jelszavak nem egyeznek!");
-                    Password.setError("A megadott jelszavak nem egyeznek!");
-                    return;
-                }
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        googleSignInLauncher.launch(signInIntent);
+    }
 
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(Register.this, "Regisztráció sikeres!", Toast.LENGTH_SHORT).show();
-                            userID = mAuth.getCurrentUser().getUid();
-                            DocumentReference dbUsers = db.collection("users").document(userID);
-
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("email", email);
-                            user.put("nev", teljesnev);
-                            user.put("password", password);
-                            user.put("suly", "80");
-                            user.put("magassag", "180");
-                            user.put("kor", "25");
-                            user.put("nem", "férfi");
-
-
-                            // ÚJ: Alapértelmezett napi célok hozzáadása
-                            Map<String, Object> dailyGoals = new HashMap<>();
-                            dailyGoals.put("calories", 2000);
-                            dailyGoals.put("carbs", 250);
-                            dailyGoals.put("protein", 120);
-                            dailyGoals.put("fat", 80);
-                            dailyGoals.put("water", 2000);
-                            user.put("dailyGoals", dailyGoals);
-
-                            dbUsers.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d(TAG, "onSuccess: user profile is created for " + userID);
-                                    Toast.makeText(Register.this, "Adatok sikeresen feltöltve!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            startActivity(new Intent(Register.this, MainActivity.class));
-                        } else {
-                            Toast.makeText(Register.this, "Regisztráció sikertelen!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    private void firebaseAuthWithGoogle(String idToken) {
+        repository.signInWithGoogle(idToken).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser user = repository.getCurrentUser();
+                checkIfProfileExists(user);
+            } else {
+                Toast.makeText(Register.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        LoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Login.class));
+    private void checkIfProfileExists(FirebaseUser user) {
+        repository.getUserData().addOnSuccessListener(documentSnapshot -> {
+            if (!documentSnapshot.exists()) {
+                repository.createUserProfile(user.getEmail(), user.getDisplayName())
+                        .addOnSuccessListener(unused -> {
+                            startActivity(new Intent(Register.this, MainActivity.class));
+                            finish();
+                        });
+            } else {
+                startActivity(new Intent(Register.this, MainActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(e -> {
+            startActivity(new Intent(Register.this, MainActivity.class));
+            finish();
+        });
+    }
+
+    private void performRegistration() {
+        String email = binding.EmailInput.getText().toString().trim();
+        String fullName = binding.teljesNev.getText().toString().trim();
+        String password = binding.PasswordInput.getText().toString().trim();
+        String passwordVerify = binding.PasswordVerifyInput.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            binding.EmailInput.setError(getString(R.string.error_email_required));
+            return;
+        }
+
+        if (TextUtils.isEmpty(fullName)) {
+            binding.teljesNev.setError(getString(R.string.error_name_required));
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            binding.PasswordInput.setError(getString(R.string.error_password_required));
+            return;
+        }
+        if (password.length() < 6) {
+            binding.PasswordInput.setError(getString(R.string.error_password_length));
+            return;
+        }
+
+        if (!password.equals(passwordVerify)) {
+            binding.PasswordVerifyInput.setError(getString(R.string.error_passwords_dont_match));
+            return;
+        }
+
+        repository.register(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(Register.this, getString(R.string.register_success), Toast.LENGTH_SHORT).show();
+
+                repository.createUserProfile(email, fullName).addOnSuccessListener(unused -> {
+                    Log.d(TAG, "User profile created");
+                    Toast.makeText(Register.this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Register.this, MainActivity.class));
+                    finish();
+                }).addOnFailureListener(e -> {
+                    Log.e(TAG, "Profile creation failed", e);
+                    Toast.makeText(Register.this, getString(R.string.register_failed), Toast.LENGTH_SHORT).show();
+                });
+
+            } else {
+                String error = task.getException() != null ? task.getException().getMessage() : getString(R.string.error_generic);
+                Toast.makeText(Register.this, getString(R.string.register_failed) + ": " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }

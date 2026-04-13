@@ -1,35 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">SZAKDOLGOZAT</string>
+
+    <!-- UI - General -->
+    <string name="error_loading_data">Fehler beim Laden der Daten</string>
+    <string name="error_generic">Ein Fehler ist aufgetreten</string>
+    <string name="save_success">Erfolgreich gespeichert!</string>
+    <string name="update_success">Erfolgreich aktualisiert!</string>
+    <string name="unit_kcal">kcal</string>
+    <string name="unit_g">g</string>
+    <string name="unit_ml">ml</string>
+    <string name="unit_kg">kg</string>
+    <string name="unit_cm">cm</string>
+    <string name="unit_years">Jahre</string>
+
+    <!-- Main Activity -->
+    <string name="label_calories">Kalorien</string>
+    <string name="label_carbs">Kohlenhydrate</string>
+    <string name="label_protein">Eiweiß</string>
+    <string name="label_fat">Fett</string>
+    <string name="label_water">Wasser</string>
+    <string name="water_added_toast">+100ml Wasser hinzugefügt! 💧</string>
+    <string name="nutrition_format">%1$s: %2$.0f/%3$.0f %4$s (%5$d%%)</string>
+    <string name="nutrition_default_format">%1$s: 0/0 %2$s (0%%)</string>
+    <string name="main_add_food">Essen hinzufügen</string>
+    <string name="main_profile">Profil</string>
+    <string name="main_logout">Abmelden</string>
+
+    <!-- Auth -->
+    <string name="login_success">Anmeldung erfolgreich!</string>
+    <string name="login_failed">Anmeldung fehlgeschlagen</string>
+    <string name="register_success">Registrierung erfolgreich!</string>
+    <string name="register_failed">Registrierung fehlgeschlagen</string>
+    <string name="error_email_required">E-Mail ist erforderlich!</string>
+    <string name="error_password_required">Passwort ist erforderlich!</string>
+    <string name="error_name_required">Name ist erforderlich!</string>
+    <string name="error_password_length">Das Passwort muss mindestens 6 Zeichen lang sein!</string>
+    <string name="error_passwords_dont_match">Passwörter stimmen nicht überein!</string>
+    <string name="error_invalid_number">Ungültiges Zahlenformat!</string>
+    <string name="error_invalid_value_range">Ungültiger Wert (%1$d-%2$d)</string>
+
+    <!-- Profile -->
+    <string name="password_changed_success">Passwort erfolgreich geändert!</string>
+    <string name="password_changed_failed">Passwortänderung fehlgeschlagen!</string>
+    <string name="gender_male">Männlich</string>
+    <string name="gender_female">Weiblich</string>
+    <string name="label_bmr">BMR (Grundumsatz): %1$.0f kcal</string>
+
+    <!-- Food -->
+    <string name="food_load_error">Fehler beim Laden der Lebensmittel</string>
+    <string name="food_add_success">Erfolgreich hinzugefügt!</string>
+    <string name="food_add_error">Fehler beim Speichern</string>
+    <string name="error_quantity_required">Bitte Menge angeben!</string>
+    <string name="error_invalid_quantity">Menge darf nicht null oder negativ sein!</string>
+    <string name="error_no_food_selected">Kein Lebensmittel ausgewählt!</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Tägliche Erinnerung</string>
+    <string name="notification_channel_desc">Erinnerung an die Protokollierung von Mahlzeiten</string>
+    <string name="notification_reminder_text">Vergessen Sie nicht, Ihre heutigen Mahlzeiten einzutragen!</string>
+    <string name="notification_reminder_text_with_time">Vergessen Sie nicht, Ihre heutigen Mahlzeiten einzutragen! (%s)</string>
+
     <string name="addFoodTitle">Neues Essen hinzufügen</string>
     <string name="addFoodString1">Wähle ein Lebensmittel:</string>
     <string name="addFoodString2">Menge (Gramm):</string>
     <string name="addFoodAmount">Geben Sie die Menge ein</string>
     <string name="addFoodDone">Essen hinzufügen</string>
-
     <string name="dailyGoalsCalorie">Kalorien</string>
     <string name="dailyGoalsCarbs">Kohlenhydrate</string>
     <string name="dailyGoalsFat">Fett</string>
     <string name="dailyGoalsProtein">Eiweiß</string>
     <string name="dailyGoalsWater">Wasser</string>
     <string name="dailyGoalsSave">Speichern</string>
-
     <string name="loginEmail">E-Mail</string>
     <string name="loginPassword">Passwort</string>
     <string name="loginLogin">Anmelden</string>
     <string name="loginQuestion">Noch nicht registriert?</string>
     <string name="loginRegister">Registrieren</string>
     <string name="loginOrGoogle">Mit Google anmelden</string>
-
-    <string name="profileFullName">Vollständiger Name</string>
     <string name="profileEmail">E-Mail</string>
     <string name="profileWeight">Gewicht</string>
-    <string name="profileHeight">Größe</string>
     <string name="profileAge">Alter</string>
     <string name="profileGender">Geschlecht</string>
     <string name="profileDaily">Tagesziele bearbeiten</string>
     <string name="profileEdit">Daten bearbeiten</string>
-
-    <string name="profileEditFullName">Vollständiger Name</string>
     <string name="profileEditPassword1">Neues Passwort</string>
     <string name="profileEditPassword2">Neues Passwort wiederholen</string>
     <string name="profileEditWeight">Gewicht</string>
@@ -37,7 +91,6 @@
     <string name="profileEditAge">Alter</string>
     <string name="profileEditGender">Geschlecht</string>
     <string name="profileEditSave">Daten speichern</string>
-
     <string name="registerEmail">E-Mail</string>
     <string name="registerName">Vollständiger Name</string>
     <string name="registerPassword1">Passwort</string>
@@ -45,6 +98,8 @@
     <string name="registerRegister">Registrieren</string>
     <string name="registerLogin">Hier anmelden!</string>
     <string name="registerText">Oder mit Google anmelden!</string>
-
     <string name="customDialog">Bitte warten</string>
+    <string name="profileFullName">Vollständiger Name</string>
+    <string name="profileEditFullName">Vollständiger Name</string>
+    <string name="profileHeight">Größe</string>
 </resources>

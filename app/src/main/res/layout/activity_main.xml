@@ -33,9 +33,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Kalória: 0/0 kcal (0%)"
+                android:text="@string/nutrition_default_format"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Kalória: 0/0 kcal (0%)" />
 
             <ProgressBar
                 android:id="@+id/progressBar_kaloria"
@@ -53,9 +54,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Szénhidrát: 0/0 g (0%)"
+                android:text="@string/nutrition_default_format"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Szénhidrát: 0/0 g (0%)" />
 
             <ProgressBar
                 android:id="@+id/progressBar_szenhidrat"
@@ -74,9 +76,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Fehérje: 0/0 g (0%)"
+                android:text="@string/nutrition_default_format"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Fehérje: 0/0 g (0%)" />
 
             <ProgressBar
                 android:id="@+id/progressBar_feherje"
@@ -95,9 +98,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Zsír: 0/0 g (0%)"
+                android:text="@string/nutrition_default_format"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Zsír: 0/0 g (0%)" />
 
             <ProgressBar
                 android:id="@+id/progressBar_zsir"
@@ -117,9 +121,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="Víz: 0/0 g (0%)"
+                android:text="@string/nutrition_default_format"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Víz: 0/0 ml (0%)" />
 
             <ProgressBar
                 android:id="@+id/progressBar_viz"
@@ -151,7 +156,6 @@
                 android:id="@+id/btn_previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="previousDay"
                 android:text="◄" />
 
             <TextView
@@ -159,41 +163,54 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:text="2024-05-20" />
 
             <Button
                 android:id="@+id/btn_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="nextDay"
                 android:text="►" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/bmr_display"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="BMR: 0 kcal"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
             android:id="@+id/add_food_btn"
             android:layout_width="298dp"
             android:layout_height="50dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/rounded_corner"
-            android:onClick="openAddFoodActivity"
-            android:text="Étel hozzáadása"
+            android:text="@string/main_add_food"
             android:textColor="#312A3C"
             android:textSize="20sp"
             app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/bmr_display" />
 
         <Button
             android:id="@+id/Profile_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="236dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/rounded_corner"
-            android:onClick="Profile"
-            android:text="Profil"
+            android:text="@string/main_profile"
             android:textColor="#312A3C"
             android:textSize="20sp"
             app:backgroundTint="@color/white"
@@ -206,10 +223,9 @@
             android:id="@+id/Logout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/rounded_corner"
-            android:onClick="Logout"
-            android:text="Kijelentkezés"
+            android:text="@string/main_logout"
             android:textColor="#312A3C"
             android:textSize="20sp"
             app:backgroundTint="@color/white"
@@ -220,19 +236,18 @@
 
         <ImageButton
             android:id="@+id/vizGomb"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_marginTop="24dp"
-            android:contentDescription="Víz hozzáadása"
-            app:backgroundTint="@color/white"
-            android:onClick="viz"
-            android:padding="10dp"
+            android:layout_width="54dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/rounded_corner"
+            android:contentDescription="@string/label_water"
+            android:padding="10dp"
             android:src="@drawable/water_medium_48dp_e3e3e3_fill0_wght400_grad0_opsz48"
+            app:backgroundTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toEndOf="@+id/add_food_btn"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/bmr_display" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

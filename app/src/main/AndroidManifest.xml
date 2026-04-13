@@ -43,9 +43,6 @@
             android:exported="true" />     <!--Ennek true-nak kell lennie -->
 
         <activity
-            android:name=".UI.food.FoodUploadActivity"
-            android:exported="false" />
-        <activity
             android:name=".UI.food.AddFoodActivity"
             android:exported="false" />
         <activity
