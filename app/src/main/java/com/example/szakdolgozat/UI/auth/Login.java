@@ -71,8 +71,8 @@ public class Login extends AppCompatActivity {
         binding.loginBtn.setOnClickListener(v -> performLogin());
         binding.RegisterBtn.setOnClickListener(v -> startActivity(new Intent(this, Register.class)));
         
-        // Click on the Google Icon Layout
-        binding.googleLayout.setOnClickListener(v -> signInWithGoogle());
+        // Click on the Google Icon
+        binding.googleLoginBtn.setOnClickListener(v -> signInWithGoogle());
         // Click on the "Or sign in with Google" text
         binding.googleSignup.setOnClickListener(v -> signInWithGoogle());
     }

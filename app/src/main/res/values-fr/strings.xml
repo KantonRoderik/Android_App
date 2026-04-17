@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SZAKDOLGOZAT</string>
+
+    <!-- UI - General -->
+    <string name="error_loading_data">Erreur lors du chargement des données</string>
+    <string name="error_generic">Une erreur est survenue</string>
+    <string name="save_success">Enregistré avec succès !</string>
+    <string name="update_success">Mis à jour avec succès !</string>
+    <string name="unit_kcal">kcal</string>
+    <string name="unit_g">g</string>
+    <string name="unit_ml">ml</string>
+    <string name="unit_kg">kg</string>
+    <string name="unit_cm">cm</string>
+    <string name="unit_years">ans</string>
+
+    <!-- Main Activity -->
+    <string name="label_calories">Calories</string>
+    <string name="label_carbs">Glucides</string>
+    <string name="label_protein">Protéines</string>
+    <string name="label_fat">Lipides</string>
+    <string name="label_water">Eau</string>
+    <string name="water_added_toast">+100ml d\'eau ajoutés ! 💧</string>
+    <string name="nutrition_format">%1$s : %2$.0f/%3$.0f %4$s (%5$d%%)</string>
+    <string name="nutrition_default_format">%1$s : 0/0 %2$s (0%%)</string>
+    <string name="main_add_food">Ajouter un aliment</string>
+    <string name="main_profile">Profil</string>
+    <string name="main_logout">Déconnexion</string>
+
+    <!-- Auth -->
+    <string name="login_success">Connexion réussie !</string>
+    <string name="login_failed">Échec de la connexion</string>
+    <string name="register_success">Inscription réussie !</string>
+    <string name="register_failed">Échec de l\'inscription</string>
+    <string name="error_email_required">L\'email est requis !</string>
+    <string name="error_password_required">Le mot de passe est requis !</string>
+    <string name="error_name_required">Le nom est requis !</string>
+    <string name="error_password_length">Le mot de passe doit comporter au moins 6 caractères !</string>
+    <string name="error_passwords_dont_match">Les mots de passe ne correspondent pas !</string>
+    <string name="error_invalid_number">Format de nombre invalide !</string>
+    <string name="error_invalid_value_range">Valeur invalide (%1$d-%2$d)</string>
+
+    <!-- Profile -->
+    <string name="password_changed_success">Mot de passe changé avec succès !</string>
+    <string name="password_changed_failed">Échec du changement de mot de passe !</string>
+    <string name="gender_male">Homme</string>
+    <string name="gender_female">Femme</string>
+    <string name="label_bmr">TMB (Taux Métabolique de Base) : %1$.0f kcal</string>
+
+    <!-- Food -->
+    <string name="food_load_error">Erreur lors du chargement des aliments</string>
+    <string name="food_add_success">Ajouté avec succès !</string>
+    <string name="food_add_error">Erreur lors de l\'enregistrement</string>
+    <string name="error_quantity_required">Veuillez préciser la quantité !</string>
+    <string name="error_invalid_quantity">La quantité ne peut pas être nulle ou négative !</string>
+    <string name="error_no_food_selected">Aucun aliment sélectionné !</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Rappel quotidien</string>
+    <string name="notification_channel_desc">Rappel pour enregistrer vos repas</string>
+    <string name="notification_reminder_text">N\'oubliez pas d\'enregistrer vos repas d\'aujourd\'hui !</string>
+    <string name="notification_reminder_text_with_time">N\'oubliez pas d\'enregistrer vos repas d\'aujourd\'hui ! (%s)</string>
+    <string name="default_notification_channel_id" translatable="false">Nutrition tracking reminders_channel_id</string>
+
+    <!-- Existing strings (keeping for layout compatibility) -->
+    <string name="addFoodTitle">Nouvel aliment consommé</string>
+    <string name="addFoodString1">Choisir un aliment</string>
+    <string name="addFoodString2">Quantité (grammes) :</string>
+    <string name="addFoodAmount">Entrez la quantité</string>
+    <string name="addFoodDone">Ajouter l\'aliment</string>
+    <string name="dailyGoalsCalorie">Calories</string>
+    <string name="dailyGoalsCarbs">Glucides</string>
+    <string name="dailyGoalsFat">Lipides</string>
+    <string name="dailyGoalsProtein">Protéines</string>
+    <string name="dailyGoalsWater">Eau</string>
+    <string name="dailyGoalsSave">Enregistrer</string>
+    <string name="loginEmail">Email</string>
+    <string name="loginPassword">Mot de passe</string>
+    <string name="loginLogin">Se connecter</string>
+    <string name="loginQuestion">Pas encore inscrit ?</string>
+    <string name="loginRegister">S\'inscrire</string>
+    <string name="loginOrGoogle">Se connecter avec Google</string>
+    <string name="profileEmail">Email</string>
+    <string name="profileWeight">Poids</string>
+    <string name="profileAge">Âge</string>
+    <string name="profileGender">Genre</string>
+    <string name="profileDaily">Modifier les objectifs quotidiens</string>
+    <string name="profileEdit">Modifier les données</string>
+    <string name="profileEditPassword1">Nouveau mot de passe</string>
+    <string name="profileEditPassword2">Répéter le nouveau mot de passe</string>
+    <string name="profileEditWeight">Poids</string>
+    <string name="profileEditHeight">Taille</string>
+    <string name="profileEditAge">Âge</string>
+    <string name="profileEditGender">Genre</string>
+    <string name="profileEditSave">Enregistrer les données</string>
+    <string name="registerEmail">Email</string>
+    <string name="registerName">Nom complet</string>
+    <string name="registerPassword1">Mot de passe</string>
+    <string name="registerPassword2">Répéter le mot de passe</string>
+    <string name="registerRegister">S\'inscrire</string>
+    <string name="registerLogin">Connectez-vous ici !</string>
+    <string name="registerText">Ou connectez-vous avec Google !</string>
+    <string name="customDialog">Veuillez patienter</string>
+    <string name="profileFullName">Nom complet</string>
+    <string name="profileEditFullName">Nom complet</string>
+    <string name="profileHeight">Taille</string>
+</resources>

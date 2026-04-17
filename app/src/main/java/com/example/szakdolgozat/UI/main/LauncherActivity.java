@@ -7,12 +7,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.szakdolgozat.UI.auth.Login;
+import com.example.szakdolgozat.UI.profile.ProfileSzerkesztes;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
 import com.example.szakdolgozat.notification.NotificationScheduler;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Entry point activity that handles user routing (Login vs Main) and initial setup.
+ * Entry point activity that handles user routing (Login vs Main vs Onboarding).
  */
 public class LauncherActivity extends AppCompatActivity {
 
@@ -23,16 +24,31 @@ public class LauncherActivity extends AppCompatActivity {
         FirestoreRepository repository = FirestoreRepository.getInstance();
         FirebaseUser user = repository.getCurrentUser();
 
-        // Initialize background tasks
         NotificationScheduler.scheduleExactAlarms(this);
 
-        // Route user based on auth state
         if (user != null) {
-            startActivity(new Intent(this, MainActivity.class));
+            checkOnboarding(repository);
         } else {
             startActivity(new Intent(this, Login.class));
+            finish();
         }
+    }
 
-        finish();
+    private void checkOnboarding(FirestoreRepository repository) {
+        repository.getUserData().addOnSuccessListener(document -> {
+            Boolean isComplete = document.getBoolean("onboarding_complete");
+            if (isComplete != null && isComplete) {
+                startActivity(new Intent(this, MainActivity.class));
+            } else {
+                // If onboarding is not complete, force them to edit profile
+                Intent intent = new Intent(this, ProfileSzerkesztes.class);
+                intent.putExtra("IS_ONBOARDING", true);
+                startActivity(intent);
+            }
+            finish();
+        }).addOnFailureListener(e -> {
+            startActivity(new Intent(this, Login.class));
+            finish();
+        });
     }
 }

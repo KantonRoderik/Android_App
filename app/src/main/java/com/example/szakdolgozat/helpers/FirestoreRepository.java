@@ -3,6 +3,7 @@ package com.example.szakdolgozat.helpers;
 import com.example.szakdolgozat.models.ConsumedFood;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.example.szakdolgozat.models.DailyGoals;
+import com.example.szakdolgozat.models.DietaryTemplate;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthCredential;
@@ -17,13 +18,13 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Repository class to handle all Firestore and Auth database operations.
- * Implemented as a Singleton for Clean Code and performance.
  */
 public class FirestoreRepository {
     private static FirestoreRepository instance;
@@ -80,18 +81,12 @@ public class FirestoreRepository {
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("nev", name);
-        user.put("suly", "80");
-        user.put("magassag", "180");
-        user.put("kor", "25");
-        user.put("nem", "férfi");
-
-        Map<String, Object> dailyGoals = new HashMap<>();
-        dailyGoals.put("calories", 2000.0);
-        dailyGoals.put("carbs", 250.0);
-        dailyGoals.put("protein", 120.0);
-        dailyGoals.put("fat", 80.0);
-        dailyGoals.put("water", 2000.0);
-        user.put("dailyGoals", dailyGoals);
+        // Initial values set to null or empty to trigger onboarding
+        user.put("suly", "");
+        user.put("magassag", "");
+        user.put("kor", "");
+        user.put("nem", "");
+        user.put("onboarding_complete", false);
 
         return userDoc.set(user);
     }
@@ -156,6 +151,25 @@ public class FirestoreRepository {
         });
     }
 
+    public Task<Void> removeConsumedFood(String date, String foodKey, ConsumedFood food) {
+        DocumentReference userDoc = getUserDoc();
+        if (userDoc == null) return Tasks.forException(new Exception("User not logged in"));
+        
+        DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
+
+        return db.runTransaction(transaction -> {
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("consumedFoods." + foodKey, FieldValue.delete());
+            updates.put("totalCalories", FieldValue.increment(-food.getCalories()));
+            updates.put("totalCarbs", FieldValue.increment(-food.getCarbs()));
+            updates.put("totalFat", FieldValue.increment(-food.getFat()));
+            updates.put("totalProtein", FieldValue.increment(-food.getProtein()));
+
+            transaction.update(entryRef, updates);
+            return null;
+        });
+    }
+
     public Task<Void> addWater(String date, double amount) {
         DocumentReference userDoc = getUserDoc();
         if (userDoc == null) return Tasks.forException(new Exception("User not logged in"));
@@ -182,7 +196,18 @@ public class FirestoreRepository {
         return userDoc.update("dailyGoals", goals);
     }
 
-    // --- Food Items ---
+    public Task<Void> updateDietaryTemplate(DietaryTemplate template, double calories, double water) {
+        DocumentReference userDoc = getUserDoc();
+        if (userDoc == null) return Tasks.forException(new Exception("User not logged in"));
+
+        DailyGoals newGoals = template.calculateGoals(calories, water);
+        
+        WriteBatch batch = db.batch();
+        batch.update(userDoc, "selectedTemplate", template.name());
+        batch.update(userDoc, "dailyGoals", newGoals);
+        
+        return batch.commit();
+    }
 
     public Task<QuerySnapshot> getAllFoods() {
         return db.collection("foods").get();

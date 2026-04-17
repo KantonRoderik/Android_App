@@ -24,6 +24,7 @@
     <string name="nutrition_format">%1$s: %2$.0f/%3$.0f %4$s (%5$d%%)</string>
     <string name="nutrition_default_format">%1$s: 0/0 %2$s (0%%)</string>
     <string name="main_add_food">Add Food</string>
+    <string name="main_stats">Statistics</string>
     <string name="main_profile">Profile</string>
     <string name="main_logout">Logout</string>
 
@@ -60,6 +61,12 @@
     <string name="notification_channel_desc">Reminder to log your meals</string>
     <string name="notification_reminder_text">Don\'t forget to log your meals today!</string>
     <string name="notification_reminder_text_with_time">Don\'t forget to log your meals today! (%s)</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">Statistics</string>
+    <string name="stats_calories_7d">Calories (last 7 days)</string>
+    <string name="stats_macro_today">Today\'s macro distribution</string>
+    <string name="stats_no_data">Not enough data to display</string>
 
     <string name="addFoodTitle">New Consumed Food</string>
     <string name="addFoodString1">Pick a Food</string>

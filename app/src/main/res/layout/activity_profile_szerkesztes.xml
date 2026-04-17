@@ -4,145 +4,156 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@drawable/login_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/login_background"
-        android:padding="16dp"
+        android:padding="24dp"
         tools:context=".UI.profile.ProfileSzerkesztes">
 
-
-        <EditText
-            android:id="@+id/teljes_nev"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/edit_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner"
-            android:hint="@string/profileEditFullName"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
+            android:layout_marginTop="32dp"
+            android:text="Edit Profile Data"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/jelszo_input"
-            android:layout_width="0dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/input_card"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="@string/profileEditPassword1"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/teljes_nev" />
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="#CCFFFFFF"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/edit_title">
 
-        <EditText
-            android:id="@+id/jelszoVerify_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="@string/profileEditPassword2"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jelszo_input" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <EditText
-            android:id="@+id/suly_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:hint="@string/profileEditWeight"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jelszoVerify_input" />
+                <EditText
+                    android:id="@+id/teljes_nev"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/profileEditFullName"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/magassag"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileEditHeight"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/suly_input" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
 
-        <EditText
-            android:id="@+id/kor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileEditAge"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/magassag" />
+                <EditText
+                    android:id="@+id/jelszo_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/profileEditPassword1"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-        <Spinner
-            android:id="@+id/gender_spinner"
-            android:layout_width="0dp"
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
+
+                <EditText
+                    android:id="@+id/jelszoVerify_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/profileEditPassword2"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
+
+                <EditText
+                    android:id="@+id/suly_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/profileEditWeight"
+                    android:inputType="number"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
+
+                <EditText
+                    android:id="@+id/magassag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/profileEditHeight"
+                    android:inputType="number"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
+
+                <EditText
+                    android:id="@+id/kor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/profileEditAge"
+                    android:inputType="number"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
+
+                <Spinner
+                    android:id="@+id/gender_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/Auto_Calculate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#2196F3"
             android:padding="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/kor" />
+            android:text="Auto-Calculate Goals"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:cornerRadius="12dp"
+            app:layout_constraintTop_toBottomOf="@id/input_card" />
 
         <Button
             android:id="@+id/Mentes"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="18dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#4CAF50"
+            android:padding="16dp"
             android:text="@string/profileEditSave"
-            android:textColor="#312A3C"
-            android:textSize="20sp"
-            app:backgroundTint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gender_spinner" />
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:cornerRadius="12dp"
+            app:layout_constraintTop_toBottomOf="@id/Auto_Calculate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

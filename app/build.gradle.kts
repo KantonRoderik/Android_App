@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    //id("com.android.application")
     id("com.google.gms.google-services")
 }
 
@@ -38,7 +37,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -53,4 +51,18 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // CameraX
+    val cameraxVersion = "1.4.1"
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+
+    // ML Kit Barcode Scanning
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+
+    // Retrofit for OpenFoodFacts API
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 }

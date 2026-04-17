@@ -24,6 +24,7 @@
     <string name="nutrition_format">%1$s: %2$.0f/%3$.0f %4$s (%5$d%%)</string>
     <string name="nutrition_default_format">%1$s: 0/0 %2$s (0%%)</string>
     <string name="main_add_food">Étel hozzáadása</string>
+    <string name="main_stats">Statisztika</string>
     <string name="main_profile">Profil</string>
     <string name="main_logout">Kijelentkezés</string>
 
@@ -61,6 +62,12 @@
     <string name="notification_reminder_text">Ne felejtsd el rögzíteni a mai étkezéseidet!</string>
     <string name="notification_reminder_text_with_time">Ne felejtsd el rögzíteni a mai étkezéseidet! (%s)</string>
     <string name="default_notification_channel_id" translatable="false">Nutrition tracking reminders_channel_id</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">Statisztika</string>
+    <string name="stats_calories_7d">Kalória (utolsó 7 nap)</string>
+    <string name="stats_macro_today">Mai makrók eloszlása</string>
+    <string name="stats_no_data">Nincs elég adat a megjelenítéshez</string>
 
     <!-- Existing strings (keeping for layout compatibility) -->
     <string name="addFoodTitle">New Consumed Food</string>

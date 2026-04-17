@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
@@ -15,14 +16,10 @@ public class NotificationScheduler {
 
     public static void scheduleExactAlarms(Context context) {
         if (checkExactAlarmPermission(context)) {
-            setExactAlarm(context, 9, 0, 1001);  // Reggel
-            setExactAlarm(context, 13, 0, 1002); // Délben
-            setExactAlarm(context, 20, 0, 1003); // Este
-
-
-            setExactAlarm(context, 17, 37, 1004); // TESZT
-            setExactAlarm(context, 17, 38, 1005); // TESZT
-            setExactAlarm(context, 17, 39, 1006); // TESZT
+            // Standard daily reminders
+            setExactAlarm(context, 9, 0, 1001);  // Morning
+            setExactAlarm(context, 13, 0, 1002); // Noon
+            setExactAlarm(context, 20, 0, 1003); // Evening
         }
     }
 

@@ -7,26 +7,44 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.UI.auth.Login;
 import com.example.szakdolgozat.UI.food.AddFoodActivity;
+import com.example.szakdolgozat.UI.food.BarcodeScannerActivity;
 import com.example.szakdolgozat.UI.profile.Profile;
 import com.example.szakdolgozat.databinding.ActivityMainBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
+import com.example.szakdolgozat.models.ConsumedFood;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.example.szakdolgozat.models.DailyGoals;
+import com.example.szakdolgozat.models.FoodItem;
+import com.example.szakdolgozat.network.OpenFoodFactsApi;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Main dashboard of the application showing daily progress.
@@ -40,19 +58,46 @@ public class MainActivity extends AppCompatActivity {
     private FirestoreRepository repository;
     private Calendar currentDate = Calendar.getInstance();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private ConsumedFoodAdapter foodAdapter;
+    private OpenFoodFactsApi api;
+
+    private final ActivityResultLauncher<Intent> barcodeScannerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    String barcode = result.getData().getStringExtra("barcode");
+                    if (barcode != null) {
+                        fetchProductFromApi(barcode);
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         
+        UIUtils.hideSystemUI(getWindow());
+        
         repository = FirestoreRepository.getInstance();
+        setupRetrofit();
         
         initializeUI();
+        setupRecyclerView();
         checkNotificationPermission();
         updateDateDisplay();
         loadDailyData();
+    }
+
+    private void setupRetrofit() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://world.openfoodfacts.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        api = retrofit.create(OpenFoodFactsApi.class);
     }
 
     private void initializeUI() {
@@ -62,7 +107,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        binding.scanBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BarcodeScannerActivity.class);
+            barcodeScannerLauncher.launch(intent);
+        });
+
         binding.vizGomb.setOnClickListener(v -> addWater());
+
+        binding.statsBtn.setOnClickListener(v -> 
+                startActivity(new Intent(this, StatisticsActivity.class)));
 
         binding.ProfileBtn.setOnClickListener(v -> 
                 startActivity(new Intent(this, Profile.class)));
@@ -71,6 +124,76 @@ public class MainActivity extends AppCompatActivity {
 
         binding.btnNext.setOnClickListener(v -> changeDay(1));
         binding.btnPrevious.setOnClickListener(v -> changeDay(-1));
+    }
+
+    private void fetchProductFromApi(String barcode) {
+        api.getProduct(barcode).enqueue(new Callback<OpenFoodFactsApi.ProductResponse>() {
+            @Override
+            public void onResponse(Call<OpenFoodFactsApi.ProductResponse> call, Response<OpenFoodFactsApi.ProductResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().status == 1) {
+                    OpenFoodFactsApi.Product product = response.body().product;
+                    showQuantityDialog(product);
+                } else {
+                    Toast.makeText(MainActivity.this, "Product not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OpenFoodFactsApi.ProductResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showQuantityDialog(OpenFoodFactsApi.Product product) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(product.productName);
+        builder.setMessage("Enter quantity in grams:");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setHint("100");
+        builder.setView(input);
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            String quantityStr = input.getText().toString().trim();
+            double quantity = quantityStr.isEmpty() ? 100.0 : Double.parseDouble(quantityStr);
+            addScannedFood(product, quantity);
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void addScannedFood(OpenFoodFactsApi.Product product, double quantity) {
+        FoodItem foodItem = new FoodItem();
+        foodItem.setName(product.productName);
+        foodItem.setCalories(product.nutriments.calories);
+        foodItem.setCarbs(product.nutriments.carbs);
+        foodItem.setFat(product.nutriments.fat);
+        foodItem.setProtein(product.nutriments.protein);
+        foodItem.setId("barcode_" + System.currentTimeMillis());
+
+        ConsumedFood consumedFood = new ConsumedFood(foodItem, quantity);
+        
+        repository.addConsumedFood(getFormattedDate(), consumedFood)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Added: " + product.productName, Toast.LENGTH_SHORT).show();
+                    loadDailyData();
+                });
+    }
+
+    private void setupRecyclerView() {
+        foodAdapter = new ConsumedFoodAdapter((key, food) -> {
+            repository.removeConsumedFood(getFormattedDate(), key, food)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, R.string.update_success, Toast.LENGTH_SHORT).show();
+                        loadDailyData();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(this, R.string.error_generic, Toast.LENGTH_SHORT).show());
+        });
+        binding.consumedFoodsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.consumedFoodsRecyclerView.setAdapter(foodAdapter);
     }
 
     private void checkNotificationPermission() {
@@ -87,6 +210,11 @@ public class MainActivity extends AppCompatActivity {
         repository.getDailyEntry(selectedDate).addOnSuccessListener(entrySnapshot -> {
             DailyEntry dailyEntry = entrySnapshot.exists() ? entrySnapshot.toObject(DailyEntry.class) : new DailyEntry(selectedDate);
             
+            if (dailyEntry != null) {
+                dailyEntry.calculateTotals();
+                foodAdapter.updateData(dailyEntry.getConsumedFoods());
+            }
+
             repository.getUserData().addOnSuccessListener(userSnapshot -> {
                 DailyGoals goals = userSnapshot.get("dailyGoals", DailyGoals.class);
                 if (goals != null && dailyEntry != null) {
@@ -126,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
     private double calculateBMR(double weight, double height, double age, String gender) {
         if (weight <= 0 || height <= 0 || age <= 0) return 0;
         double bmr = (10 * weight) + (6.25 * height) - (5 * age);
-        if (gender != null && (gender.equalsIgnoreCase("nő") || gender.equalsIgnoreCase("female"))) {
+        if (gender != null && (gender.equalsIgnoreCase("n\u0151") || gender.equalsIgnoreCase("female"))) {
             bmr -= 161;
         } else {
             bmr += 5;
@@ -152,7 +280,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int calculateSafeProgress(double actual, double goal) {
         if (goal <= 0) return 0;
-        return (int) Math.min((actual / goal) * 100, 100);
+        int progress = (int) ((actual / goal) * 100);
+        return Math.max(0, Math.min(progress, 100));
     }
 
     private void updateTextViews(DailyEntry entry, DailyGoals goals) {
@@ -164,8 +293,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String formatNutritionText(String label, double actual, double goal, String unit) {
-        int percent = calculateSafeProgress(actual, goal);
-        return getString(R.string.nutrition_format, label, actual, goal, unit, percent);
+        double displayActual = Math.max(0, actual);
+        int percent = (goal > 0) ? (int) ((displayActual / goal) * 100) : 0;
+        return String.format(Locale.getDefault(), "%s: %.0f/%.0f %s (%d%%)", label, displayActual, goal, unit, percent);
     }
 
     private void setDefaultUIValues() {
@@ -220,5 +350,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadDailyData();
+        UIUtils.hideSystemUI(getWindow());
     }
 }

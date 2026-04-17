@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.szakdolgozat.R;
-import com.example.szakdolgozat.UI.main.MainActivity;
+import com.example.szakdolgozat.UI.profile.ProfileSzerkesztes;
 import com.example.szakdolgozat.databinding.ActivityRegisterBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -24,7 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Activity for user registration.
+ * Activity for user registration. Redirects to onboarding after creation.
  */
 public class Register extends AppCompatActivity {
 
@@ -62,8 +62,7 @@ public class Register extends AppCompatActivity {
         repository = FirestoreRepository.getInstance();
 
         if (repository.getCurrentUser() != null) {
-            startActivity(new Intent(Register.this, MainActivity.class));
-            finish();
+            navigateToOnboarding();
         }
 
         setupGoogleSignIn();
@@ -71,8 +70,8 @@ public class Register extends AppCompatActivity {
         binding.RegisterButton.setOnClickListener(v -> performRegistration());
         binding.LoginButton.setOnClickListener(v -> startActivity(new Intent(this, Login.class)));
         
-        // Google login buttons in Register
-        binding.googleLayout.setOnClickListener(v -> signInWithGoogle());
+        binding.googleBtn.setOnClickListener(v -> signInWithGoogle());
+        binding.googleText.setOnClickListener(v -> signInWithGoogle());
     }
 
     private void setupGoogleSignIn() {
@@ -104,18 +103,18 @@ public class Register extends AppCompatActivity {
         repository.getUserData().addOnSuccessListener(documentSnapshot -> {
             if (!documentSnapshot.exists()) {
                 repository.createUserProfile(user.getEmail(), user.getDisplayName())
-                        .addOnSuccessListener(unused -> {
-                            startActivity(new Intent(Register.this, MainActivity.class));
-                            finish();
-                        });
+                        .addOnSuccessListener(unused -> navigateToOnboarding());
             } else {
-                startActivity(new Intent(Register.this, MainActivity.class));
-                finish();
+                navigateToOnboarding();
             }
-        }).addOnFailureListener(e -> {
-            startActivity(new Intent(Register.this, MainActivity.class));
-            finish();
-        });
+        }).addOnFailureListener(e -> navigateToOnboarding());
+    }
+
+    private void navigateToOnboarding() {
+        Intent intent = new Intent(Register.this, ProfileSzerkesztes.class);
+        intent.putExtra("IS_ONBOARDING", true);
+        startActivity(intent);
+        finish();
     }
 
     private void performRegistration() {
@@ -153,10 +152,7 @@ public class Register extends AppCompatActivity {
                 Toast.makeText(Register.this, getString(R.string.register_success), Toast.LENGTH_SHORT).show();
 
                 repository.createUserProfile(email, fullName).addOnSuccessListener(unused -> {
-                    Log.d(TAG, "User profile created");
-                    Toast.makeText(Register.this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Register.this, MainActivity.class));
-                    finish();
+                    navigateToOnboarding();
                 }).addOnFailureListener(e -> {
                     Log.e(TAG, "Profile creation failed", e);
                     Toast.makeText(Register.this, getString(R.string.register_failed), Toast.LENGTH_SHORT).show();

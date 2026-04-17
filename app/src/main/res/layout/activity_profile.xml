@@ -1,154 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:background="@drawable/login_background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/login_background"
-        android:padding="16dp"
-        tools:context=".UI.profile.Profile">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-        <TextView
-            android:id="@+id/teljes_nev"
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileFullName"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingTop="24dp"
+            app:contentInsetStart="16dp"
+            app:contentInsetEnd="16dp">
 
-        <TextView
-            android:id="@+id/Email_input"
-            android:layout_width="0dp"
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/baseline_arrow_back_24"
+                app:tint="@color/black"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="My Profile"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileEmail"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/teljes_nev" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/suly"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileWeight"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Email_input" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#CCFFFFFF"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="24dp">
 
-        <TextView
-            android:id="@+id/magassag"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileHeight"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/suly" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-        <TextView
-            android:id="@+id/kor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileAge"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/magassag" />
+                    <TextView
+                        android:id="@+id/teljes_nev"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/profileFullName"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/nem"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="16dp"
-            android:hint="@string/profileGender"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/kor" />
+                    <TextView
+                        android:id="@+id/Email_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/profileEmail"
+                        android:textColor="#555555"
+                        android:textSize="16sp"
+                        android:paddingBottom="16dp"/>
 
-        <Button
-            android:id="@+id/celok"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="18dp"
-            android:text="@string/profileDaily"
-            android:textColor="#312A3C"
-            android:textSize="20sp"
-            app:backgroundTint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nem" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDDDDD"
+                        android:layout_marginBottom="16dp"/>
 
-        <Button
-            android:id="@+id/Szerkeszt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_corner"
-            android:padding="18dp"
-            android:text="@string/profileEdit"
-            android:textColor="#312A3C"
-            android:textSize="20sp"
-            app:backgroundTint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/celok"
-            app:layout_constraintVertical_bias="0.041" />
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:rowCount="4">
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="12dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Vissza gomb"
-            android:padding="10dp"
-            android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                        <TextView android:text="@string/profileWeight" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/suly" android:layout_gravity="end" android:padding="8dp"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                        <TextView android:text="@string/profileHeight" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/magassag" android:layout_gravity="end" android:padding="8dp"/>
+
+                        <TextView android:text="@string/profileAge" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/kor" android:layout_gravity="end" android:padding="8dp"/>
+
+                        <TextView android:text="@string/profileGender" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/nem" android:layout_gravity="end" android:padding="8dp"/>
+                    </GridLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/celok"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#4CAF50"
+                android:padding="16dp"
+                android:text="@string/profileDaily"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:cornerRadius="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/Szerkeszt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#2196F3"
+                android:padding="16dp"
+                android:text="@string/profileEdit"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

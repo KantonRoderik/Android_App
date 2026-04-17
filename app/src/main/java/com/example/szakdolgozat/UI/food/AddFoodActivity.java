@@ -6,11 +6,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.databinding.ActivityAddfoodBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.example.szakdolgozat.models.ConsumedFood;
 import com.example.szakdolgozat.models.FoodItem;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -36,12 +38,14 @@ public class AddFoodActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         binding = ActivityAddfoodBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        UIUtils.hideSystemUI(getWindow());
+
         repository = FirestoreRepository.getInstance();
 
-        // Get the date passed from MainActivity, default to today if not provided
         selectedDate = getIntent().getStringExtra("selected_date");
         if (selectedDate == null) {
             selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -50,6 +54,7 @@ public class AddFoodActivity extends AppCompatActivity {
         loadFoodItems();
 
         binding.addButton.setOnClickListener(v -> onAddButtonClicked());
+        binding.backButton.setOnClickListener(v -> finish());
     }
 
     private void loadFoodItems() {
@@ -122,5 +127,11 @@ public class AddFoodActivity extends AppCompatActivity {
                     Log.e(TAG, "Error adding food: " + e.getMessage());
                     Toast.makeText(this, getString(R.string.food_add_error) + ": " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UIUtils.hideSystemUI(getWindow());
     }
 }
