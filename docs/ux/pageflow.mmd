@@ -1,0 +1,35 @@
+graph TD
+    S00[▶ S00 - LauncherActivity] -->|Bejelentkezve| S03
+    S00 -->|Nincs bejelentkezve| S01[🔒 S01 - Login]
+
+    S01 -->|Regisztráció gomb| S02[🔒 S02 - Register]
+    S01 -->|Sikeres belépés| S03[S03 - MainActivity Dashboard]
+
+    S02 -->|Bejelentkezés link| S01
+    S02 -->|Sikeres regisztráció| S05[S05 - Onboarding / Edit Data]
+
+    S03 -->|Profil ikon| S04[S04 - Profile]
+    S03 -->|Stats ikon| S07[S07 - Statistics]
+    S03 -->|Plusz gomb| S08[S08 - Add Food]
+    S03 -->|Víz ikon| S09[S09 - Add Water]
+    S03 -->|Scan ikon| S10[♦ S10 - Barcode Scanner]
+    S03 -->|Kijelentkezés| S01
+
+    S04 -->|Back gomb| S03
+    S04 -->|Edit Data gomb| S05
+    S04 -->|Edit Goals gomb| S06[S06 - Daily Goals]
+
+    S05 -->|Mentes / Auto-calc| S03
+    S05 -->|Back gomb| S04
+
+    S06 -->|Mentes / Template| S03
+    S06 -->|Back gomb| S04
+
+    S07 -->|Back gomb| S03
+
+    S08 -->|Hozzáadás / Back| S03
+
+    S09 -->|Hozzáadás / Back| S03
+
+    S10 -->|Sikeres felismerés| S03
+    S10 -->|Back gomb| S03
