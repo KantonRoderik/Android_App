@@ -16,7 +16,7 @@ public class NotificationScheduler {
 
     public static void scheduleExactAlarms(Context context) {
         if (checkExactAlarmPermission(context)) {
-            // Standard daily reminders
+
             setExactAlarm(context, 9, 0, 1001);  // Morning
             setExactAlarm(context, 13, 0, 1002); // Noon
             setExactAlarm(context, 20, 0, 1003); // Evening
