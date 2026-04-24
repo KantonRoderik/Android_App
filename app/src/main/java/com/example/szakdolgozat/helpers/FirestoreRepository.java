@@ -4,6 +4,7 @@ import com.example.szakdolgozat.models.ConsumedFood;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.example.szakdolgozat.models.DailyGoals;
 import com.example.szakdolgozat.models.DietaryTemplate;
+import com.example.szakdolgozat.models.FoodItem;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthCredential;
@@ -209,7 +210,19 @@ public class FirestoreRepository {
         return batch.commit();
     }
 
+    // --- Food Items ---
+
     public Task<QuerySnapshot> getAllFoods() {
         return db.collection("foods").get();
+    }
+
+    public Task<QuerySnapshot> searchFoodByName(String name) {
+        return db.collection("foods")
+                .whereEqualTo("name", name)
+                .get();
+    }
+
+    public Task<Void> saveFoodItemWithNameAsId(FoodItem foodItem) {
+        return db.collection("foods").document(foodItem.getName()).set(foodItem);
     }
 }

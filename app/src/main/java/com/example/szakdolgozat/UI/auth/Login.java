@@ -112,7 +112,16 @@ public class Login extends AppCompatActivity {
                             finish();
                         });
             } else {
-                startActivity(new Intent(Login.this, MainActivity.class));
+                // Profile exists, check onboarding status
+                Boolean isComplete = documentSnapshot.getBoolean("onboarding_complete");
+                if (isComplete != null && isComplete) {
+                    startActivity(new Intent(Login.this, MainActivity.class));
+                } else {
+                    // This case handles users who started but didn't finish onboarding
+                    // Or if they were redirected incorrectly before.
+                    // LauncherActivity also handles this, but let's be safe.
+                    startActivity(new Intent(Login.this, MainActivity.class));
+                }
                 finish();
             }
         }).addOnFailureListener(e -> {

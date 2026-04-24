@@ -7,6 +7,7 @@ public class FoodItem {
     private double carbs;
     private double fat;
     private double protein;
+    private boolean isAiGenerated;
 
     // Üres konstruktor Firebase-hez
     public FoodItem() {}
@@ -17,6 +18,7 @@ public class FoodItem {
         this.carbs = carbs;
         this.protein = protein;
         this.fat = fat;
+        this.isAiGenerated = false;
     }
 
     // Getterek és setterek
@@ -32,4 +34,6 @@ public class FoodItem {
     public void setFat(double fat) { this.fat = fat; }
     public double getProtein() { return protein; }
     public void setProtein(double protein) { this.protein = protein; }
+    public boolean isAiGenerated() { return isAiGenerated; }
+    public void setAiGenerated(boolean aiGenerated) { isAiGenerated = aiGenerated; }
 }

@@ -26,7 +26,7 @@
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/baseline_arrow_back_24"
-                app:tint="@color/black"
+                app:tint="@color/text_main"
                 android:contentDescription="Back" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="My Profile"
-                android:textColor="@color/black"
+                android:textColor="@color/text_main"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
@@ -55,7 +55,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#CCFFFFFF"
+                app:cardBackgroundColor="@color/card_bg"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 android:layout_marginBottom="24dp">
@@ -71,7 +71,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/profileFullName"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_main"
+                        android:textColorHint="@color/text_sub"
                         android:textSize="22sp"
                         android:textStyle="bold"
                         android:paddingBottom="8dp"/>
@@ -81,7 +82,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/profileEmail"
-                        android:textColor="#555555"
+                        android:textColor="@color/text_sub"
+                        android:textColorHint="@color/text_sub"
                         android:textSize="16sp"
                         android:paddingBottom="16dp"/>
 
@@ -97,17 +99,17 @@
                         android:columnCount="2"
                         android:rowCount="4">
 
-                        <TextView android:text="@string/profileWeight" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
-                        <TextView android:id="@+id/suly" android:layout_gravity="end" android:padding="8dp"/>
+                        <TextView android:text="@string/profileWeight" android:textColor="@color/text_main" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/suly" android:textColor="@color/text_main" android:layout_gravity="end" android:padding="8dp"/>
 
-                        <TextView android:text="@string/profileHeight" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
-                        <TextView android:id="@+id/magassag" android:layout_gravity="end" android:padding="8dp"/>
+                        <TextView android:text="@string/profileHeight" android:textColor="@color/text_main" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/magassag" android:textColor="@color/text_main" android:layout_gravity="end" android:padding="8dp"/>
 
-                        <TextView android:text="@string/profileAge" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
-                        <TextView android:id="@+id/kor" android:layout_gravity="end" android:padding="8dp"/>
+                        <TextView android:text="@string/profileAge" android:textColor="@color/text_main" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/kor" android:textColor="@color/text_main" android:layout_gravity="end" android:padding="8dp"/>
 
-                        <TextView android:text="@string/profileGender" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
-                        <TextView android:id="@+id/nem" android:layout_gravity="end" android:padding="8dp"/>
+                        <TextView android:text="@string/profileGender" android:textColor="@color/text_main" android:layout_gravity="start" android:padding="8dp" android:textStyle="bold"/>
+                        <TextView android:id="@+id/nem" android:textColor="@color/text_main" android:layout_gravity="end" android:padding="8dp"/>
                     </GridLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

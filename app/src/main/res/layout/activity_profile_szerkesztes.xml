@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Edit Profile Data"
-            android:textColor="@color/white"
+            android:textColor="@color/text_main"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:cardBackgroundColor="#CCFFFFFF"
+            app:cardBackgroundColor="@color/card_bg"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
             app:layout_constraintTop_toBottomOf="@id/edit_title">
@@ -50,7 +50,8 @@
                     android:background="@android:color/transparent"
                     android:hint="@string/profileEditFullName"
                     android:padding="12dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_sub"
                     android:textSize="18sp" />
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
@@ -63,7 +64,8 @@
                     android:hint="@string/profileEditPassword1"
                     android:inputType="textPassword"
                     android:padding="12dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_sub"
                     android:textSize="18sp" />
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
@@ -76,7 +78,8 @@
                     android:hint="@string/profileEditPassword2"
                     android:inputType="textPassword"
                     android:padding="12dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_sub"
                     android:textSize="18sp" />
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
@@ -89,7 +92,8 @@
                     android:hint="@string/profileEditWeight"
                     android:inputType="number"
                     android:padding="12dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_sub"
                     android:textSize="18sp" />
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
@@ -102,7 +106,8 @@
                     android:hint="@string/profileEditHeight"
                     android:inputType="number"
                     android:padding="12dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_sub"
                     android:textSize="18sp" />
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
@@ -115,7 +120,8 @@
                     android:hint="@string/profileEditAge"
                     android:inputType="number"
                     android:padding="12dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_sub"
                     android:textSize="18sp" />
 
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />

@@ -1,18 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme for Night Mode. -->
     <style name="Theme.SZAKDOLGOZAT" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">#81C784</item> <!-- Lighter green for dark mode -->
-        <item name="colorPrimaryVariant">#388E3C</item>
+        <!-- Brand colors -->
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorPrimaryVariant">@color/primary_dark_green</item>
         <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">#64B5F6</item> <!-- Lighter blue for dark mode -->
-        <item name="colorSecondaryVariant">#1976D2</item>
+        <item name="colorSecondary">@color/secondary_blue</item>
         <item name="colorOnSecondary">@color/black</item>
 
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Adaptive Colors -->
+        <item name="colorSurface">@color/glass_black</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
 
-        <!-- Customize your theme here. -->
+        <!-- System UI -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 </resources>

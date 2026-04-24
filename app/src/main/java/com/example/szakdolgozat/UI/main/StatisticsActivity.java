@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.databinding.ActivityStatisticsBinding;
@@ -13,6 +14,7 @@ import com.example.szakdolgozat.helpers.FirestoreRepository;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -61,20 +63,28 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void styleCharts() {
+        int textColor = ContextCompat.getColor(this, R.color.text_main);
+        int gridColor = Color.parseColor("#40888888"); // Semi-transparent gray
+
         // Line Chart styling
         binding.lineChart.setBackgroundColor(Color.TRANSPARENT);
         binding.lineChart.setDrawGridBackground(false);
         binding.lineChart.getDescription().setEnabled(false);
-        binding.lineChart.getLegend().setEnabled(true);
+        
+        Legend legend = binding.lineChart.getLegend();
+        legend.setEnabled(true);
+        legend.setTextColor(textColor);
         
         XAxis xAxis = binding.lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
+        xAxis.setTextColor(textColor);
         
         YAxis leftAxis = binding.lineChart.getAxisLeft();
         leftAxis.setDrawGridLines(true);
-        leftAxis.setGridColor(Color.LTGRAY);
+        leftAxis.setGridColor(gridColor);
+        leftAxis.setTextColor(textColor);
         binding.lineChart.getAxisRight().setEnabled(false);
 
         // Pie Chart styling
@@ -83,10 +93,12 @@ public class StatisticsActivity extends AppCompatActivity {
         binding.pieChart.setExtraOffsets(5, 10, 5, 5);
         binding.pieChart.setDragDecelerationFrictionCoef(0.95f);
         binding.pieChart.setDrawHoleEnabled(true);
-        binding.pieChart.setHoleColor(Color.WHITE);
+        binding.pieChart.setHoleColor(Color.TRANSPARENT);
         binding.pieChart.setTransparentCircleRadius(61f);
-        binding.pieChart.setEntryLabelColor(Color.BLACK);
+        binding.pieChart.setEntryLabelColor(textColor);
         binding.pieChart.setEntryLabelTextSize(12f);
+        
+        binding.pieChart.getLegend().setTextColor(textColor);
     }
 
     private void loadWeeklyData() {
@@ -126,6 +138,8 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void updateLineChart(List<Entry> entries, List<String> labels) {
+        int textColor = ContextCompat.getColor(this, R.color.text_main);
+        
         LineDataSet dataSet = new LineDataSet(entries, "Daily Calories");
         dataSet.setColor(Color.parseColor("#4CAF50")); // Primary Green
         dataSet.setCircleColor(Color.parseColor("#388E3C"));
@@ -133,6 +147,7 @@ public class StatisticsActivity extends AppCompatActivity {
         dataSet.setCircleRadius(5f);
         dataSet.setDrawCircleHole(true);
         dataSet.setValueTextSize(10f);
+        dataSet.setValueTextColor(textColor);
         dataSet.setDrawFilled(true);
         dataSet.setFillColor(Color.parseColor("#4CAF50"));
         dataSet.setFillAlpha(50);
@@ -161,6 +176,8 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void setupPieChart(DailyEntry entry) {
+        int textColor = ContextCompat.getColor(this, R.color.text_main);
+        
         List<PieEntry> pieEntries = new ArrayList<>();
         pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalCarbs()), "Carbs"));
         pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalProtein()), "Protein"));
@@ -179,11 +196,12 @@ public class StatisticsActivity extends AppCompatActivity {
 
         PieData data = new PieData(dataSet);
         data.setValueTextSize(13f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.WHITE); // Keep values white for contrast on macro colors
 
         binding.pieChart.setData(data);
         binding.pieChart.setCenterText("Macros");
         binding.pieChart.setCenterTextSize(18f);
+        binding.pieChart.setCenterTextColor(textColor);
         binding.pieChart.animateY(1400);
         binding.pieChart.invalidate();
     }
