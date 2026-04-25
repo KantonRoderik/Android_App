@@ -11,6 +11,7 @@ import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.UI.main.MainActivity;
 import com.example.szakdolgozat.databinding.ActivityProfileBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -33,6 +34,8 @@ public class Profile extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        UIUtils.hideSystemUI(getWindow());
 
         repository = FirestoreRepository.getInstance();
 
@@ -78,15 +81,42 @@ public class Profile extends AppCompatActivity {
         String korStr = value.getString("kor");
         String nem = value.getString("nem");
 
-        binding.teljesNev.setText(name);
-        binding.EmailInput.setText(email);
+        binding.teljesNev.setText(name != null ? name : "");
+        binding.EmailInput.setText(email != null ? email : "");
         
-        binding.suly.setText(sulyStr != null ? sulyStr + " " + getString(R.string.unit_kg) : "0 " + getString(R.string.unit_kg));
-        binding.magassag.setText(magassagStr != null ? magassagStr + " " + getString(R.string.unit_cm) : "0 " + getString(R.string.unit_cm));
-        binding.kor.setText(korStr != null ? korStr + " " + getString(R.string.unit_years) : "0 " + getString(R.string.unit_years));
-        binding.nem.setText(nem);
+        binding.suly.setText(String.format("%s %s", sulyStr != null ? sulyStr : "0", getString(R.string.unit_kg)));
+        binding.magassag.setText(String.format("%s %s", magassagStr != null ? magassagStr : "0", getString(R.string.unit_cm)));
+        binding.kor.setText(String.format("%s %s", korStr != null ? korStr : "0", getString(R.string.unit_years)));
+        
+        // Localized gender display
+        if (nem != null) {
+            if (nem.equalsIgnoreCase("male") || nem.equalsIgnoreCase("férfi")) {
+                binding.nem.setText(getString(R.string.gender_male));
+            } else if (nem.equalsIgnoreCase("female") || nem.equalsIgnoreCase("nő")) {
+                binding.nem.setText(getString(R.string.gender_female));
+            } else {
+                binding.nem.setText(nem);
+            }
+        } else {
+            binding.nem.setText("");
+        }
 
+        if (name != null && name.length() >= 2) {
+            String initials = "";
+            if (name.contains(" ")) {
+                initials = name.substring(0, 1).toUpperCase() + name.substring(name.lastIndexOf(" ") + 1, name.lastIndexOf(" ") + 2).toUpperCase();
+            } else {
+                initials = name.substring(0, 1).toUpperCase();
+            }
+            binding.profileInitials.setText(initials);
+        } else if (name != null && name.length() > 0) {
+            binding.profileInitials.setText(name.substring(0, 1).toUpperCase());
+        }
 
+        // Logic for streak - hardcoded for now as example, should come from Firestore
+        long streak = 12; 
+        binding.streakTitle.setText(getString(R.string.label_active_streak, (int)streak));
+        binding.streakMotivation.setText(getString(R.string.streak_motivation, name != null ? name : ""));
     }
 
 

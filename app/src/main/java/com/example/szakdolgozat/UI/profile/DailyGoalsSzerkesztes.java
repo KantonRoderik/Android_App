@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.databinding.ActivityDailygoalsEditBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.example.szakdolgozat.models.DailyGoals;
 import com.example.szakdolgozat.models.DietaryTemplate;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -44,6 +45,7 @@ public class DailyGoalsSzerkesztes extends AppCompatActivity {
         binding = ActivityDailygoalsEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        UIUtils.hideSystemUI(getWindow());
         repository = FirestoreRepository.getInstance();
 
         setupTemplateSpinner();
@@ -56,10 +58,11 @@ public class DailyGoalsSzerkesztes extends AppCompatActivity {
 
     private void setupTemplateSpinner() {
         List<String> templateNames = new ArrayList<>();
-        templateNames.add("Custom");
-        for (DietaryTemplate template : DietaryTemplate.values()) {
-            templateNames.add(template.getName());
-        }
+        templateNames.add(getString(R.string.template_custom));
+        templateNames.add(getString(R.string.template_balanced));
+        templateNames.add(getString(R.string.template_low_carb));
+        templateNames.add(getString(R.string.template_high_protein));
+        templateNames.add(getString(R.string.template_ketogenic));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, templateNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -110,7 +113,7 @@ public class DailyGoalsSzerkesztes extends AppCompatActivity {
         double water = parseInput(binding.water);
         
         if (calories <= 0) {
-            Toast.makeText(this, "Please enter calories first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_calories_required), Toast.LENGTH_SHORT).show();
             binding.templateSpinner.setSelection(0);
             isApplyingTemplate = false;
             return;
@@ -170,12 +173,12 @@ public class DailyGoalsSzerkesztes extends AppCompatActivity {
             if (weight > 0 && height > 0 && age > 0) {
                 // Mifflin-St Jeor Equation
                 calculatedBmr = (10 * weight) + (6.25 * height) - (5 * age);
-                if (nem != null && (nem.equalsIgnoreCase("n\u0151") || nem.equalsIgnoreCase("female"))) {
+                if (nem != null && (nem.equalsIgnoreCase("female") || nem.equalsIgnoreCase("nő"))) {
                     calculatedBmr -= 161;
                 } else {
                     calculatedBmr += 5;
                 }
-                binding.bmrInfoText.setText("Your BMR: " + (int)calculatedBmr + " kcal");
+                binding.bmrInfoText.setText(getString(R.string.label_your_bmr, (int)calculatedBmr));
             } else {
                 binding.bmrCard.setVisibility(View.GONE);
             }
@@ -193,7 +196,7 @@ public class DailyGoalsSzerkesztes extends AppCompatActivity {
                 DietaryTemplate template = DietaryTemplate.values()[templatePos - 1];
                 applyTemplate(template);
             }
-            Toast.makeText(this, "Calories set to BMR", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.calories_set_to_bmr), Toast.LENGTH_SHORT).show();
         }
     }
 

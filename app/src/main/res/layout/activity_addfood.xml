@@ -23,7 +23,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/baseline_arrow_back_24"
             app:tint="@color/text_main"
-            android:contentDescription="Back"
+            android:contentDescription="@string/error_generic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,9 +57,10 @@
                 android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/food_name_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Search Food Name"
+                    android:text="@string/addFoodString1"
                     android:textColor="@color/text_main"
                     android:textSize="14sp"
                     android:layout_marginStart="4dp"
@@ -70,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:hint="e.g. Cheese, Apple..."
+                    android:hint="@string/addFoodString1"
                     android:inputType="text"
                     android:padding="12dp"
                     android:textColor="@color/text_main"
@@ -86,9 +87,10 @@
                     android:layout_marginBottom="16dp"/>
 
                 <TextView
+                    android:id="@+id/quantity_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Amount"
+                    android:text="@string/addFoodString2"
                     android:textColor="@color/text_main"
                     android:textSize="14sp"
                     android:layout_marginStart="4dp"
@@ -129,7 +131,7 @@
             android:layout_marginTop="24dp"
             android:backgroundTint="#4CAF50"
             android:padding="16dp"
-            android:text="Add to Log"
+            android:text="@string/addFoodDone"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:cornerRadius="12dp"
@@ -142,7 +144,7 @@
             android:layout_marginTop="12dp"
             android:backgroundTint="#9C27B0"
             android:padding="16dp"
-            android:text="✨ Identify with AI"
+            android:text="@string/addFoodAiBtn"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:visibility="gone"

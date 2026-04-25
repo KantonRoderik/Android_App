@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.szakdolgozat.UI.auth.Login;
 import com.example.szakdolgozat.UI.profile.ProfileSzerkesztes;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.example.szakdolgozat.notification.NotificationScheduler;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -20,6 +21,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UIUtils.hideSystemUI(getWindow());
 
         FirestoreRepository repository = FirestoreRepository.getInstance();
         FirebaseUser user = repository.getCurrentUser();

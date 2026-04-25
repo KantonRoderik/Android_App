@@ -29,8 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Create Account"
-            android:textColor="@color/white"
+            android:text="@string/register_title"
+            android:textColor="@color/text_main"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#DDDDDD" />
+                    android:background="@color/gray"
+                    android:alpha="0.3" />
 
                 <EditText
                     android:id="@+id/Email_input"
@@ -85,7 +86,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#DDDDDD" />
+                    android:background="@color/gray"
+                    android:alpha="0.3" />
 
                 <EditText
                     android:id="@+id/Password_input"
@@ -102,7 +104,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#DDDDDD" />
+                    android:background="@color/gray"
+                    android:alpha="0.3" />
 
                 <EditText
                     android:id="@+id/Password_Verify_input"
@@ -123,7 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#4CAF50"
+            android:backgroundTint="@color/primary_green"
             android:padding="16dp"
             android:text="@string/registerRegister"
             android:textColor="@color/white"
@@ -140,7 +143,7 @@
             android:focusable="true"
             android:padding="8dp"
             android:text="@string/registerLogin"
-            android:textColor="@color/white"
+            android:textColor="@color/secondary_blue"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/registerText"
-            android:textColor="@color/white"
+            android:textColor="@color/text_main"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -13,6 +13,8 @@
     <string name="unit_kg">kg</string>
     <string name="unit_cm">cm</string>
     <string name="unit_years">Jahre</string>
+    <string name="unit_yrs">Jahre</string>
+    <string name="customDialog">Bitte warten</string>
 
     <!-- Main Activity -->
     <string name="label_calories">Kalorien</string>
@@ -24,8 +26,11 @@
     <string name="nutrition_format">%1$s: %2$.0f/%3$.0f %4$s (%5$d%%)</string>
     <string name="nutrition_default_format">%1$s: 0/0 %2$s (0%%)</string>
     <string name="main_add_food">Essen hinzufügen</string>
+    <string name="main_stats">Statistiken</string>
     <string name="main_profile">Profil</string>
     <string name="main_logout">Abmelden</string>
+    <string name="app_title">Fitness-Tracker</string>
+    <string name="label_consumed_food">Verzehrte Lebensmittel</string>
 
     <!-- Auth -->
     <string name="login_success">Anmeldung erfolgreich!</string>
@@ -39,6 +44,22 @@
     <string name="error_passwords_dont_match">Passwörter stimmen nicht überein!</string>
     <string name="error_invalid_number">Ungültiges Zahlenformat!</string>
     <string name="error_invalid_value_range">Ungültiger Wert (%1$d-%2$d)</string>
+    <string name="login_welcome">Willkommen zurück!</string>
+    <string name="loginEmail">E-Mail</string>
+    <string name="loginPassword">Passwort</string>
+    <string name="loginLogin">ANMELDEN</string>
+    <string name="loginQuestion">Noch kein Konto?</string>
+    <string name="loginRegister">REGISTRIEREN</string>
+    <string name="loginOrGoogle">Oder mit Google anmelden</string>
+    <string name="register_title">Konto erstellen</string>
+    <string name="register_hint">Geben Sie Ihre Daten ein, um beizutreten</string>
+    <string name="registerEmail">E-Mail</string>
+    <string name="registerName">Vollständiger Name</string>
+    <string name="registerPassword1">Passwort</string>
+    <string name="registerPassword2">Passwort bestätigen</string>
+    <string name="registerRegister">Registrieren</string>
+    <string name="registerLogin">Hier anmelden!</string>
+    <string name="registerText">Oder mit Google anmelden!</string>
 
     <!-- Profile -->
     <string name="password_changed_success">Passwort erfolgreich geändert!</string>
@@ -46,6 +67,52 @@
     <string name="gender_male">Männlich</string>
     <string name="gender_female">Weiblich</string>
     <string name="label_bmr">BMR (Grundumsatz): %1$.0f kcal</string>
+    <string name="profile_onboarding_title">Willkommen! Vervollständigen Sie Ihr Profil</string>
+    <string name="profile_onboarding_hint">Bitte geben Sie Ihre Daten ein, um zu beginnen!</string>
+    <string name="error_fill_stats_first">Bitte geben Sie zuerst Gewicht, Größe und Alter ein!</string>
+    <string name="goals_calculated_success">Tagesziele erfolgreich berechnet!</string>
+    <string name="label_personal_info">PERSÖNLICHE INFO</string>
+    <string name="label_body_stats">KÖRPERSTATISTIK</string>
+    <string name="label_security">SICHERHEIT</string>
+    <string name="label_full_name">VOLLSTÄNDIGER NAME</string>
+    <string name="label_gender">GESCHLECHT</string>
+    <string name="label_weight">GEWICHT</string>
+    <string name="label_height">GRÖSSE</string>
+    <string name="label_age">ALTER</string>
+    <string name="label_new_password">NEUES PASSWORT</string>
+    <string name="label_confirm_password">PASSWORT BESTÄTIGEN</string>
+    <string name="label_auto_calculate">AUTO-BERECHNUNG</string>
+    <string name="btn_save_changes">ÄNDERUNGEN SPEICHERN</string>
+    <string name="label_quick_actions">SCHNELLE AKTIONEN</string>
+    <string name="label_edit_daily_goals">TAGESZIELE BEARBEITEN</string>
+    <string name="label_edit_profile_data">PROFILDATEN BEARBEITEN</string>
+    <string name="label_active_streak">Aktive Serie: %1$d Tage!</string>
+    <string name="streak_motivation">Weiter so, %1$s! Du bist auf einem guten Weg zu deinen Zielen.</string>
+    <string name="edit_profile_title">PROFIL BEARBEITEN</string>
+    <string name="edit_daily_goals_title">TAGESZIELE BEARBEITEN</string>
+    <string name="label_your_bmr">Dein BMR: %1$d kcal</string>
+    <string name="btn_use_this">DIES VERWENDEN</string>
+    <string name="label_dietary_template">ERNÄHRUNGSVORLAGE</string>
+    <string name="goals_footer_hint">Das Ändern dieser Werte aktualisiert die heutige und zukünftige Verfolgung.</string>
+    <string name="error_calories_required">Bitte geben Sie zuerst einen Kalorienwert ein!</string>
+    <string name="calories_set_to_bmr">Kalorien auf BMR-Wert gesetzt</string>
+
+    <string name="profileEmail">E-Mail</string>
+    <string name="profileFullName">Vollständiger Name</string>
+    <string name="profileWeight">Gewicht</string>
+    <string name="profileHeight">Größe</string>
+    <string name="profileAge">Alter</string>
+    <string name="profileGender">Geschlecht</string>
+    <string name="profileDaily">Tagesziele bearbeiten</string>
+    <string name="profileEdit">Daten bearbeiten</string>
+    <string name="profileEditFullName">Vollständiger Name</string>
+    <string name="profileEditPassword1">Neues Passwort</string>
+    <string name="profileEditPassword2">Neues Passwort wiederholen</string>
+    <string name="profileEditWeight">Gewicht</string>
+    <string name="profileEditHeight">Größe</string>
+    <string name="profileEditAge">Alter</string>
+    <string name="profileEditGender">Geschlecht</string>
+    <string name="profileEditSave">Daten speichern</string>
 
     <!-- Food -->
     <string name="food_load_error">Fehler beim Laden der Lebensmittel</string>
@@ -55,51 +122,38 @@
     <string name="error_invalid_quantity">Menge darf nicht null oder negativ sein!</string>
     <string name="error_no_food_selected">Kein Lebensmittel ausgewählt!</string>
 
+    <string name="addFoodTitle">Neues Lebensmittel hinzufügen</string>
+    <string name="addFoodString1">Lebensmittel wählen:</string>
+    <string name="addFoodString2">Menge (Gramm):</string>
+    <string name="addFoodAmount">Geben Sie die Menge ein</string>
+    <string name="addFoodDone">Essen hinzufügen</string>
+    <string name="addFoodAiBtn">✨ Mit KI identifizieren</string>
+
     <!-- Notifications -->
     <string name="notification_channel_name">Tägliche Erinnerung</string>
     <string name="notification_channel_desc">Erinnerung an die Protokollierung von Mahlzeiten</string>
     <string name="notification_reminder_text">Vergessen Sie nicht, Ihre heutigen Mahlzeiten einzutragen!</string>
     <string name="notification_reminder_text_with_time">Vergessen Sie nicht, Ihre heutigen Mahlzeiten einzutragen! (%s)</string>
+    <string name="default_notification_channel_id" translatable="false">Nutrition tracking reminders_channel_id</string>
 
-    <string name="addFoodTitle">Neues Essen hinzufügen</string>
-    <string name="addFoodString1">Wähle ein Lebensmittel:</string>
-    <string name="addFoodString2">Menge (Gramm):</string>
-    <string name="addFoodAmount">Geben Sie die Menge ein</string>
-    <string name="addFoodDone">Essen hinzufügen</string>
+    <!-- Statistics -->
+    <string name="stats_title">Statistiken</string>
+    <string name="stats_calories_7d">Kalorien (letzte 7 Tage)</string>
+    <string name="stats_macro_today">Heutige Makroverteilung</string>
+    <string name="stats_no_data">Nicht genügend Daten zur Anzeige vorhanden</string>
+
+    <!-- Daily Goals Labels -->
     <string name="dailyGoalsCalorie">Kalorien</string>
     <string name="dailyGoalsCarbs">Kohlenhydrate</string>
     <string name="dailyGoalsFat">Fett</string>
     <string name="dailyGoalsProtein">Eiweiß</string>
     <string name="dailyGoalsWater">Wasser</string>
     <string name="dailyGoalsSave">Speichern</string>
-    <string name="loginEmail">E-Mail</string>
-    <string name="loginPassword">Passwort</string>
-    <string name="loginLogin">Anmelden</string>
-    <string name="loginQuestion">Noch nicht registriert?</string>
-    <string name="loginRegister">Registrieren</string>
-    <string name="loginOrGoogle">Mit Google anmelden</string>
-    <string name="profileEmail">E-Mail</string>
-    <string name="profileWeight">Gewicht</string>
-    <string name="profileAge">Alter</string>
-    <string name="profileGender">Geschlecht</string>
-    <string name="profileDaily">Tagesziele bearbeiten</string>
-    <string name="profileEdit">Daten bearbeiten</string>
-    <string name="profileEditPassword1">Neues Passwort</string>
-    <string name="profileEditPassword2">Neues Passwort wiederholen</string>
-    <string name="profileEditWeight">Gewicht</string>
-    <string name="profileEditHeight">Größe</string>
-    <string name="profileEditAge">Alter</string>
-    <string name="profileEditGender">Geschlecht</string>
-    <string name="profileEditSave">Daten speichern</string>
-    <string name="registerEmail">E-Mail</string>
-    <string name="registerName">Vollständiger Name</string>
-    <string name="registerPassword1">Passwort</string>
-    <string name="registerPassword2">Passwort wiederholen</string>
-    <string name="registerRegister">Registrieren</string>
-    <string name="registerLogin">Hier anmelden!</string>
-    <string name="registerText">Oder mit Google anmelden!</string>
-    <string name="customDialog">Bitte warten</string>
-    <string name="profileFullName">Vollständiger Name</string>
-    <string name="profileEditFullName">Vollständiger Name</string>
-    <string name="profileHeight">Größe</string>
+
+    <!-- Dietary Templates -->
+    <string name="template_custom">Benutzerdefiniert</string>
+    <string name="template_balanced">Ausgewogen</string>
+    <string name="template_low_carb">Low Carb</string>
+    <string name="template_high_protein">Viel Eiweiß</string>
+    <string name="template_ketogenic">Ketogen</string>
 </resources>

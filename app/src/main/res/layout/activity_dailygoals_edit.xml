@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Edit Daily Goals"
+            android:text="@string/edit_daily_goals_title"
             android:textColor="@color/text_main"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -48,7 +48,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Your BMR: 1911 kcal"
+                    tools:text="Your BMR: 1911 kcal"
                     android:textColor="#1976D2"
                     android:textStyle="bold"
                     android:textSize="14sp" />
@@ -57,7 +57,7 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="USE THIS"
+                    android:text="@string/btn_use_this"
                     android:textColor="#1976D2"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -83,7 +83,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DIETARY TEMPLATE"
+                    android:text="@string/label_dietary_template"
                     android:textColor="@color/text_sub"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -131,7 +131,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CALORIES"
+                        android:text="@string/dailyGoalsCalorie"
                         android:textColor="#F44336"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -152,7 +152,7 @@
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:text="kcal"
+                        android:text="@string/unit_kcal"
                         android:gravity="start"
                         android:textColor="@color/text_sub"
                         android:textSize="12sp"
@@ -176,7 +176,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CARBS"
+                        android:text="@string/dailyGoalsCarbs"
                         android:textColor="#FF9800"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -197,7 +197,7 @@
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:text="g"
+                        android:text="@string/unit_g"
                         android:gravity="start"
                         android:textColor="@color/text_sub"
                         android:textSize="12sp"
@@ -221,7 +221,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="FAT"
+                        android:text="@string/dailyGoalsFat"
                         android:textColor="#9C27B0"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -242,7 +242,7 @@
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:text="g"
+                        android:text="@string/unit_g"
                         android:gravity="start"
                         android:textColor="@color/text_sub"
                         android:textSize="12sp"
@@ -266,7 +266,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PROTEIN"
+                        android:text="@string/dailyGoalsProtein"
                         android:textColor="#2196F3"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -287,7 +287,7 @@
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:text="g"
+                        android:text="@string/unit_g"
                         android:gravity="start"
                         android:textColor="@color/text_sub"
                         android:textSize="14sp"
@@ -311,7 +311,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="WATER"
+                        android:text="@string/dailyGoalsWater"
                         android:textColor="#03A9F4"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -332,7 +332,7 @@
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
-                        android:text="ml"
+                        android:text="@string/unit_ml"
                         android:gravity="start"
                         android:textColor="@color/text_sub"
                         android:textSize="12sp"
@@ -347,7 +347,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:backgroundTint="#4CAF50"
-            android:text="Save Changes"
+            android:text="@string/btn_save_changes"
             android:padding="16dp"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -360,7 +360,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="Changing these values will update your progress tracking for today and future dates."
+            android:text="@string/goals_footer_hint"
             android:textColor="@color/text_sub"
             android:textSize="12sp"
             android:alpha="0.6"

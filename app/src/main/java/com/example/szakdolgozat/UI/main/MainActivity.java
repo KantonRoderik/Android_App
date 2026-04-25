@@ -37,6 +37,7 @@ import com.example.szakdolgozat.models.DailyGoals;
 import com.example.szakdolgozat.models.FoodItem;
 import com.example.szakdolgozat.network.OpenFoodFactsApi;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
     private ConsumedFoodAdapter foodAdapter;
     private OpenFoodFactsApi api;
     private GestureDetector gestureDetector;
+    private ListenerRegistration dailyEntryListener;
+    private ListenerRegistration userListener;
+
+    // Cache for UI updates
+    private DailyEntry currentEntry;
+    private DailyGoals currentGoals;
+    private DocumentSnapshot currentUserSnapshot;
 
     private final ActivityResultLauncher<Intent> barcodeScannerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -86,14 +94,96 @@ public class MainActivity extends AppCompatActivity {
         UIUtils.hideSystemUI(getWindow());
         
         repository = FirestoreRepository.getInstance();
-        setupRetrofit();
         
+        if (repository.getCurrentUser() == null) {
+            startActivity(new Intent(this, Login.class));
+            finish();
+            return;
+        }
+
+        setupRetrofit();
         initializeUI();
         setupRecyclerView();
         checkNotificationPermission();
         updateDateDisplay();
-        loadDailyData();
         setupSwipeGestures();
+        
+        startListeningToData();
+    }
+
+    private void startListeningToData() {
+        stopListening();
+        String selectedDate = getFormattedDate();
+
+        // Listen to daily nutritional data
+        dailyEntryListener = repository.listenToDailyEntry(selectedDate, (snapshot, error) -> {
+            if (error != null) {
+                Log.e(TAG, "Daily entry listen failed", error);
+                return;
+            }
+
+            if (snapshot != null) {
+                DailyEntry entry = snapshot.exists() ? snapshot.toObject(DailyEntry.class) : new DailyEntry(selectedDate);
+                if (entry != null) {
+                    // Explicitly recalculate totals from the food map to handle offline/online sync issues
+                    entry.calculateTotals();
+                    
+                    // Firestore FieldValue.increment might not be immediately reflected in toObject 
+                    // if calculateTotals isn't called or if the snapshot is in a partial state.
+                    // By calling calculateTotals(), we ensure UI consistency with the list.
+                    
+                    this.currentEntry = entry;
+                    foodAdapter.updateData(entry.getConsumedFoods());
+                    updateUI();
+                }
+            }
+        });
+
+        // Listen to user profile/goals changes
+        userListener = repository.listenToUserData((snapshot, error) -> {
+            if (error != null) {
+                Log.e(TAG, "User data listen failed", error);
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                currentUserSnapshot = snapshot;
+                currentGoals = snapshot.get("dailyGoals", DailyGoals.class);
+                updateUI();
+            }
+        });
+    }
+
+    private void updateUI() {
+        if (currentEntry == null) return;
+
+        // Use current goals or fall back to sensible defaults
+        DailyGoals goals = currentGoals;
+        if (goals == null) {
+            goals = new DailyGoals();
+            goals.setCalories(2000);
+            goals.setCarbs(250);
+            goals.setProtein(150);
+            goals.setFat(70);
+            goals.setWater(2000);
+        }
+
+        updateProgressBars(currentEntry, goals);
+        updateTextViews(currentEntry, goals);
+        
+        if (currentUserSnapshot != null) {
+            updateBMR(currentUserSnapshot);
+        }
+    }
+
+    private void stopListening() {
+        if (dailyEntryListener != null) {
+            dailyEntryListener.remove();
+            dailyEntryListener = null;
+        }
+        if (userListener != null) {
+            userListener.remove();
+            userListener = null;
+        }
     }
 
     private void setupSwipeGestures() {
@@ -109,9 +199,9 @@ public class MainActivity extends AppCompatActivity {
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffX > 0) {
-                            changeDay(-1); // Swipe Jobbra -> Előző nap
+                            changeDay(-1);
                         } else {
-                            changeDay(1);  // Swipe Balra -> Következő nap
+                            changeDay(1);
                         }
                         return true;
                     }
@@ -216,7 +306,6 @@ public class MainActivity extends AppCompatActivity {
         repository.addConsumedFood(getFormattedDate(), consumedFood)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Added: " + product.productName, Toast.LENGTH_SHORT).show();
-                    loadDailyData();
                 });
     }
 
@@ -225,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
             repository.removeConsumedFood(getFormattedDate(), key, food)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, R.string.update_success, Toast.LENGTH_SHORT).show();
-                        loadDailyData();
                     })
                     .addOnFailureListener(e -> Toast.makeText(this, R.string.error_generic, Toast.LENGTH_SHORT).show());
         });
@@ -239,35 +327,6 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_CODE);
             }
         }
-    }
-
-    private void loadDailyData() {
-        String selectedDate = getFormattedDate();
-
-        repository.getDailyEntry(selectedDate).addOnSuccessListener(entrySnapshot -> {
-            DailyEntry dailyEntry = entrySnapshot.exists() ? entrySnapshot.toObject(DailyEntry.class) : new DailyEntry(selectedDate);
-            
-            if (dailyEntry != null) {
-                dailyEntry.calculateTotals();
-                foodAdapter.updateData(dailyEntry.getConsumedFoods());
-            }
-
-            repository.getUserData().addOnSuccessListener(userSnapshot -> {
-                DailyGoals goals = userSnapshot.get("dailyGoals", DailyGoals.class);
-                if (goals != null && dailyEntry != null) {
-                    updateUI(dailyEntry, goals, userSnapshot);
-                } else {
-                    setDefaultUIValues();
-                }
-            }).addOnFailureListener(e -> handleDataError(getString(R.string.error_loading_data), e));
-            
-        }).addOnFailureListener(e -> handleDataError(getString(R.string.error_loading_data), e));
-    }
-
-    private void updateUI(DailyEntry entry, DailyGoals goals, DocumentSnapshot userSnapshot) {
-        updateProgressBars(entry, goals);
-        updateTextViews(entry, goals);
-        updateBMR(userSnapshot);
     }
 
     private void updateBMR(DocumentSnapshot userSnapshot) {
@@ -291,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
     private double calculateBMR(double weight, double height, double age, String gender) {
         if (weight <= 0 || height <= 0 || age <= 0) return 0;
         double bmr = (10 * weight) + (6.25 * height) - (5 * age);
-        if (gender != null && (gender.equalsIgnoreCase("n\u0151") || gender.equalsIgnoreCase("female"))) {
+        if (gender != null && (gender.equalsIgnoreCase("female") || gender.equalsIgnoreCase("nő"))) {
             bmr -= 161;
         } else {
             bmr += 5;
@@ -349,11 +408,6 @@ public class MainActivity extends AppCompatActivity {
         binding.textViewViz.setText(getString(R.string.nutrition_default_format, getString(R.string.label_water), getString(R.string.unit_ml)));
     }
 
-    private void handleDataError(String message, Exception e) {
-        Log.e(TAG, message + ": " + e.getMessage());
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
     private void updateDateDisplay() {
         binding.tvCurrentDate.setText(getFormattedDate());
     }
@@ -363,15 +417,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addWater() {
+        // Show toast immediately for better offline feedback
+        Toast.makeText(this, R.string.water_added_toast, Toast.LENGTH_SHORT).show();
+        
         repository.addWater(getFormattedDate(), 100)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, R.string.water_added_toast, Toast.LENGTH_SHORT).show();
-                    loadDailyData();
-                })
-                .addOnFailureListener(e -> Toast.makeText(this, getString(R.string.error_generic) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to add water", e);
+                    Toast.makeText(this, getString(R.string.error_generic), Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void logout() {
+        stopListening();
         repository.signOut();
         startActivity(new Intent(this, Login.class));
         finish();
@@ -380,13 +437,25 @@ public class MainActivity extends AppCompatActivity {
     private void changeDay(int amount) {
         currentDate.add(Calendar.DAY_OF_YEAR, amount);
         updateDateDisplay();
-        loadDailyData();
+        startListeningToData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadDailyData();
+        startListeningToData();
         UIUtils.hideSystemUI(getWindow());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopListening();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopListening();
     }
 }

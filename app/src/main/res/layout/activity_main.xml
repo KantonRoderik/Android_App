@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fitness Tracker"
+                android:text="@string/app_title"
                 android:textColor="@color/text_main"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -79,6 +79,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -292,19 +293,29 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/consumed_food_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Consumed Food"
+                android:text="@string/label_consumed_food"
                 android:textColor="@color/text_main"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/consumedFoodsRecyclerView"
+            <!-- List Container to ensure visibility in NestedScrollView -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:minHeight="100dp"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/consumedFoodsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_consumed_food" />
+            </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="80dp"/>
 

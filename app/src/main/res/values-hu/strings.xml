@@ -12,7 +12,9 @@
     <string name="unit_ml">ml</string>
     <string name="unit_kg">kg</string>
     <string name="unit_cm">cm</string>
-    <string name="unit_years">éves</string>
+    <string name="unit_years">év</string>
+    <string name="unit_yrs">év</string>
+    <string name="customDialog">Kérem várjon</string>
 
     <!-- Main Activity -->
     <string name="label_calories">Kalória</string>
@@ -24,8 +26,11 @@
     <string name="nutrition_format">%1$s: %2$.0f/%3$.0f %4$s (%5$d%%)</string>
     <string name="nutrition_default_format">%1$s: 0/0 %2$s (0%%)</string>
     <string name="main_add_food">Étel hozzáadása</string>
+    <string name="main_stats">Statisztika</string>
     <string name="main_profile">Profil</string>
     <string name="main_logout">Kijelentkezés</string>
+    <string name="app_title">Fitness Tracker</string>
+    <string name="label_consumed_food">Elfogyasztott ételek</string>
 
     <!-- Auth -->
     <string name="login_success">Bejelentkezés sikeres!</string>
@@ -39,6 +44,22 @@
     <string name="error_passwords_dont_match">A megadott jelszavak nem egyeznek!</string>
     <string name="error_invalid_number">Érvénytelen számformátum!</string>
     <string name="error_invalid_value_range">Érvénytelen érték (%1$d-%2$d)</string>
+    <string name="login_welcome">Üdvözöljük újra!</string>
+    <string name="loginEmail">Email</string>
+    <string name="loginPassword">Jelszó</string>
+    <string name="loginLogin">BEJELENTKEZÉS</string>
+    <string name="loginQuestion">Még nincs fiókja?</string>
+    <string name="loginRegister">REGISZTRÁCIÓ</string>
+    <string name="loginOrGoogle">Vagy jelentkezzen be Google-lel</string>
+    <string name="register_title">Fiók létrehozása</string>
+    <string name="register_hint">Adja meg adatait a csatlakozáshoz</string>
+    <string name="registerEmail">Email</string>
+    <string name="registerName">Teljes név</string>
+    <string name="registerPassword1">Jelszó</string>
+    <string name="registerPassword2">Jelszó újra</string>
+    <string name="registerRegister">Regisztráció</string>
+    <string name="registerLogin">Jelentkezzen be itt!</string>
+    <string name="registerText">Vagy jelentkezzen be google-el!</string>
 
     <!-- Profile -->
     <string name="password_changed_success">Jelszó sikeresen megváltoztatva!</string>
@@ -46,6 +67,52 @@
     <string name="gender_male">Férfi</string>
     <string name="gender_female">Nő</string>
     <string name="label_bmr">BMR (Alapanyagcsere): %1$.0f kcal</string>
+    <string name="profile_onboarding_title">Üdvözöljük! Töltse ki a profilját</string>
+    <string name="profile_onboarding_hint">Kérjük, adja meg adatait a kezdéshez!</string>
+    <string name="error_fill_stats_first">Kérjük, először töltse ki a súlyt, magasságot és kort!</string>
+    <string name="goals_calculated_success">Napi célok sikeresen kiszámítva!</string>
+    <string name="label_personal_info">SZEMÉLYES ADATOK</string>
+    <string name="label_body_stats">TESTSTATISZTIKA</string>
+    <string name="label_security">BIZTONSÁG</string>
+    <string name="label_full_name">TELJES NÉV</string>
+    <string name="label_gender">NEM</string>
+    <string name="label_weight">SÚLY</string>
+    <string name="label_height">MAGASSÁG</string>
+    <string name="label_age">KOR</string>
+    <string name="label_new_password">ÚJ JELSZÓ</string>
+    <string name="label_confirm_password">JELSZÓ MEGERŐSÍTÉSE</string>
+    <string name="label_auto_calculate">AUTOMATIKUS SZÁMÍTÁS</string>
+    <string name="btn_save_changes">MÓDOSÍTÁSOK MENTÉSE</string>
+    <string name="label_quick_actions">GYORS MŰVELETEK</string>
+    <string name="label_edit_daily_goals">NAPI CÉLOK SZERKESZTÉSE</string>
+    <string name="label_edit_profile_data">PROFIL ADATOK MÓDOSÍTÁSA</string>
+    <string name="label_active_streak">Aktív sorozat: %1$d nap!</string>
+    <string name="streak_motivation">Csak így tovább, %1$s! Jól haladsz a céljaid felé.</string>
+    <string name="edit_profile_title">PROFIL SZERKESZTÉSE</string>
+    <string name="edit_daily_goals_title">NAPI CÉLOK SZERKESZTÉSE</string>
+    <string name="label_your_bmr">BMR értéked: %1$d kcal</string>
+    <string name="btn_use_this">HASZNÁLD EZT</string>
+    <string name="label_dietary_template">ÉTRENDI SABLON</string>
+    <string name="goals_footer_hint">Ezen értékek módosítása frissíteni fogja a mai és a jövőbeli követést.</string>
+    <string name="error_calories_required">Kérjük, először adjon meg kalóriaértéket!</string>
+    <string name="calories_set_to_bmr">Kalória a BMR értékre állítva</string>
+
+    <string name="profileEmail">Email</string>
+    <string name="profileFullName">Teljes név</string>
+    <string name="profileWeight">Súly</string>
+    <string name="profileHeight">Magasság</string>
+    <string name="profileAge">Kor</string>
+    <string name="profileGender">Nem</string>
+    <string name="profileDaily">Napi célok szerkesztése</string>
+    <string name="profileEdit">Adatok módosítása</string>
+    <string name="profileEditFullName">Teljes név</string>
+    <string name="profileEditPassword1">Új jelszó</string>
+    <string name="profileEditPassword2">Új jelszó ismét</string>
+    <string name="profileEditWeight">Súly</string>
+    <string name="profileEditHeight">Magasság</string>
+    <string name="profileEditAge">Kor</string>
+    <string name="profileEditGender">Nem</string>
+    <string name="profileEditSave">Adatok mentése</string>
 
     <!-- Food -->
     <string name="food_load_error">Hiba az ételek betöltésekor</string>
@@ -55,51 +122,38 @@
     <string name="error_invalid_quantity">A mennyiség nem lehet nulla vagy negatív!</string>
     <string name="error_no_food_selected">Nincs kiválasztva étel!</string>
 
-    <!-- Notifications -->
-    <string name="notification_channel_name">Napi emlékeztető</string>
-    <string name="notification_channel_desc">Emlékeztető az étkezések rögzítésére</string>
-    <string name="notification_reminder_text">Ne felejtsd el rögzíteni a mai étkezéseidet!</string>
-    <string name="notification_reminder_text_with_time">Ne felejtsd el rögzíteni a mai étkezéseidet! (%s)</string>
-
     <string name="addFoodTitle">Új étel hozzáadása</string>
     <string name="addFoodString1">Válassz ételt:</string>
     <string name="addFoodString2">Mennyiség (gramm):</string>
     <string name="addFoodAmount">Adja meg a mennyiséget</string>
     <string name="addFoodDone">Étel hozzáadása</string>
+    <string name="addFoodAiBtn">Azonosítás AI-val</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Napi emlékeztető</string>
+    <string name="notification_channel_desc">Emlékeztető az étkezések rögzítésére</string>
+    <string name="notification_reminder_text">Ne felejtsd el rögzíteni a mai étkezéseidet!</string>
+    <string name="notification_reminder_text_with_time">Ne felejtsd el rögzíteni a mai étkezéseidet! (%s)</string>
+    <string name="default_notification_channel_id" translatable="false">Nutrition tracking reminders_channel_id</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">Statisztika</string>
+    <string name="stats_calories_7d">Kalória (utolsó 7 nap)</string>
+    <string name="stats_macro_today">Mai makrók eloszlása</string>
+    <string name="stats_no_data">Nincs elég adat a megjelenítéshez</string>
+
+    <!-- Daily Goals Labels -->
     <string name="dailyGoalsCalorie">Kalória</string>
     <string name="dailyGoalsCarbs">Szénhidrát</string>
     <string name="dailyGoalsFat">Zsír</string>
     <string name="dailyGoalsProtein">Fehérje</string>
     <string name="dailyGoalsWater">Víz</string>
     <string name="dailyGoalsSave">Mentés</string>
-    <string name="loginEmail">Email</string>
-    <string name="loginPassword">Jelszó</string>
-    <string name="loginLogin">Bejelentkezés</string>
-    <string name="loginQuestion">Nincs regisztrálva még?</string>
-    <string name="loginRegister">Regisztráljon</string>
-    <string name="loginOrGoogle">Jelentkezz be Google-el</string>
-    <string name="profileEmail">Email</string>
-    <string name="profileWeight">Súly</string>
-    <string name="profileAge">Kor</string>
-    <string name="profileGender">Nem</string>
-    <string name="profileDaily">Napi célok szerkesztése</string>
-    <string name="profileEdit">Adatok módosítása</string>
-    <string name="profileEditPassword1">Új jelszó</string>
-    <string name="profileEditPassword2">Új jelszó ismét</string>
-    <string name="profileEditWeight">Súly</string>
-    <string name="profileEditHeight">Magasság</string>
-    <string name="profileEditAge">Kor</string>
-    <string name="profileEditGender">Nem</string>
-    <string name="profileEditSave">Adatok mentése</string>
-    <string name="registerEmail">Email</string>
-    <string name="registerName">Teljes név</string>
-    <string name="registerPassword1">Jelszó</string>
-    <string name="registerPassword2">Jelszó újra</string>
-    <string name="registerRegister">Regisztráció</string>
-    <string name="registerLogin">Jelentkezzen be itt!</string>
-    <string name="registerText">Vagy jelentkezzen be google-el!</string>
-    <string name="customDialog">Kérem várjon</string>
-    <string name="profileFullName">Teljes név</string>
-    <string name="profileEditFullName">Teljes név</string>
-    <string name="profileHeight">Magasság</string>
+
+    <!-- Dietary Templates -->
+    <string name="template_custom">Egyéni</string>
+    <string name="template_balanced">Kiegyensúlyozott</string>
+    <string name="template_low_carb">Alacsony szénhidrát</string>
+    <string name="template_high_protein">Magas fehérje</string>
+    <string name="template_ketogenic">Ketogén</string>
 </resources>

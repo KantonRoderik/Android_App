@@ -13,6 +13,8 @@
     <string name="unit_kg">kg</string>
     <string name="unit_cm">cm</string>
     <string name="unit_years">ans</string>
+    <string name="unit_yrs">ans</string>
+    <string name="customDialog">Veuillez patienter</string>
 
     <!-- Main Activity -->
     <string name="label_calories">Calories</string>
@@ -24,8 +26,11 @@
     <string name="nutrition_format">%1$s : %2$.0f/%3$.0f %4$s (%5$d%%)</string>
     <string name="nutrition_default_format">%1$s : 0/0 %2$s (0%%)</string>
     <string name="main_add_food">Ajouter un aliment</string>
+    <string name="main_stats">Statistiques</string>
     <string name="main_profile">Profil</string>
     <string name="main_logout">Déconnexion</string>
+    <string name="app_title">Traqueur de Fitness</string>
+    <string name="label_consumed_food">Aliments consommés</string>
 
     <!-- Auth -->
     <string name="login_success">Connexion réussie !</string>
@@ -39,6 +44,22 @@
     <string name="error_passwords_dont_match">Les mots de passe ne correspondent pas !</string>
     <string name="error_invalid_number">Format de nombre invalide !</string>
     <string name="error_invalid_value_range">Valeur invalide (%1$d-%2$d)</string>
+    <string name="login_welcome">Bon retour !</string>
+    <string name="loginEmail">Email</string>
+    <string name="loginPassword">Mot de passe</string>
+    <string name="loginLogin">SE CONNECTER</string>
+    <string name="loginQuestion">Pas encore inscrit ?</string>
+    <string name="loginRegister">S\'INSCRIRE</string>
+    <string name="loginOrGoogle">Ou connectez-vous avec Google</string>
+    <string name="register_title">Créer un compte</string>
+    <string name="register_hint">Entrez vos coordonnées pour nous rejoindre</string>
+    <string name="registerEmail">Email</string>
+    <string name="registerName">Nom complet</string>
+    <string name="registerPassword1">Mot de passe</string>
+    <string name="registerPassword2">Confirmer le mot de passe</string>
+    <string name="registerRegister">S\'inscrire</string>
+    <string name="registerLogin">Connectez-vous ici !</string>
+    <string name="registerText">Ou connectez-vous avec Google !</string>
 
     <!-- Profile -->
     <string name="password_changed_success">Mot de passe changé avec succès !</string>
@@ -46,14 +67,67 @@
     <string name="gender_male">Homme</string>
     <string name="gender_female">Femme</string>
     <string name="label_bmr">TMB (Taux Métabolique de Base) : %1$.0f kcal</string>
+    <string name="profile_onboarding_title">Bienvenue ! Complétez votre profil</string>
+    <string name="profile_onboarding_hint">Veuillez entrer vos informations pour commencer !</string>
+    <string name="error_fill_stats_first">Veuillez d\'abord renseigner votre poids, votre taille et votre âge !</string>
+    <string name="goals_calculated_success">Objectifs quotidiens calculés avec succès !</string>
+    <string name="label_personal_info">INFOS PERSONNELLES</string>
+    <string name="label_body_stats">STATISTIQUES CORPORELLES</string>
+    <string name="label_security">SÉCURITÉ</string>
+    <string name="label_full_name">NOM COMPLET</string>
+    <string name="label_gender">GENRE</string>
+    <string name="label_weight">POIDS</string>
+    <string name="label_height">TAILLE</string>
+    <string name="label_age">ÂGE</string>
+    <string name="label_new_password">NOUVEAU MOT DE PASSE</string>
+    <string name="label_confirm_password">CONFIRMER LE MOT DE PASSE</string>
+    <string name="label_auto_calculate">CALCUL AUTOMATIQUE</string>
+    <string name="btn_save_changes">ENREGISTRER LES MODIFICATIONS</string>
+    <string name="label_quick_actions">ACTIONS RAPIDES</string>
+    <string name="label_edit_daily_goals">MODIFIER LES OBJECTIFS QUOTIDIENS</string>
+    <string name="label_edit_profile_data">MODIFIER LES DONNÉES DU PROFIL</string>
+    <string name="label_active_streak">Série active : %1$d jours !</string>
+    <string name="streak_motivation">Continue comme ça, %1$s ! Tu progresses bien vers tes objectifs.</string>
+    <string name="edit_profile_title">MODIFIER LE PROFIL</string>
+    <string name="edit_daily_goals_title">MODIFIER LES OBJECTIFS QUOTIDIENS</string>
+    <string name="label_your_bmr">Votre TMB : %1$d kcal</string>
+    <string name="btn_use_this">UTILISER CECI</string>
+    <string name="label_dietary_template">MODÈLE DIÉTÉTIQUE</string>
+    <string name="goals_footer_hint">La modification de ces valeurs mettra à jour le suivi d\'aujourd\'hui et des jours suivants.</string>
+    <string name="error_calories_required">Veuillez d\'abord saisir une valeur de calories !</string>
+    <string name="calories_set_to_bmr">Calories réglées sur la valeur du TMB</string>
+
+    <string name="profileEmail">Email</string>
+    <string name="profileFullName">Nom complet</string>
+    <string name="profileWeight">Poids</string>
+    <string name="profileHeight">Taille</string>
+    <string name="profileAge">Âge</string>
+    <string name="profileGender">Genre</string>
+    <string name="profileDaily">Modifier les objectifs quotidiens</string>
+    <string name="profileEdit">Modifier les données</string>
+    <string name="profileEditFullName">Nom complet</string>
+    <string name="profileEditPassword1">Nouveau mot de passe</string>
+    <string name="profileEditPassword2">Répéter le nouveau mot de passe</string>
+    <string name="profileEditWeight">Poids</string>
+    <string name="profileEditHeight">Taille</string>
+    <string name="profileEditAge">Âge</string>
+    <string name="profileEditGender">Genre</string>
+    <string name="profileEditSave">Enregistrer les données</string>
 
     <!-- Food -->
     <string name="food_load_error">Erreur lors du chargement des aliments</string>
     <string name="food_add_success">Ajouté avec succès !</string>
     <string name="food_add_error">Erreur lors de l\'enregistrement</string>
     <string name="error_quantity_required">Veuillez préciser la quantité !</string>
-    <string name="error_invalid_quantity">La quantité ne peut pas être nulle ou négative !</string>
+    <string name="error_invalid_quantity">La quantité ne peut pas être nulle ou negatíve !</string>
     <string name="error_no_food_selected">Aucun aliment sélectionné !</string>
+
+    <string name="addFoodTitle">Ajouter un aliment</string>
+    <string name="addFoodString1">Choisir un aliment :</string>
+    <string name="addFoodString2">Quantité (grammes) :</string>
+    <string name="addFoodAmount">Entrez la quantité</string>
+    <string name="addFoodDone">Ajouter l\'aliment</string>
+    <string name="addFoodAiBtn">✨ Identifier avec l\'IA</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">Rappel quotidien</string>
@@ -62,46 +136,24 @@
     <string name="notification_reminder_text_with_time">N\'oubliez pas d\'enregistrer vos repas d\'aujourd\'hui ! (%s)</string>
     <string name="default_notification_channel_id" translatable="false">Nutrition tracking reminders_channel_id</string>
 
-    <!-- Existing strings (keeping for layout compatibility) -->
-    <string name="addFoodTitle">Nouvel aliment consommé</string>
-    <string name="addFoodString1">Choisir un aliment</string>
-    <string name="addFoodString2">Quantité (grammes) :</string>
-    <string name="addFoodAmount">Entrez la quantité</string>
-    <string name="addFoodDone">Ajouter l\'aliment</string>
+    <!-- Statistics -->
+    <string name="stats_title">Statistiques</string>
+    <string name="stats_calories_7d">Calories (7 derniers jours)</string>
+    <string name="stats_macro_today">Distribution des macros d\'aujourd\'hui</string>
+    <string name="stats_no_data">Pas assez de données pour l\'affichage</string>
+
+    <!-- Daily Goals Labels -->
     <string name="dailyGoalsCalorie">Calories</string>
     <string name="dailyGoalsCarbs">Glucides</string>
     <string name="dailyGoalsFat">Lipides</string>
     <string name="dailyGoalsProtein">Protéines</string>
     <string name="dailyGoalsWater">Eau</string>
     <string name="dailyGoalsSave">Enregistrer</string>
-    <string name="loginEmail">Email</string>
-    <string name="loginPassword">Mot de passe</string>
-    <string name="loginLogin">Se connecter</string>
-    <string name="loginQuestion">Pas encore inscrit ?</string>
-    <string name="loginRegister">S\'inscrire</string>
-    <string name="loginOrGoogle">Se connecter avec Google</string>
-    <string name="profileEmail">Email</string>
-    <string name="profileWeight">Poids</string>
-    <string name="profileAge">Âge</string>
-    <string name="profileGender">Genre</string>
-    <string name="profileDaily">Modifier les objectifs quotidiens</string>
-    <string name="profileEdit">Modifier les données</string>
-    <string name="profileEditPassword1">Nouveau mot de passe</string>
-    <string name="profileEditPassword2">Répéter le nouveau mot de passe</string>
-    <string name="profileEditWeight">Poids</string>
-    <string name="profileEditHeight">Taille</string>
-    <string name="profileEditAge">Âge</string>
-    <string name="profileEditGender">Genre</string>
-    <string name="profileEditSave">Enregistrer les données</string>
-    <string name="registerEmail">Email</string>
-    <string name="registerName">Nom complet</string>
-    <string name="registerPassword1">Mot de passe</string>
-    <string name="registerPassword2">Répéter le mot de passe</string>
-    <string name="registerRegister">S\'inscrire</string>
-    <string name="registerLogin">Connectez-vous ici !</string>
-    <string name="registerText">Ou connectez-vous avec Google !</string>
-    <string name="customDialog">Veuillez patienter</string>
-    <string name="profileFullName">Nom complet</string>
-    <string name="profileEditFullName">Nom complet</string>
-    <string name="profileHeight">Taille</string>
+
+    <!-- Dietary Templates -->
+    <string name="template_custom">Personnalisé</string>
+    <string name="template_balanced">Équilibré</string>
+    <string name="template_low_carb">Faible en glucides</string>
+    <string name="template_high_protein">Riche en protéines</string>
+    <string name="template_ketogenic">Cétogène</string>
 </resources>

@@ -12,9 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.szakdolgozat.R;
+import com.example.szakdolgozat.UI.main.MainActivity;
 import com.example.szakdolgozat.UI.profile.ProfileSzerkesztes;
 import com.example.szakdolgozat.databinding.ActivityRegisterBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -61,8 +63,10 @@ public class Register extends AppCompatActivity {
 
         repository = FirestoreRepository.getInstance();
 
+        UIUtils.hideSystemUI(getWindow());
+
         if (repository.getCurrentUser() != null) {
-            navigateToOnboarding();
+            checkIfProfileExists(repository.getCurrentUser());
         }
 
         setupGoogleSignIn();
@@ -102,12 +106,25 @@ public class Register extends AppCompatActivity {
     private void checkIfProfileExists(FirebaseUser user) {
         repository.getUserData().addOnSuccessListener(documentSnapshot -> {
             if (!documentSnapshot.exists()) {
+                // First time Google login, create profile and go to onboarding
                 repository.createUserProfile(user.getEmail(), user.getDisplayName())
                         .addOnSuccessListener(unused -> navigateToOnboarding());
             } else {
-                navigateToOnboarding();
+                // Profile exists, check onboarding status
+                Boolean isComplete = documentSnapshot.getBoolean("onboarding_complete");
+                if (isComplete != null && isComplete) {
+                    // Profile is complete, go to main screen
+                    startActivity(new Intent(Register.this, MainActivity.class));
+                    finish();
+                } else {
+                    // Profile exists but onboarding not finished
+                    navigateToOnboarding();
+                }
             }
-        }).addOnFailureListener(e -> navigateToOnboarding());
+        }).addOnFailureListener(e -> {
+            // Error fetching data, fallback to safe redirection
+            navigateToOnboarding();
+        });
     }
 
     private void navigateToOnboarding() {

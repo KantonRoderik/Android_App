@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.szakdolgozat.databinding.ActivityBarcodeScannerBinding;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
@@ -42,7 +43,7 @@ public class BarcodeScannerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         cameraExecutor = Executors.newSingleThreadExecutor();
-
+        UIUtils.hideSystemUI(getWindow());
         if (allPermissionsGranted()) {
             startCamera();
         } else {

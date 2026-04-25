@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F8FAFC">
+    android:background="@drawable/login_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,8 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="EDIT PROFILE"
-            android:textColor="#1E293B"
+            android:text="@string/edit_profile_title"
+            android:textColor="@color/text_main"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,8 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            app:cardBackgroundColor="@color/card_bg"
             app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
+            app:cardElevation="2dp"
             app:layout_constraintTop_toBottomOf="@id/edit_title">
 
             <LinearLayout
@@ -50,13 +51,13 @@
                     <View
                         android:layout_width="3dp"
                         android:layout_height="16dp"
-                        android:background="#2196F3" />
+                        android:background="@color/secondary_blue" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="PERSONAL INFORMATION"
-                        android:textColor="#1E293B"
+                        android:text="@string/label_personal_info"
+                        android:textColor="@color/text_main"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -64,8 +65,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FULL NAME"
-                    android:textColor="#94A3B8"
+                    android:text="@string/label_full_name"
+                    android:textColor="@color/text_sub"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -80,16 +81,17 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_person_24"
-                        app:tint="#94A3B8" />
+                        app:tint="@color/text_sub" />
                     <EditText
                         android:id="@+id/teljes_nev"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@android:color/transparent"
-                        android:hint="Full Name"
+                        android:hint="@string/label_full_name"
                         android:inputType="textPersonName"
                         android:paddingHorizontal="12dp"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/text_main"
+                        android:textColorHint="@color/text_sub"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -97,8 +99,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="GENDER"
-                    android:textColor="#94A3B8"
+                    android:text="@string/label_gender"
+                    android:textColor="@color/text_sub"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -125,8 +127,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/card_bg"
             app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
+            app:cardElevation="2dp"
             app:layout_constraintTop_toBottomOf="@id/personal_card">
 
             <LinearLayout
@@ -149,8 +152,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="BODY STATISTICS"
-                        android:textColor="#1E293B"
+                        android:text="@string/label_body_stats"
+                        android:textColor="@color/text_main"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -168,8 +171,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="WEIGHT"
-                            android:textColor="#94A3B8"
+                            android:text="@string/label_weight"
+                            android:textColor="@color/text_sub"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                         <LinearLayout
@@ -183,7 +186,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/baseline_monitor_weight_24"
-                                app:tint="#94A3B8" />
+                                app:tint="@color/text_sub" />
                             <EditText
                                 android:id="@+id/suly_input"
                                 android:layout_width="0dp"
@@ -192,13 +195,14 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:inputType="number"
-                                android:textColor="#1E293B"
+                                android:textColor="@color/text_main"
+                                android:textColorHint="@color/text_sub"
                                 android:textSize="14sp" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="kg"
-                                android:textColor="#CBD5E1"
+                                android:text="@string/unit_kg"
+                                android:textColor="@color/text_sub"
                                 android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -212,8 +216,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="HEIGHT"
-                            android:textColor="#94A3B8"
+                            android:text="@string/label_height"
+                            android:textColor="@color/text_sub"
                             android:textSize="11sp"
                             android:textStyle="bold" />
                         <LinearLayout
@@ -227,7 +231,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:src="@drawable/baseline_height_24"
-                                app:tint="#94A3B8" />
+                                app:tint="@color/text_sub" />
                             <EditText
                                 android:id="@+id/magassag"
                                 android:layout_width="0dp"
@@ -236,13 +240,14 @@
                                 android:background="@android:color/transparent"
                                 android:gravity="center"
                                 android:inputType="number"
-                                android:textColor="#1E293B"
+                                android:textColor="@color/text_main"
+                                android:textColorHint="@color/text_sub"
                                 android:textSize="14sp" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="cm"
-                                android:textColor="#CBD5E1"
+                                android:text="@string/unit_cm"
+                                android:textColor="@color/text_sub"
                                 android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -252,8 +257,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="AGE"
-                    android:textColor="#94A3B8"
+                    android:text="@string/label_age"
+                    android:textColor="@color/text_sub"
                     android:textSize="11sp"
                     android:textStyle="bold" />
                 <LinearLayout
@@ -267,7 +272,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_calendar_today_24"
-                        app:tint="#94A3B8" />
+                        app:tint="@color/text_sub" />
                     <EditText
                         android:id="@+id/kor"
                         android:layout_width="0dp"
@@ -276,13 +281,14 @@
                         android:background="@android:color/transparent"
                         android:paddingHorizontal="12dp"
                         android:inputType="number"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/text_main"
+                        android:textColorHint="@color/text_sub"
                         android:textSize="14sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="yrs"
-                        android:textColor="#CBD5E1"
+                        android:text="@string/unit_yrs"
+                        android:textColor="@color/text_sub"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -294,10 +300,10 @@
                     android:background="@drawable/dashed_border"
                     android:drawableStart="@drawable/baseline_analytics_24"
                     android:drawablePadding="8dp"
-                    android:drawableTint="#2196F3"
+                    android:drawableTint="@color/secondary_blue"
                     android:paddingHorizontal="24dp"
-                    android:text="AUTO-CALCULATE GOALS"
-                    android:textColor="#2196F3"
+                    android:text="@string/label_auto_calculate"
+                    android:textColor="@color/secondary_blue"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -310,8 +316,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/card_bg"
             app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
+            app:cardElevation="2dp"
             app:layout_constraintTop_toBottomOf="@id/body_card">
 
             <LinearLayout
@@ -334,8 +341,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="SECURITY"
-                        android:textColor="#1E293B"
+                        android:text="@string/label_security"
+                        android:textColor="@color/text_main"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -343,8 +350,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NEW PASSWORD"
-                    android:textColor="#94A3B8"
+                    android:text="@string/label_new_password"
+                    android:textColor="@color/text_sub"
                     android:textSize="11sp"
                     android:textStyle="bold" />
                 <LinearLayout
@@ -358,7 +365,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_lock_24"
-                        app:tint="#94A3B8" />
+                        app:tint="@color/text_sub" />
                     <EditText
                         android:id="@+id/jelszo_input"
                         android:layout_width="match_parent"
@@ -367,7 +374,8 @@
                         android:hint="••••••••"
                         android:inputType="textPassword"
                         android:paddingHorizontal="12dp"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/text_main"
+                        android:textColorHint="@color/text_sub"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -375,8 +383,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="CONFIRM PASSWORD"
-                    android:textColor="#94A3B8"
+                    android:text="@string/label_confirm_password"
+                    android:textColor="@color/text_sub"
                     android:textSize="11sp"
                     android:textStyle="bold" />
                 <LinearLayout
@@ -390,7 +398,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_qr_code_scanner_24"
-                        app:tint="#94A3B8" />
+                        app:tint="@color/text_sub" />
                     <EditText
                         android:id="@+id/jelszoVerify_input"
                         android:layout_width="match_parent"
@@ -399,7 +407,8 @@
                         android:hint="••••••••"
                         android:inputType="textPassword"
                         android:paddingHorizontal="12dp"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/text_main"
+                        android:textColorHint="@color/text_sub"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -412,8 +421,8 @@
             android:layout_height="56dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:backgroundTint="#22C55E"
-            android:text="SAVE CHANGES"
+            android:backgroundTint="@color/primary_green"
+            android:text="@string/btn_save_changes"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"

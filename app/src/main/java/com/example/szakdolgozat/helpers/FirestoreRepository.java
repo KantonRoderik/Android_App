@@ -17,8 +17,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.HashMap;
@@ -35,6 +37,11 @@ public class FirestoreRepository {
     private FirestoreRepository() {
         this.db = FirebaseFirestore.getInstance();
         this.auth = FirebaseAuth.getInstance();
+        
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        this.db.setFirestoreSettings(settings);
     }
 
     public static synchronized FirestoreRepository getInstance() {
@@ -43,8 +50,6 @@ public class FirestoreRepository {
         }
         return instance;
     }
-
-    // --- Auth Operations ---
 
     public FirebaseUser getCurrentUser() {
         return auth.getCurrentUser();
@@ -67,8 +72,6 @@ public class FirestoreRepository {
         auth.signOut();
     }
 
-    // --- User Profile Operations ---
-
     private DocumentReference getUserDoc() {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return null;
@@ -82,7 +85,6 @@ public class FirestoreRepository {
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("nev", name);
-        // Initial values set to null or empty to trigger onboarding
         user.put("suly", "");
         user.put("magassag", "");
         user.put("kor", "");
@@ -116,12 +118,16 @@ public class FirestoreRepository {
         return user.updatePassword(newPassword);
     }
 
-    // --- Daily Entry Operations ---
-
     public Task<DocumentSnapshot> getDailyEntry(String date) {
         DocumentReference userDoc = getUserDoc();
         if (userDoc == null) return Tasks.forException(new Exception("User not logged in"));
         return userDoc.collection("dailyEntries").document(date).get();
+    }
+
+    public ListenerRegistration listenToDailyEntry(String date, EventListener<DocumentSnapshot> listener) {
+        DocumentReference userDoc = getUserDoc();
+        if (userDoc == null) return null;
+        return userDoc.collection("dailyEntries").document(date).addSnapshotListener(listener);
     }
 
     public Task<Void> addConsumedFood(String date, ConsumedFood food) {
@@ -129,38 +135,27 @@ public class FirestoreRepository {
         if (userDoc == null) return Tasks.forException(new Exception("User not logged in"));
         
         DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
+        String timestamp = String.valueOf(System.currentTimeMillis());
         
-        return db.runTransaction(transaction -> {
-            DocumentSnapshot snapshot = transaction.get(entryRef);
-            String timestamp = String.valueOf(System.currentTimeMillis());
-            
-            if (!snapshot.exists()) {
-                // Create new document
-                Map<String, Object> newEntry = new HashMap<>();
-                newEntry.put("date", date);
-                newEntry.put("totalCalories", food.getCalories());
-                newEntry.put("totalCarbs", food.getCarbs());
-                newEntry.put("totalFat", food.getFat());
-                newEntry.put("totalProtein", food.getProtein());
-                newEntry.put("totalWater", 0.0);
-                
-                Map<String, Object> foods = new HashMap<>();
-                foods.put(timestamp, food);
-                newEntry.put("consumedFoods", foods);
-                
-                transaction.set(entryRef, newEntry);
-            } else {
-                // Update existing document using dot notation for nested map
-                transaction.update(entryRef,
-                    "consumedFoods." + timestamp, food,
-                    "totalCalories", FieldValue.increment(food.getCalories()),
-                    "totalCarbs", FieldValue.increment(food.getCarbs()),
-                    "totalFat", FieldValue.increment(food.getFat()),
-                    "totalProtein", FieldValue.increment(food.getProtein())
-                );
-            }
-            return null;
-        });
+        // We use a WriteBatch to ensure the document exists and update nested fields correctly
+        WriteBatch batch = db.batch();
+        
+        // 1. Ensure the document exists (won't overwrite if it does)
+        Map<String, Object> initial = new HashMap<>();
+        initial.put("date", date);
+        batch.set(entryRef, initial, SetOptions.merge());
+        
+        // 2. Update the nested map and increments using dot notation (which update() supports)
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("consumedFoods." + timestamp, food);
+        updates.put("totalCalories", FieldValue.increment(food.getCalories()));
+        updates.put("totalCarbs", FieldValue.increment(food.getCarbs()));
+        updates.put("totalFat", FieldValue.increment(food.getFat()));
+        updates.put("totalProtein", FieldValue.increment(food.getProtein()));
+
+        batch.update(entryRef, updates);
+
+        return batch.commit();
     }
 
     public Task<Void> removeConsumedFood(String date, String foodKey, ConsumedFood food) {
@@ -169,16 +164,14 @@ public class FirestoreRepository {
         
         DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
 
-        return db.runTransaction(transaction -> {
-            transaction.update(entryRef,
-                "consumedFoods." + foodKey, FieldValue.delete(),
-                "totalCalories", FieldValue.increment(-food.getCalories()),
-                "totalCarbs", FieldValue.increment(-food.getCarbs()),
-                "totalFat", FieldValue.increment(-food.getFat()),
-                "totalProtein", FieldValue.increment(-food.getProtein())
-            );
-            return null;
-        });
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("consumedFoods." + foodKey, FieldValue.delete());
+        updates.put("totalCalories", FieldValue.increment(-food.getCalories()));
+        updates.put("totalCarbs", FieldValue.increment(-food.getCarbs()));
+        updates.put("totalFat", FieldValue.increment(-food.getFat()));
+        updates.put("totalProtein", FieldValue.increment(-food.getProtein()));
+
+        return entryRef.update(updates);
     }
 
     public Task<Void> addWater(String date, double amount) {
@@ -187,18 +180,10 @@ public class FirestoreRepository {
         
         DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
 
-        return db.runTransaction(transaction -> {
-            DocumentSnapshot snapshot = transaction.get(entryRef);
-            
-            if (!snapshot.exists()) {
-                DailyEntry newEntry = new DailyEntry(date);
-                newEntry.setTotalWater(amount);
-                transaction.set(entryRef, newEntry);
-            } else {
-                transaction.update(entryRef, "totalWater", FieldValue.increment(amount));
-            }
-            return null;
-        });
+        Map<String, Object> update = new HashMap<>();
+        update.put("totalWater", FieldValue.increment(amount));
+
+        return entryRef.set(update, SetOptions.merge());
     }
 
     public Task<Void> updateDailyGoals(DailyGoals goals) {
@@ -219,8 +204,6 @@ public class FirestoreRepository {
         
         return batch.commit();
     }
-
-    // --- Food Items ---
 
     public Task<QuerySnapshot> getAllFoods() {
         return db.collection("foods").get();

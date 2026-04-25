@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.databinding.ActivityStatisticsBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -50,6 +51,8 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityStatisticsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        UIUtils.hideSystemUI(getWindow());
 
         repository = FirestoreRepository.getInstance();
 
@@ -99,6 +102,8 @@ public class StatisticsActivity extends AppCompatActivity {
         binding.pieChart.setEntryLabelTextSize(12f);
         
         binding.pieChart.getLegend().setTextColor(textColor);
+        binding.pieChart.setNoDataText(getString(R.string.stats_no_data));
+        binding.lineChart.setNoDataText(getString(R.string.stats_no_data));
     }
 
     private void loadWeeklyData() {
@@ -140,7 +145,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private void updateLineChart(List<Entry> entries, List<String> labels) {
         int textColor = ContextCompat.getColor(this, R.color.text_main);
         
-        LineDataSet dataSet = new LineDataSet(entries, "Daily Calories");
+        LineDataSet dataSet = new LineDataSet(entries, getString(R.string.label_calories));
         dataSet.setColor(Color.parseColor("#4CAF50")); // Primary Green
         dataSet.setCircleColor(Color.parseColor("#388E3C"));
         dataSet.setLineWidth(3f);
@@ -179,9 +184,9 @@ public class StatisticsActivity extends AppCompatActivity {
         int textColor = ContextCompat.getColor(this, R.color.text_main);
         
         List<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalCarbs()), "Carbs"));
-        pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalProtein()), "Protein"));
-        pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalFat()), "Fat"));
+        pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalCarbs()), getString(R.string.label_carbs)));
+        pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalProtein()), getString(R.string.label_protein)));
+        pieEntries.add(new PieEntry((float) Math.max(0, entry.getTotalFat()), getString(R.string.label_fat)));
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "");
         dataSet.setSliceSpace(3f);
@@ -199,7 +204,7 @@ public class StatisticsActivity extends AppCompatActivity {
         data.setValueTextColor(Color.WHITE); // Keep values white for contrast on macro colors
 
         binding.pieChart.setData(data);
-        binding.pieChart.setCenterText("Macros");
+        binding.pieChart.setCenterText(getString(R.string.label_consumed_food));
         binding.pieChart.setCenterTextSize(18f);
         binding.pieChart.setCenterTextColor(textColor);
         binding.pieChart.animateY(1400);

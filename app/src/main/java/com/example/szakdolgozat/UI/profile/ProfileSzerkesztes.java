@@ -15,6 +15,7 @@ import com.example.szakdolgozat.UI.main.MainActivity;
 import com.example.szakdolgozat.databinding.ActivityProfileSzerkesztesBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
 import com.example.szakdolgozat.helpers.NutritionCalculator;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.example.szakdolgozat.models.DailyGoals;
 
 import java.util.HashMap;
@@ -38,18 +39,22 @@ public class ProfileSzerkesztes extends AppCompatActivity {
         binding = ActivityProfileSzerkesztesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        UIUtils.hideSystemUI(getWindow());
+
         repository = FirestoreRepository.getInstance();
         isOnboarding = getIntent().getBooleanExtra("IS_ONBOARDING", false);
 
         if (isOnboarding) {
-            binding.editTitle.setText("Welcome! Complete your profile");
-            Toast.makeText(this, "Please fill in your stats to get started!", Toast.LENGTH_LONG).show();
+            binding.editTitle.setText(getString(R.string.profile_onboarding_title));
+            Toast.makeText(this, getString(R.string.profile_onboarding_hint), Toast.LENGTH_LONG).show();
         }
 
         setupGenderSpinner();
 
         binding.Mentes.setOnClickListener(v -> onSaveButtonClicked());
         binding.AutoCalculate.setOnClickListener(v -> onAutoCalculateClicked());
+        
+        loadCurrentData();
     }
 
     private void setupGenderSpinner() {
@@ -57,6 +62,26 @@ public class ProfileSzerkesztes extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genders);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.genderSpinner.setAdapter(adapter);
+    }
+
+    private void loadCurrentData() {
+        repository.getUserData().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                binding.teljesNev.setText(documentSnapshot.getString("nev"));
+                binding.sulyInput.setText(documentSnapshot.getString("suly"));
+                binding.magassag.setText(documentSnapshot.getString("magassag"));
+                binding.kor.setText(documentSnapshot.getString("kor"));
+                
+                String nem = documentSnapshot.getString("nem");
+                if (nem != null) {
+                    if (nem.equalsIgnoreCase("male") || nem.equalsIgnoreCase(getString(R.string.gender_male))) {
+                        binding.genderSpinner.setSelection(0);
+                    } else if (nem.equalsIgnoreCase("female") || nem.equalsIgnoreCase(getString(R.string.gender_female))) {
+                        binding.genderSpinner.setSelection(1);
+                    }
+                }
+            }
+        });
     }
 
     private void onAutoCalculateClicked() {
@@ -72,25 +97,33 @@ public class ProfileSzerkesztes extends AppCompatActivity {
             Integer.parseInt(binding.kor.getText().toString().trim());
             return true;
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Please fill in weight, height, and age first!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_fill_stats_first), Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
     private void calculateAndSaveGoals() {
-        double weight = Double.parseDouble(binding.sulyInput.getText().toString().trim());
-        double height = Double.parseDouble(binding.magassag.getText().toString().trim());
-        int age = Integer.parseInt(binding.kor.getText().toString().trim());
+        String weightStr = binding.sulyInput.getText().toString().trim();
+        String heightStr = binding.magassag.getText().toString().trim();
+        String ageStr = binding.kor.getText().toString().trim();
+
+        if (TextUtils.isEmpty(weightStr) || TextUtils.isEmpty(heightStr) || TextUtils.isEmpty(ageStr)) {
+            Toast.makeText(this, getString(R.string.error_fill_stats_first), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double weight = Double.parseDouble(weightStr);
+        double height = Double.parseDouble(heightStr);
+        int age = Integer.parseInt(ageStr);
         
-        String genderStr = binding.genderSpinner.getSelectedItem().toString();
-        NutritionCalculator.Gender gender = genderStr.equalsIgnoreCase(getString(R.string.gender_male)) 
+        NutritionCalculator.Gender gender = (binding.genderSpinner.getSelectedItemPosition() == 0) 
                 ? NutritionCalculator.Gender.MALE 
                 : NutritionCalculator.Gender.FEMALE;
 
         DailyGoals autoGoals = NutritionCalculator.calculateDailyGoals(weight, height, age, gender);
         
         repository.updateDailyGoals(autoGoals).addOnSuccessListener(aVoid -> {
-            Toast.makeText(this, "Daily goals calculated successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.goals_calculated_success), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -101,11 +134,13 @@ public class ProfileSzerkesztes extends AppCompatActivity {
         String weightStr = binding.sulyInput.getText().toString().trim();
         String heightStr = binding.magassag.getText().toString().trim();
         String ageStr = binding.kor.getText().toString().trim();
-        String gender = binding.genderSpinner.getSelectedItem().toString();
+        
+        // Save as standard key for easier localization later
+        String genderKey = (binding.genderSpinner.getSelectedItemPosition() == 0) ? "male" : "female";
 
         Map<String, Object> profileUpdates = new HashMap<>();
         if (!TextUtils.isEmpty(fullName)) profileUpdates.put("nev", fullName);
-        profileUpdates.put("nem", gender);
+        profileUpdates.put("nem", genderKey);
         
         if (isOnboarding) {
             profileUpdates.put("onboarding_complete", true);

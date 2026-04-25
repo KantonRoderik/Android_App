@@ -27,13 +27,14 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/baseline_arrow_back_24"
                 app:tint="@color/text_main"
-                android:contentDescription="Back" />
+                android:contentDescription="@string/error_generic" />
 
             <TextView
+                android:id="@+id/statsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Statistics"
+                android:text="@string/stats_title"
                 android:textColor="@color/text_main"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -70,7 +71,7 @@
                         android:id="@+id/labelLineChart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Weekly Calories"
+                        android:text="@string/stats_calories_7d"
                         android:textColor="@color/text_main"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -102,7 +103,7 @@
                         android:id="@+id/labelPieChart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Macro Distribution (Today)"
+                        android:text="@string/stats_macro_today"
                         android:textColor="@color/text_main"
                         android:textSize="18sp"
                         android:textStyle="bold"

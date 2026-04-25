@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.szakdolgozat.BuildConfig;
+import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.databinding.ActivityAddfoodBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
 import com.example.szakdolgozat.helpers.UIUtils;
@@ -30,6 +31,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -117,6 +119,9 @@ public class AddFoodActivity extends AppCompatActivity {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_dropdown_item_1line, foodNames);
             binding.foodNameInput.setAdapter(adapter);
+        }).addOnFailureListener(e -> {
+            // Even if it fails (e.g. offline and no cache), user can still type
+            Log.w(TAG, "Failed to load autocomplete foods", e);
         });
 
         binding.foodNameInput.setOnItemClickListener((parent, view, position, id) -> {
@@ -183,7 +188,7 @@ public class AddFoodActivity extends AppCompatActivity {
         String quantityStr = binding.quantityInput.getText().toString().trim();
 
         if (foodName.isEmpty() || quantityStr.isEmpty()) {
-            Toast.makeText(this, "Kérlek tölts ki minden mezőt", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_generic), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -205,7 +210,7 @@ public class AddFoodActivity extends AppCompatActivity {
                 double totalGrams = quantity * weightMultiplier;
                 addFoodToLog(selectedFoodItem, totalGrams);
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "Érvénytelen mennyiség", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_invalid_number), Toast.LENGTH_SHORT).show();
             }
         } else {
             // If not found in DB, suggest AI
@@ -255,7 +260,6 @@ public class AddFoodActivity extends AppCompatActivity {
                                     if (!quantityStr.isEmpty()) {
                                         try {
                                             double quantity = Double.parseDouble(quantityStr);
-                                            // Since it's a new item, we default to grams (1.0) for this first log
                                             addFoodToLog(aiFood, quantity);
                                         } catch (NumberFormatException e) {
                                             setLoading(false);
@@ -292,15 +296,36 @@ public class AddFoodActivity extends AppCompatActivity {
     private void addFoodToLog(FoodItem food, double totalGrams) {
         setLoading(true);
         ConsumedFood consumed = new ConsumedFood(food, totalGrams);
+        
         repository.addConsumedFood(selectedDate, consumed)
                 .addOnSuccessListener(aVoid -> {
                     setLoading(false);
                     finish();
                 })
                 .addOnFailureListener(e -> {
-                    setLoading(false);
-                    showErrorDialog("Hiba", "Nem sikerült a naplózás.");
+                    // Check if failure is due to being offline
+                    if (e instanceof FirebaseFirestoreException && 
+                        ((FirebaseFirestoreException) e).getCode() == FirebaseFirestoreException.Code.UNAVAILABLE) {
+                        // Offline write is queued, we can safely finish
+                        setLoading(false);
+                        finish();
+                    } else {
+                        setLoading(false);
+                        showErrorDialog("Hiba", "Nem sikerült a naplózás: " + e.getMessage());
+                    }
                 });
+                
+        // For task-based listeners in offline mode, SuccessListener might not fire immediately.
+        // However, with set/update (non-transactional), Firestore queues the write.
+        // To improve UX in offline mode, we can close the activity if we know it's queued.
+        // Let's add a small delay or a check to see if we should just close.
+        
+        // Alternative: If the task hasn't completed in 500ms, assume it's queued offline and close
+        binding.getRoot().postDelayed(() -> {
+            if (isFinishing()) return;
+            setLoading(false);
+            finish();
+        }, 800);
     }
 
     private void showErrorDialog(String title, String message) {

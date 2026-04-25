@@ -13,6 +13,8 @@
     <string name="unit_kg">kg</string>
     <string name="unit_cm">cm</string>
     <string name="unit_years">years</string>
+    <string name="unit_yrs">yrs</string>
+    <string name="customDialog">Please wait</string>
 
     <!-- Main Activity -->
     <string name="label_calories">Calories</string>
@@ -27,6 +29,8 @@
     <string name="main_stats">Statistics</string>
     <string name="main_profile">Profile</string>
     <string name="main_logout">Logout</string>
+    <string name="app_title">Fitness Tracker</string>
+    <string name="label_consumed_food">Consumed Foods</string>
 
     <!-- Auth -->
     <string name="login_success">Login successful!</string>
@@ -40,6 +44,22 @@
     <string name="error_passwords_dont_match">Passwords do not match!</string>
     <string name="error_invalid_number">Invalid number format!</string>
     <string name="error_invalid_value_range">Invalid value (%1$d-%2$d)</string>
+    <string name="login_welcome">Welcome Back!</string>
+    <string name="loginEmail">Email</string>
+    <string name="loginPassword">Password</string>
+    <string name="loginLogin">LOGIN</string>
+    <string name="loginQuestion">Don\'t have an account?</string>
+    <string name="loginRegister">REGISTER</string>
+    <string name="loginOrGoogle">Or sign in with Google</string>
+    <string name="register_title">Create Account</string>
+    <string name="register_hint">Enter your details to join</string>
+    <string name="registerEmail">Email</string>
+    <string name="registerName">Full name</string>
+    <string name="registerPassword1">Password</string>
+    <string name="registerPassword2">Confirm Password</string>
+    <string name="registerRegister">Register</string>
+    <string name="registerLogin">Log in here!</string>
+    <string name="registerText">Or sign in with Google!</string>
 
     <!-- Profile -->
     <string name="password_changed_success">Password changed successfully!</string>
@@ -47,6 +67,52 @@
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
     <string name="label_bmr">BMR (Basal Metabolic Rate): %1$.0f kcal</string>
+    <string name="profile_onboarding_title">Welcome! Complete your profile</string>
+    <string name="profile_onboarding_hint">Please enter your details to get started!</string>
+    <string name="error_fill_stats_first">Please fill in your weight, height and age first!</string>
+    <string name="goals_calculated_success">Daily goals successfully calculated!</string>
+    <string name="label_personal_info">PERSONAL INFO</string>
+    <string name="label_body_stats">BODY STATISTICS</string>
+    <string name="label_security">SECURITY</string>
+    <string name="label_full_name">FULL NAME</string>
+    <string name="label_gender">GENDER</string>
+    <string name="label_weight">WEIGHT</string>
+    <string name="label_height">HEIGHT</string>
+    <string name="label_age">AGE</string>
+    <string name="label_new_password">NEW PASSWORD</string>
+    <string name="label_confirm_password">CONFIRM PASSWORD</string>
+    <string name="label_auto_calculate">AUTO CALCULATE</string>
+    <string name="btn_save_changes">SAVE CHANGES</string>
+    <string name="label_quick_actions">QUICK ACTIONS</string>
+    <string name="label_edit_daily_goals">EDIT DAILY GOALS</string>
+    <string name="label_edit_profile_data">EDIT PROFILE DATA</string>
+    <string name="label_active_streak">Active streak: %1$d days!</string>
+    <string name="streak_motivation">Keep it up, %1$s! You are doing great towards your goals.</string>
+    <string name="edit_profile_title">EDIT PROFILE</string>
+    <string name="edit_daily_goals_title">EDIT DAILY GOALS</string>
+    <string name="label_your_bmr">Your BMR: %1$d kcal</string>
+    <string name="btn_use_this">USE THIS</string>
+    <string name="label_dietary_template">DIETARY TEMPLATE</string>
+    <string name="goals_footer_hint">Changing these values will update today\'s and future tracking.</string>
+    <string name="error_calories_required">Please enter a calorie value first!</string>
+    <string name="calories_set_to_bmr">Calories set to BMR value</string>
+
+    <string name="profileEmail">Email</string>
+    <string name="profileFullName">Full name</string>
+    <string name="profileWeight">Weight</string>
+    <string name="profileHeight">Height</string>
+    <string name="profileAge">Age</string>
+    <string name="profileGender">Gender</string>
+    <string name="profileDaily">Edit daily goals</string>
+    <string name="profileEdit">Edit data</string>
+    <string name="profileEditFullName">Full name</string>
+    <string name="profileEditPassword1">New password</string>
+    <string name="profileEditPassword2">Repeat new password</string>
+    <string name="profileEditWeight">Weight</string>
+    <string name="profileEditHeight">Height</string>
+    <string name="profileEditAge">Age</string>
+    <string name="profileEditGender">Gender</string>
+    <string name="profileEditSave">Save data</string>
 
     <!-- Food -->
     <string name="food_load_error">Error loading food items</string>
@@ -56,11 +122,19 @@
     <string name="error_invalid_quantity">Quantity cannot be zero or negative!</string>
     <string name="error_no_food_selected">No food selected!</string>
 
+    <string name="addFoodTitle">Add New Food</string>
+    <string name="addFoodString1">Choose food:</string>
+    <string name="addFoodString2">Quantity (grams):</string>
+    <string name="addFoodAmount">Enter the quantity</string>
+    <string name="addFoodDone">Add food</string>
+    <string name="addFoodAiBtn">✨ Identify with AI</string>
+
     <!-- Notifications -->
     <string name="notification_channel_name">Daily Reminder</string>
     <string name="notification_channel_desc">Reminder to log your meals</string>
     <string name="notification_reminder_text">Don\'t forget to log your meals today!</string>
     <string name="notification_reminder_text_with_time">Don\'t forget to log your meals today! (%s)</string>
+    <string name="default_notification_channel_id" translatable="false">Nutrition tracking reminders_channel_id</string>
 
     <!-- Statistics -->
     <string name="stats_title">Statistics</string>
@@ -68,45 +142,18 @@
     <string name="stats_macro_today">Today\'s macro distribution</string>
     <string name="stats_no_data">Not enough data to display</string>
 
-    <string name="addFoodTitle">New Consumed Food</string>
-    <string name="addFoodString1">Pick a Food</string>
-    <string name="addFoodString2">Quantity (grams):</string>
-    <string name="addFoodAmount">Enter the quantity</string>
-    <string name="addFoodDone">Add food</string>
+    <!-- Daily Goals Labels -->
     <string name="dailyGoalsCalorie">Calories</string>
     <string name="dailyGoalsCarbs">Carbohydrates</string>
     <string name="dailyGoalsFat">Fat</string>
     <string name="dailyGoalsProtein">Protein</string>
     <string name="dailyGoalsWater">Water</string>
     <string name="dailyGoalsSave">Save</string>
-    <string name="loginEmail">Email</string>
-    <string name="loginPassword">Password</string>
-    <string name="loginLogin">Log in</string>
-    <string name="loginQuestion">Not registered yet?</string>
-    <string name="loginRegister">Register</string>
-    <string name="loginOrGoogle">Sign in with Google</string>
-    <string name="profileEmail">Email</string>
-    <string name="profileWeight">Weight</string>
-    <string name="profileAge">Age</string>
-    <string name="profileGender">Gender</string>
-    <string name="profileDaily">Edit daily goals</string>
-    <string name="profileEdit">Edit data</string>
-    <string name="profileEditPassword1">New password</string>
-    <string name="profileEditPassword2">Repeat new password</string>
-    <string name="profileEditWeight">Weight</string>
-    <string name="profileEditHeight">Height</string>
-    <string name="profileEditAge">Age</string>
-    <string name="profileEditGender">Gender</string>
-    <string name="profileEditSave">Save data</string>
-    <string name="registerEmail">Email</string>
-    <string name="registerName">Full name</string>
-    <string name="registerPassword1">Password</string>
-    <string name="registerPassword2">Repeat password</string>
-    <string name="registerRegister">Register</string>
-    <string name="registerLogin">Log in here!</string>
-    <string name="registerText">Or sign in with Google!</string>
-    <string name="customDialog">Please wait</string>
-    <string name="profileFullName">Full name</string>
-    <string name="profileEditFullName">Full name</string>
-    <string name="profileHeight">Height</string>
+
+    <!-- Dietary Templates -->
+    <string name="template_custom">Custom</string>
+    <string name="template_balanced">Balanced</string>
+    <string name="template_low_carb">Low Carb</string>
+    <string name="template_high_protein">High Protein</string>
+    <string name="template_ketogenic">Ketogenic</string>
 </resources>

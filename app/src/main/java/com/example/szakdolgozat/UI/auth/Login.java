@@ -15,6 +15,7 @@ import com.example.szakdolgozat.R;
 import com.example.szakdolgozat.UI.main.MainActivity;
 import com.example.szakdolgozat.databinding.ActivityLoginBinding;
 import com.example.szakdolgozat.helpers.FirestoreRepository;
+import com.example.szakdolgozat.helpers.UIUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -57,6 +58,8 @@ public class Login extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        UIUtils.hideSystemUI(getWindow());
 
         repository = FirestoreRepository.getInstance();
 
