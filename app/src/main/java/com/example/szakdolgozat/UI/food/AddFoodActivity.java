@@ -1,8 +1,11 @@
 package com.example.szakdolgozat.UI.food;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -26,10 +29,13 @@ import com.google.ai.client.generativeai.type.RequestOptions;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AddFoodActivity extends AppCompatActivity {
@@ -39,6 +45,8 @@ public class AddFoodActivity extends AppCompatActivity {
     private FirestoreRepository repository;
     private String selectedDate;
     private GenerativeModelFutures generativeModel;
+    private List<FoodItem> availableFoods = new ArrayList<>();
+    private FoodItem selectedFoodItem = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,42 +58,127 @@ public class AddFoodActivity extends AppCompatActivity {
         UIUtils.hideSystemUI(getWindow());
         repository = FirestoreRepository.getInstance();
 
-        // Konfiguráció JSON válaszhoz
+        setupAi();
+        setupDate();
+        setupAutocomplete();
+        setupListeners();
+        
+        // Initial units
+        updateUnitSpinner(null);
+    }
+
+    private void setupAi() {
         GenerationConfig.Builder configBuilder = new GenerationConfig.Builder();
         configBuilder.responseMimeType = "application/json";
         GenerationConfig config = configBuilder.build();
 
-        // Rendszer utasítás
         Content systemInstruction = new Content.Builder()
                 .addText("Act as a nutritionist. Provide nutrition data for 100g. " +
-                        "Return ONLY a raw JSON object. Fields: name (string), calories (double), " +
-                        "carbs (double), protein (double), fat (double)")
+                        "Also provide common serving units (e.g., 'piece', 'slice') and their weight in grams. " +
+                        "Return ONLY a raw JSON object. " +
+                        "Fields: name (string), calories (double), carbs (double), protein (double), fat (double), " +
+                        "commonUnits (array of objects with 'unitName' (string) and 'weightG' (double))")
                 .build();
 
-        // A listázás alapján a gemini-2.5-flash modell érhető el
         GenerativeModel gm = new GenerativeModel(
                 "gemini-2.5-flash",
                 BuildConfig.GEMINI_API_KEY,
                 config,
-                null, 
+                null,
                 new RequestOptions(30000L, "v1beta"),
-                null, 
-                null, 
+                null,
+                null,
                 systemInstruction
         );
 
         generativeModel = GenerativeModelFutures.from(gm);
+    }
 
+    private void setupDate() {
         selectedDate = getIntent().getStringExtra("selected_date");
         if (selectedDate == null) {
             selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         }
+    }
 
-        binding.searchAddButton.setOnClickListener(v -> onSearchAddClicked());
+    private void setupAutocomplete() {
+        repository.getAllFoods().addOnSuccessListener(queryDocumentSnapshots -> {
+            availableFoods.clear();
+            List<String> foodNames = new ArrayList<>();
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                FoodItem food = doc.toObject(FoodItem.class);
+                if (food != null) {
+                    food.setId(doc.getId());
+                    availableFoods.add(food);
+                    foodNames.add(food.getName());
+                }
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_dropdown_item_1line, foodNames);
+            binding.foodNameInput.setAdapter(adapter);
+        });
+
+        binding.foodNameInput.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedName = (String) parent.getItemAtPosition(position);
+            for (FoodItem food : availableFoods) {
+                if (food.getName().equals(selectedName)) {
+                    selectedFoodItem = food;
+                    updateUnitSpinner(food);
+                    binding.aiIdentifyButton.setVisibility(View.GONE);
+                    break;
+                }
+            }
+        });
+
+        binding.foodNameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                selectedFoodItem = null;
+                updateUnitSpinner(null);
+                
+                // Show AI button if the text doesn't match any known food exactly
+                boolean matchFound = false;
+                for (FoodItem food : availableFoods) {
+                    if (food.getName().equalsIgnoreCase(s.toString())) {
+                        matchFound = true;
+                        selectedFoodItem = food;
+                        updateUnitSpinner(food);
+                        break;
+                    }
+                }
+                binding.aiIdentifyButton.setVisibility(matchFound ? View.GONE : View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void updateUnitSpinner(FoodItem food) {
+        List<FoodItem.ServingUnit> units = new ArrayList<>();
+        units.add(new FoodItem.ServingUnit("gram", 1.0));
+        
+        if (food != null && food.getCommonUnits() != null) {
+            units.addAll(food.getCommonUnits());
+        }
+
+        ArrayAdapter<FoodItem.ServingUnit> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, units);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.unitSpinner.setAdapter(adapter);
+    }
+
+    private void setupListeners() {
+        binding.searchAddButton.setOnClickListener(v -> onAddClicked());
+        binding.aiIdentifyButton.setOnClickListener(v -> onAiIdentifyClicked());
         binding.backButton.setOnClickListener(v -> finish());
     }
 
-    private void onSearchAddClicked() {
+    private void onAddClicked() {
         String foodName = binding.foodNameInput.getText().toString().trim();
         String quantityStr = binding.quantityInput.getText().toString().trim();
 
@@ -94,39 +187,43 @@ public class AddFoodActivity extends AppCompatActivity {
             return;
         }
 
-        try {
-            double quantity = Double.parseDouble(quantityStr);
-            performSearchAndProcess(foodName, quantity);
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "Érvénytelen mennyiség", Toast.LENGTH_SHORT).show();
+        if (selectedFoodItem == null) {
+            // Try to find if it matches any available food (case insensitive)
+            for (FoodItem food : availableFoods) {
+                if (food.getName().equalsIgnoreCase(foodName)) {
+                    selectedFoodItem = food;
+                    break;
+                }
+            }
+        }
+
+        if (selectedFoodItem != null) {
+            try {
+                double quantity = Double.parseDouble(quantityStr);
+                FoodItem.ServingUnit selectedUnit = (FoodItem.ServingUnit) binding.unitSpinner.getSelectedItem();
+                double weightMultiplier = (selectedUnit != null) ? selectedUnit.getWeightG() : 1.0;
+                double totalGrams = quantity * weightMultiplier;
+                addFoodToLog(selectedFoodItem, totalGrams);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Érvénytelen mennyiség", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // If not found in DB, suggest AI
+            Toast.makeText(this, "Étel nem található. Használd az AI keresést!", Toast.LENGTH_LONG).show();
+            binding.aiIdentifyButton.setVisibility(View.VISIBLE);
         }
     }
 
-    private void performSearchAndProcess(String name, double quantity) {
-        setLoading(true);
-        repository.searchFoodByName(name).addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                FoodItem food = task.getResult().getDocuments().get(0).toObject(FoodItem.class);
-                if (food != null) {
-                    food.setId(task.getResult().getDocuments().get(0).getId());
-                    addFoodToLog(food, quantity);
-                } else {
-                    generateWithAiAndSave(name, quantity);
-                }
-            } else {
-                generateWithAiAndSave(name, quantity);
-            }
-        }).addOnFailureListener(e -> {
-            Log.e(TAG, "Search failed: " + e.getMessage());
-            generateWithAiAndSave(name, quantity);
-        });
-    }
-
-    private void generateWithAiAndSave(String name, double quantity) {
+    private void onAiIdentifyClicked() {
+        String foodName = binding.foodNameInput.getText().toString().trim();
+        String quantityStr = binding.quantityInput.getText().toString().trim();
+        
+        if (foodName.isEmpty()) return;
+        
         setLoading(true);
 
         Content prompt = new Content.Builder()
-                .addText("Provide nutrition data for: " + name)
+                .addText("Provide nutrition data for: " + foodName)
                 .build();
 
         ListenableFuture<GenerateContentResponse> response = generativeModel.generateContent(prompt);
@@ -143,10 +240,32 @@ public class AddFoodActivity extends AppCompatActivity {
 
                         FoodItem aiFood = new Gson().fromJson(cleanJson, FoodItem.class);
                         aiFood.setAiGenerated(true);
-                        if (aiFood.getName() == null || aiFood.getName().isEmpty()) aiFood.setName(name);
+                        if (aiFood.getName() == null || aiFood.getName().isEmpty()) aiFood.setName(foodName);
+                        
+                        // Set ID to name for Firestore consistency
+                        aiFood.setId(aiFood.getName());
 
                         repository.saveFoodItemWithNameAsId(aiFood)
-                                .addOnSuccessListener(aVoid -> addFoodToLog(aiFood, quantity))
+                                .addOnSuccessListener(aVoid -> {
+                                    selectedFoodItem = aiFood;
+                                    updateUnitSpinner(aiFood);
+                                    binding.aiIdentifyButton.setVisibility(View.GONE);
+                                    
+                                    // AUTOMATICALLY ADD TO LOG IF QUANTITY IS PROVIDED
+                                    if (!quantityStr.isEmpty()) {
+                                        try {
+                                            double quantity = Double.parseDouble(quantityStr);
+                                            // Since it's a new item, we default to grams (1.0) for this first log
+                                            addFoodToLog(aiFood, quantity);
+                                        } catch (NumberFormatException e) {
+                                            setLoading(false);
+                                            Toast.makeText(AddFoodActivity.this, "AI elemzés kész, de a mennyiség érvénytelen.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        setLoading(false);
+                                        Toast.makeText(AddFoodActivity.this, "AI elemzés kész! Most már hozzáadhatod.", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
                                 .addOnFailureListener(e -> {
                                     setLoading(false);
                                     showErrorDialog("Mentési hiba", "Nem sikerült menteni az adatokat.");
@@ -170,8 +289,9 @@ public class AddFoodActivity extends AppCompatActivity {
         }, ContextCompat.getMainExecutor(this));
     }
 
-    private void addFoodToLog(FoodItem food, double quantity) {
-        ConsumedFood consumed = new ConsumedFood(food, quantity);
+    private void addFoodToLog(FoodItem food, double totalGrams) {
+        setLoading(true);
+        ConsumedFood consumed = new ConsumedFood(food, totalGrams);
         repository.addConsumedFood(selectedDate, consumed)
                 .addOnSuccessListener(aVoid -> {
                     setLoading(false);
@@ -195,6 +315,7 @@ public class AddFoodActivity extends AppCompatActivity {
         runOnUiThread(() -> {
             binding.loadingIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             binding.searchAddButton.setEnabled(!isLoading);
+            binding.aiIdentifyButton.setEnabled(!isLoading);
         });
     }
 }

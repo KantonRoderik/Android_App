@@ -27,15 +27,52 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- BMR Info Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bmr_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="#E3F2FD"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/edit_title">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/bmr_info_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Your BMR: 1911 kcal"
+                    android:textColor="#1976D2"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+                <Button
+                    android:id="@+id/btn_use_bmr"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="USE THIS"
+                    android:textColor="#1976D2"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Template Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/template_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             app:cardBackgroundColor="@color/card_bg"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/edit_title">
+            app:cardElevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/bmr_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,26 +83,30 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dietary Template"
-                    android:textColor="@color/text_main"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:text="DIETARY TEMPLATE"
+                    android:textColor="@color/text_sub"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:alpha="0.7"/>
 
                 <Spinner
                     android:id="@+id/template_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp" />
+                    android:minHeight="48dp"
+                    android:background="@drawable/spinner_background"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Main Input Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/input_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:cardBackgroundColor="@color/card_bg"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
             app:layout_constraintTop_toBottomOf="@id/template_card">
 
@@ -75,73 +116,228 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/caloria"
+                <!-- Calorie Row -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/dailyGoalsCalorie"
-                    android:inputType="number"
-                    android:padding="12dp"
-                    android:textColor="@color/text_main"
-                    android:textColorHint="@color/text_sub"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="12dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/baseline_local_fire_department_24"
+                        app:tint="#F44336" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CALORIES"
+                        android:textColor="#F44336"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginStart="12dp"/>
+                    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+                    <EditText
+                        android:id="@+id/caloria"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textColor="@color/text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:selectAllOnFocus="true" />
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:text="kcal"
+                        android:gravity="start"
+                        android:textColor="@color/text_sub"
+                        android:textSize="12sp"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#80DDDDDD" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#10000000" />
 
-                <EditText
-                    android:id="@+id/carbs"
+                <!-- Carbs Row -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/dailyGoalsCarbs"
-                    android:inputType="number"
-                    android:padding="12dp"
-                    android:textColor="@color/text_main"
-                    android:textColorHint="@color/text_sub"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="12dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/baseline_wheat_24"
+                        app:tint="#FF9800" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CARBS"
+                        android:textColor="#FF9800"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginStart="12dp" />
+                    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+                    <EditText
+                        android:id="@+id/carbs"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textColor="@color/text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:selectAllOnFocus="true" />
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:text="g"
+                        android:gravity="start"
+                        android:textColor="@color/text_sub"
+                        android:textSize="12sp"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#80DDDDDD" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#10000000" />
 
-                <EditText
-                    android:id="@+id/fat"
+                <!-- Fat Row -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/dailyGoalsFat"
-                    android:inputType="number"
-                    android:padding="12dp"
-                    android:textColor="@color/text_main"
-                    android:textColorHint="@color/text_sub"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="12dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/baseline_bolt_24"
+                        app:tint="#9C27B0" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FAT"
+                        android:textColor="#9C27B0"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginStart="12dp" />
+                    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+                    <EditText
+                        android:id="@+id/fat"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textColor="@color/text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:selectAllOnFocus="true" />
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:text="g"
+                        android:gravity="start"
+                        android:textColor="@color/text_sub"
+                        android:textSize="12sp"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#80DDDDDD" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#10000000" />
 
-                <EditText
-                    android:id="@+id/protein"
+                <!-- Protein Row -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/dailyGoalsProtein"
-                    android:inputType="number"
-                    android:padding="12dp"
-                    android:textColor="@color/text_main"
-                    android:textColorHint="@color/text_sub"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="12dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/baseline_egg_24"
+                        app:tint="#2196F3" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PROTEIN"
+                        android:textColor="#2196F3"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginStart="12dp" />
+                    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+                    <EditText
+                        android:id="@+id/protein"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textColor="@color/text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:selectAllOnFocus="true" />
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:text="g"
+                        android:gravity="start"
+                        android:textColor="@color/text_sub"
+                        android:textSize="14sp"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#80DDDDDD" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#10000000" />
 
-                <EditText
-                    android:id="@+id/water"
+                <!-- Water Row -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/dailyGoalsWater"
-                    android:inputType="number"
-                    android:padding="12dp"
-                    android:textColor="@color/text_main"
-                    android:textColorHint="@color/text_sub"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="12dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/baseline_opacity_24"
+                        app:tint="#03A9F4" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="WATER"
+                        android:textColor="#03A9F4"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginStart="12dp" />
+                    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
+                    <EditText
+                        android:id="@+id/water"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textColor="@color/text_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:selectAllOnFocus="true" />
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:text="ml"
+                        android:gravity="start"
+                        android:textColor="@color/text_sub"
+                        android:textSize="12sp"
+                        android:layout_marginStart="8dp"/>
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -149,14 +345,26 @@
             android:id="@+id/Mentes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:backgroundTint="#4CAF50"
+            android:text="Save Changes"
             android:padding="16dp"
-            android:text="@string/dailyGoalsSave"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:cornerRadius="12dp"
             app:layout_constraintTop_toBottomOf="@id/input_card" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Changing these values will update your progress tracking for today and future dates."
+            android:textColor="@color/text_sub"
+            android:textSize="12sp"
+            android:alpha="0.6"
+            app:layout_constraintTop_toBottomOf="@id/Mentes" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

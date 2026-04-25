@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private ConsumedFoodAdapter foodAdapter;
     private OpenFoodFactsApi api;
+    private GestureDetector gestureDetector;
 
     private final ActivityResultLauncher<Intent> barcodeScannerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -90,6 +93,40 @@ public class MainActivity extends AppCompatActivity {
         checkNotificationPermission();
         updateDateDisplay();
         loadDailyData();
+        setupSwipeGestures();
+    }
+
+    private void setupSwipeGestures() {
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (e1 == null || e2 == null) return false;
+                float diffX = e2.getX() - e1.getX();
+                float diffY = e2.getY() - e1.getY();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            changeDay(-1); // Swipe Jobbra -> Előző nap
+                        } else {
+                            changeDay(1);  // Swipe Balra -> Következő nap
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (gestureDetector != null) {
+            gestureDetector.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     private void setupRetrofit() {

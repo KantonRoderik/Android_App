@@ -132,21 +132,32 @@ public class FirestoreRepository {
         
         return db.runTransaction(transaction -> {
             DocumentSnapshot snapshot = transaction.get(entryRef);
+            String timestamp = String.valueOf(System.currentTimeMillis());
             
-            Map<String, Object> updates = new HashMap<>();
-            String foodKey = "consumedFoods." + System.currentTimeMillis();
-            updates.put(foodKey, food);
-            updates.put("totalCalories", FieldValue.increment(food.getCalories()));
-            updates.put("totalCarbs", FieldValue.increment(food.getCarbs()));
-            updates.put("totalFat", FieldValue.increment(food.getFat()));
-            updates.put("totalProtein", FieldValue.increment(food.getProtein()));
-
             if (!snapshot.exists()) {
-                updates.put("date", date);
-                updates.put("totalWater", 0.0);
-                transaction.set(entryRef, updates);
+                // Create new document
+                Map<String, Object> newEntry = new HashMap<>();
+                newEntry.put("date", date);
+                newEntry.put("totalCalories", food.getCalories());
+                newEntry.put("totalCarbs", food.getCarbs());
+                newEntry.put("totalFat", food.getFat());
+                newEntry.put("totalProtein", food.getProtein());
+                newEntry.put("totalWater", 0.0);
+                
+                Map<String, Object> foods = new HashMap<>();
+                foods.put(timestamp, food);
+                newEntry.put("consumedFoods", foods);
+                
+                transaction.set(entryRef, newEntry);
             } else {
-                transaction.update(entryRef, updates);
+                // Update existing document using dot notation for nested map
+                transaction.update(entryRef,
+                    "consumedFoods." + timestamp, food,
+                    "totalCalories", FieldValue.increment(food.getCalories()),
+                    "totalCarbs", FieldValue.increment(food.getCarbs()),
+                    "totalFat", FieldValue.increment(food.getFat()),
+                    "totalProtein", FieldValue.increment(food.getProtein())
+                );
             }
             return null;
         });
@@ -159,14 +170,13 @@ public class FirestoreRepository {
         DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
 
         return db.runTransaction(transaction -> {
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("consumedFoods." + foodKey, FieldValue.delete());
-            updates.put("totalCalories", FieldValue.increment(-food.getCalories()));
-            updates.put("totalCarbs", FieldValue.increment(-food.getCarbs()));
-            updates.put("totalFat", FieldValue.increment(-food.getFat()));
-            updates.put("totalProtein", FieldValue.increment(-food.getProtein()));
-
-            transaction.update(entryRef, updates);
+            transaction.update(entryRef,
+                "consumedFoods." + foodKey, FieldValue.delete(),
+                "totalCalories", FieldValue.increment(-food.getCalories()),
+                "totalCarbs", FieldValue.increment(-food.getCarbs()),
+                "totalFat", FieldValue.increment(-food.getFat()),
+                "totalProtein", FieldValue.increment(-food.getProtein())
+            );
             return null;
         });
     }

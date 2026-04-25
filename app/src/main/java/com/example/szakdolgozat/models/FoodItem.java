@@ -1,5 +1,8 @@
 package com.example.szakdolgozat.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FoodItem {
     private String id;
     private String name;
@@ -8,9 +11,34 @@ public class FoodItem {
     private double fat;
     private double protein;
     private boolean isAiGenerated;
+    private List<ServingUnit> commonUnits;
+
+    public static class ServingUnit {
+        private String unitName;
+        private double weightG;
+
+        public ServingUnit() {}
+
+        public ServingUnit(String unitName, double weightG) {
+            this.unitName = unitName;
+            this.weightG = weightG;
+        }
+
+        public String getUnitName() { return unitName; }
+        public void setUnitName(String unitName) { this.unitName = unitName; }
+        public double getWeightG() { return weightG; }
+        public void setWeightG(double weightG) { this.weightG = weightG; }
+
+        @Override
+        public String toString() {
+            return unitName;
+        }
+    }
 
     // Üres konstruktor Firebase-hez
-    public FoodItem() {}
+    public FoodItem() {
+        this.commonUnits = new ArrayList<>();
+    }
 
     public FoodItem(String name, double calories, double carbs, double protein, double fat) {
         this.name = name;
@@ -19,6 +47,7 @@ public class FoodItem {
         this.protein = protein;
         this.fat = fat;
         this.isAiGenerated = false;
+        this.commonUnits = new ArrayList<>();
     }
 
     // Getterek és setterek
@@ -36,4 +65,6 @@ public class FoodItem {
     public void setProtein(double protein) { this.protein = protein; }
     public boolean isAiGenerated() { return isAiGenerated; }
     public void setAiGenerated(boolean aiGenerated) { isAiGenerated = aiGenerated; }
+    public List<ServingUnit> getCommonUnits() { return commonUnits; }
+    public void setCommonUnits(List<ServingUnit> commonUnits) { this.commonUnits = commonUnits; }
 }
