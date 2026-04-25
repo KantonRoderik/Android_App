@@ -261,13 +261,13 @@ public class MainActivity extends AppCompatActivity {
                     OpenFoodFactsApi.Product product = response.body().product;
                     showQuantityDialog(product);
                 } else {
-                    Toast.makeText(MainActivity.this, "Product not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Termék nem található", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<OpenFoodFactsApi.ProductResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hálózati hiba", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -275,38 +275,50 @@ public class MainActivity extends AppCompatActivity {
     private void showQuantityDialog(OpenFoodFactsApi.Product product) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(product.productName);
-        builder.setMessage("Enter quantity in grams:");
+        builder.setMessage("Mennyiség grammban:");
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         input.setHint("100");
         builder.setView(input);
 
-        builder.setPositiveButton("Add", (dialog, which) -> {
+        builder.setPositiveButton("Hozzáadás", (dialog, which) -> {
             String quantityStr = input.getText().toString().trim();
             double quantity = quantityStr.isEmpty() ? 100.0 : Double.parseDouble(quantityStr);
             addScannedFood(product, quantity);
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton("Mégse", (dialog, which) -> dialog.cancel());
 
         builder.show();
     }
 
     private void addScannedFood(OpenFoodFactsApi.Product product, double quantity) {
         FoodItem foodItem = new FoodItem();
-        foodItem.setName(product.productName);
+        foodItem.setName(product.productName != null ? product.productName : "Ismeretlen termék");
         foodItem.setCalories(product.nutriments.calories);
         foodItem.setCarbs(product.nutriments.carbs);
         foodItem.setFat(product.nutriments.fat);
         foodItem.setProtein(product.nutriments.protein);
-        foodItem.setId("barcode_" + System.currentTimeMillis());
+        foodItem.setId(foodItem.getName());
 
         ConsumedFood consumedFood = new ConsumedFood(foodItem, quantity);
         
-        repository.addConsumedFood(getFormattedDate(), consumedFood)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Added: " + product.productName, Toast.LENGTH_SHORT).show();
-                });
+        // Save to general foods collection first, then log it (like in AddFoodActivity)
+        repository.saveFoodItemWithNameAsId(foodItem).addOnCompleteListener(task -> {
+            repository.addConsumedFood(getFormattedDate(), consumedFood)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Hozzáadva: " + foodItem.getName(), Toast.LENGTH_SHORT).show();
+                        // Explicitly refresh to ensure UI shows the new item
+                        startListeningToData();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to add food", e);
+                        startListeningToData();
+                    });
+        });
+        
+        // Safety refresh call (same logic as the finish() delay in AddFoodActivity)
+        binding.getRoot().postDelayed(this::startListeningToData, 1000);
     }
 
     private void setupRecyclerView() {

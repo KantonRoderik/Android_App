@@ -137,7 +137,7 @@ public class FirestoreRepository {
         DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
         String timestamp = String.valueOf(System.currentTimeMillis());
         
-        // We use a WriteBatch to ensure the document exists and update nested fields correctly
+        // Use a WriteBatch for atomicity and correct nested field handling
         WriteBatch batch = db.batch();
         
         // 1. Ensure the document exists (won't overwrite if it does)
@@ -145,15 +145,12 @@ public class FirestoreRepository {
         initial.put("date", date);
         batch.set(entryRef, initial, SetOptions.merge());
         
-        // 2. Update the nested map and increments using dot notation (which update() supports)
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("consumedFoods." + timestamp, food);
-        updates.put("totalCalories", FieldValue.increment(food.getCalories()));
-        updates.put("totalCarbs", FieldValue.increment(food.getCarbs()));
-        updates.put("totalFat", FieldValue.increment(food.getFat()));
-        updates.put("totalProtein", FieldValue.increment(food.getProtein()));
-
-        batch.update(entryRef, updates);
+        // 2. Add the food and increment totals using dot notation
+        batch.update(entryRef, "consumedFoods." + timestamp, food);
+        batch.update(entryRef, "totalCalories", FieldValue.increment(food.getCalories()));
+        batch.update(entryRef, "totalCarbs", FieldValue.increment(food.getCarbs()));
+        batch.update(entryRef, "totalFat", FieldValue.increment(food.getFat()));
+        batch.update(entryRef, "totalProtein", FieldValue.increment(food.getProtein()));
 
         return batch.commit();
     }
@@ -216,6 +213,8 @@ public class FirestoreRepository {
     }
 
     public Task<Void> saveFoodItemWithNameAsId(FoodItem foodItem) {
-        return db.collection("foods").document(foodItem.getName()).set(foodItem);
+        // Sanitize name to avoid issues with slashes in document IDs
+        String safeId = foodItem.getName().replace("/", "_").replace(".", "_");
+        return db.collection("foods").document(safeId).set(foodItem);
     }
 }
