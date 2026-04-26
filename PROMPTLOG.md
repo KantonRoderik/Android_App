@@ -93,3 +93,21 @@ Ez a fájl tartalmazza a fejlesztés során használt kulcsfontosságú promptok
 **Prompt:** "Hogyan működik az offline mód Firestore-ban?"
 **Válasz összefoglalása:** "Alapból be van kapcsolva."
 **Módosításom:** Ez nem volt elég. Implementáltam egy egyedi szinkronizációs állapotjelzőt a UI-ra, ami mutatja a felhasználónak, ha az adatai még csak helyben vannak mentve, és értesítést küld, ha a feltöltés sikeresen megtörtént (Background Task).
+
+### 16. Projekt architektúra dokumentáció (ADR)
+**Dátum:** 2024-12-22
+**Prompt:** "Segíts létrehozni az ADR (Architecture Decision Records) mappát és dokumentáld a legfontosabb döntéseket (Firebase, MVVM, Gemini, Material 3)."
+**Válasz összefoglalása:** Az MI javaslatot tett 4 ADR fájlra és a hozzájuk tartozó tartalomra.
+**Módosításom:** Kiegészítettem a "Rationale" részeket saját érvekkel (pl. a Spark csomag ingyenessége, a Material 3 dinamikus színeinek fontossága az akadálymentesítésben), hogy ne csak technikai leírás legyen, hanem indoklás is.
+
+### 17. Refaktorálás a tesztelhetőség érdekében
+**Dátum:** 2024-12-23
+**Prompt:** "Hogyan tudom a MainActivity-ben lévő számítási logikát (BMR, progress bár százalék, szöveg formázás) kiszervezni, hogy unit tesztelhető legyen?"
+**Válasz összefoglalása:** Javaslat a segédfüggvények static helper osztályokba (NutritionCalculator, UIUtils) mozgatására.
+**Módosításom:** Nem csak átmozgattam a kódot, hanem egységesítettem is a BMR számítást a két helyen használt (Main és Setup) kód között, és bevezettem egy biztonságos progress számítást, ami garantálja a 0-100% közötti értékeket (edge case kezelés).
+
+### 18. Átfogó Unit Teszt készlet és Bugfix
+**Dátum:** 2024-12-24
+**Prompt:** "Írj unit teszteket a NutritionCalculator és UIUtils osztályokhoz, különös tekintettel a szélsőséges bemenetekre."
+**Válasz összefoglalása:** JUnit tesztesetek generálása alapvető adatokkal.
+**Módosításom:** Felfedeztem egy hibát a tesztelés során: a nem-felismerő logika (parseGender) a "unknown" stringet tartalmazó szavakat (pl. "unknown") nőnek (nő) érzékelte. Kijavítottam a logikát pontosabb szövegegyezésre, és kiterjesztettem a teszteket 21 esetre, lefedve a modelleket (DailyEntry, ConsumedFood) és a segédosztályokat is.

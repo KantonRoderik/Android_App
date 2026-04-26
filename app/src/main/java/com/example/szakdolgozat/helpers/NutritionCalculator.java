@@ -8,14 +8,29 @@ public class NutritionCalculator {
         MALE, FEMALE
     }
 
-    public static DailyGoals calculateDailyGoals(double weightKg, double heightCm, int age, Gender gender) {
-        // 1. BMR Calculation
+    public static Gender parseGender(String genderStr) {
+        if (genderStr == null) return Gender.MALE;
+        String lower = genderStr.toLowerCase().trim();
+        if (lower.equals("female") || lower.equals("nő") || lower.equals("no") || 
+            lower.startsWith("fem") || lower.equals("n")) {
+            return Gender.FEMALE;
+        }
+        return Gender.MALE;
+    }
+
+    public static double calculateBMR(double weight, double height, double age, Gender gender) {
+        if (weight <= 0 || height <= 0 || age <= 0) return 0;
         double bmr;
         if (gender == Gender.MALE) {
-            bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+            bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
         } else {
-            bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+            bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
         }
+        return Math.max(0, bmr);
+    }
+
+    public static DailyGoals calculateDailyGoals(double weightKg, double heightCm, int age, Gender gender) {
+        double bmr = calculateBMR(weightKg, heightCm, age, gender);
 
         // 2. Daily Calorie Goal (TDEE: BMR * 1.2 base maintenance)
         double totalCalories = bmr * 1.2;

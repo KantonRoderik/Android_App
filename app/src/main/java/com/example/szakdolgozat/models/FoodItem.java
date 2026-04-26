@@ -1,5 +1,6 @@
 package com.example.szakdolgozat.models;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,6 @@ public class FoodItem {
         }
     }
 
-    // Üres konstruktor Firebase-hez
     public FoodItem() {
         this.commonUnits = new ArrayList<>();
     }
@@ -48,6 +48,23 @@ public class FoodItem {
         this.fat = fat;
         this.isAiGenerated = false;
         this.commonUnits = new ArrayList<>();
+    }
+
+    /**
+     * Parses a JSON string from the AI into a FoodItem object.
+     */
+    public static FoodItem fromAiJson(String json) {
+        if (json == null || json.isEmpty()) return null;
+        try {
+            String cleanJson = json.replaceAll("(?s)```(?:json)?\\n?|```", "").trim();
+            FoodItem item = new Gson().fromJson(cleanJson, FoodItem.class);
+            if (item != null) {
+                item.setAiGenerated(true);
+            }
+            return item;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     // Getterek és setterek
