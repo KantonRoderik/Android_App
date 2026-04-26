@@ -34,21 +34,28 @@ public class FirestoreRepository {
     private final FirebaseFirestore db;
     private final FirebaseAuth auth;
 
-    private FirestoreRepository() {
-        this.db = FirebaseFirestore.getInstance();
-        this.auth = FirebaseAuth.getInstance();
+    protected FirestoreRepository(FirebaseFirestore db, FirebaseAuth auth) {
+        this.db = db;
+        this.auth = auth;
         
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(true)
-                .build();
-        this.db.setFirestoreSettings(settings);
+        if (db != null) {
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setPersistenceEnabled(true)
+                    .build();
+            this.db.setFirestoreSettings(settings);
+        }
     }
 
     public static synchronized FirestoreRepository getInstance() {
         if (instance == null) {
-            instance = new FirestoreRepository();
+            instance = new FirestoreRepository(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
         }
         return instance;
+    }
+
+    // For testing purposes
+    public static synchronized void setInstance(FirestoreRepository repository) {
+        instance = repository;
     }
 
     public FirebaseUser getCurrentUser() {

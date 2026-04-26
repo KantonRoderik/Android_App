@@ -1,20 +1,24 @@
-# ADR 1: Firebase használata háttérszolgáltatásként
+# ADR-001: Firebase as Backend-as-a-Service
+
+## Context
+The application requires user authentication, cloud data storage, and analytics. We needed to choose between building a custom backend (e.g., Spring Boot or Node.js) or using a managed Backend-as-a-Service (BaaS) solution.
+
+## Decision
+We chose **Google Firebase** (Authentication, Firestore, and Analytics) as our backend infrastructure.
+
+## Rationale
+- **Rapid Development**: It eliminates the need to manage infrastructure or develop custom API endpoints for basic CRUD operations.
+- **Real-time Synchronization**: Firestore provides native support for real-time updates, which is essential for a seamless nutritional logging experience.
+- **Cost-Effectiveness**: The "Spark" free tier is sufficient for the scope of this project.
+- **Security**: Firebase Auth provides industry-standard security for logins (Email/Password, Google Sign-in) without manual implementation of sensitive security logic.
+
+## Alternatives considered
+- **Custom Spring Boot Backend**: Rejected due to the significant overhead in development time and the complexity of hosting/maintenance for a single-person project.
+- **AWS Amplify**: Evaluated but rejected as Firebase offers a more intuitive experience and better documentation for native Android development.
+
+## Consequences
+- **Vendor Lock-in**: The app becomes dependent on the Google ecosystem.
+- **Query Limitations**: Complex queries (like full-text search) are harder to implement in Firestore compared to traditional relational databases.
 
 ## Status
 Accepted
-
-## Context
-Az alkalmazáshoz szükség van felhasználói hitelesítésre, felhő alapú adattárolásra és analitikára. Felmerült egy saját Spring Boot backend írása vagy egy "Backend-as-a-Service" (BaaS) megoldás használata.
-
-## Decision
-A Google Firebase platformja mellett döntöttem (Auth, Firestore, Analytics).
-
-## Rationale
-- **Gyors fejlesztés:** Nem kell infrastruktúrát üzemeltetni és API végpontokat manuálisan lefejleszteni az alap CRUD műveletekhez.
-- **Valós idejű szinkronizáció:** A Firestore natívan támogatja a valós idejű adatfrissítést, ami javítja a felhasználói élményt a naplózásnál.
-- **Költséghatékonyság:** A szakdolgozat léptékében a "Spark" (ingyenes) csomag bőségesen elegendő.
-- **Biztonság:** A Firebase Auth bevált megoldásokat kínál (Google Sign-In, jelszókezelés), amiket nehéz lenne hiba nélkül saját kézzel implementálni.
-
-## Consequences
-- Függőség a Google ökoszisztémájától (Vendor lock-in).
-- A komplexebb lekérdezések (pl.全文 keresés) nehezebbek Firestore-ban, mint egy relációs adatbázisban.
