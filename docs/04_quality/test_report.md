@@ -11,6 +11,7 @@
 ## Legutolsó futás eredménye
 - **Dátum:** 2024-05 (Aktuális)
 - **Eredmény:** PASS (30 passed, 0 failed)
+- **CI link:** [GitHub Actions - CI Pipeline](https://github.com/KantonRoderik/Android_App/actions/workflows/ci.yml)
 - **Részletek:**
   - `NutritionCalculatorTest`: 10/10 PASS
   - `UIUtilsTest`: 5/5 PASS

@@ -47,3 +47,10 @@ The complete engineering and UX documentation is located in the `docs` folder us
 - **Error: `google-services.json is missing`**: Download the file from your Firebase console and ensure it is placed exactly in the `app` folder.
 - **Error: `AI response cannot be processed`**: Check if your API key in `local.properties` is valid and if you have available quota in Google AI Studio.
 - **Progress bars stuck at zero after login**: No network connection. The Firebase offline cache is empty; please ensure internet access for the initial data sync.
+
+
+
+## Workflow
+- **Error: `google-services.json is missing`**: Download the file from your Firebase console and ensure it is placed exactly in the `app` folder.
+- **Error: `AI response cannot be processed`**: Check if your API key in `local.properties` is valid and if you have available quota in Google AI Studio.
+- **Progress bars stuck at zero after login**: No network connection. The Firebase offline cache is empty; please ensure internet access for the initial data sync.

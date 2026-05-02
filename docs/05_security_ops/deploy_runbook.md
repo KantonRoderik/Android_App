@@ -2,6 +2,7 @@
 
 ## Környezeti Modell
 - **Lokális Fejlesztői Környezet:** Android Studio, Firebase Local Emulator (opcionális), Fizikai eszköz vagy AVD (Android Virtual Device).
+- **CI Környezet:** [GitHub Actions - CI Pipeline](https://github.com/KantonRoderik/Android_App/actions/workflows/ci.yml) az automata buildekhez és tesztekhez.
 - **Éles Környezet (Production):** Google Play Store (tervezett), éles Firebase projekt (Cloud Firestore, Auth).
 
 ## Deploy Lépések (Lokál -> Éles eszköz)

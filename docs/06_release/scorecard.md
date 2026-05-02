@@ -52,7 +52,7 @@ Ez a dokumentum a szakdolgozói leadandó csomag (v1.2) alapján értékeli a pr
 | :--- | :--- | :---: | :---: | :--- |
 | 2 | Teszt stratégia és teszt riport kitöltve, futtatás leírva | 1.0 | 2.0 | [test_strategy.md](../04_quality/test_strategy.md) és [test_report.md](../04_quality/test_report.md) |
 | 4 | 30+ automata teszt értelmes mixben, legalább 5 negatív teszttel | 1.0 | 4.0 | 30 PASS teszt JVM szinten (Unit + Integration MockWebServerrel). |
-| 3 | CI gating: a tesztek kötelezően futnak, main branch zöld | 1.0 | 3.0 | A beállított GitHub Actions pipeline (`ci.yml`) automatikusan futtatja a teszteket a commitoknál. |
+| 3 | CI gating: a tesztek kötelezően futnak, main branch zöld | 1.0 | 3.0 | [GitHub Actions - CI Pipeline](https://github.com/KantonRoderik/Android_App/actions/workflows/ci.yml) |
 | 2 | Integrációs tesztek valós függőségekkel | 1.0 | 2.0 | `NetworkIntegrationTest.java` (MockWebServer). |
 | 2 | E2E/contract jellegű teszt a core flow-ra | 0.0 | 0.0 | Espresso UI tesztek még hiányoznak. |
 | 2 | Plusz minőségi teszt (performance/security) | 0.0 | 0.0 | Nincs implementálva. |
@@ -61,7 +61,7 @@ Ez a dokumentum a szakdolgozói leadandó csomag (v1.2) alapján értékeli a pr
 
 | Max | Követelmény | Állapot | Számított | Evidence / link |
 | :--- | :--- | :---: | :---: | :--- |
-| 3 | CI pipeline komplett: build + lint + teszt | 1.0 | 3.0 | `.github/workflows/ci.yml` konfigurálva. |
+| 3 | CI pipeline komplett: build + lint + teszt | 1.0 | 3.0 | [GitHub Actions - CI Pipeline](https://github.com/KantonRoderik/Android_App/actions/workflows/ci.yml) konfigurálva. |
 | 2 | Reprodukálható build/dependency kezelés | 1.0 | 2.0 | Gradle (Kotlin DSL) és versions toml. |
 | 3 | Deploy leírás + környezetek | 1.0 | 3.0 | [deploy_runbook.md](../05_security_ops/deploy_runbook.md) |
 | 2 | Rollback terv (leírva) | 1.0 | 2.0 | [deploy_runbook.md](../05_security_ops/deploy_runbook.md) |

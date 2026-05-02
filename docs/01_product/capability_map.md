@@ -10,4 +10,5 @@
 | **Kliens-oldali input validáció** | Productization | [UIUtils](../../app/src/main/java/com/example/szakdolgozat/helpers/UIUtils.java) | `UIUtilsTest.java` | Done |
 | **Dinamikus UI (Progress bars)** | Value | [MainActivity](../../app/src/main/java/com/example/szakdolgozat/UI/main/MainActivity.java) | `UIUtilsTest.java` | Done |
 | **Sötét mód (Dark Theme) támogatás** | Value | [values-night/themes.xml](../../app/src/main/res/values-night/themes.xml) | Manuális Teszt | Done |
+| **CI/CD Pipeline (Build & Test)** | Productization | [CI/CD Pipeline Link](https://github.com/KantonRoderik/Android_App/actions/workflows/ci.yml) | GitHub Actions | Done |
 | **E2E UI tesztelés (Espresso)** | Productization | N/A | N/A | Planned |
