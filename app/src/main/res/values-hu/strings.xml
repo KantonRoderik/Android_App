@@ -31,6 +31,12 @@
     <string name="main_logout">Kijelentkezés</string>
     <string name="app_title">Fitness Tracker</string>
     <string name="label_consumed_food">Elfogyasztott ételek</string>
+    <string name="label_burned_calories">Elégetve</string>
+    <string name="label_done_exercises">Elvégzett mozgások</string>
+    <string name="burned_calories_format">🔥 %1$s: %2$.0f kcal</string>
+    <string name="exercise_details_format">%1$d perc • -%2$.0f kcal</string>
+    <string name="label_performed_prefix">elvégezve:</string>
+
 
     <!-- Auth -->
     <string name="login_success">Bejelentkezés sikeres!</string>
@@ -60,6 +66,7 @@
     <string name="registerRegister">Regisztráció</string>
     <string name="registerLogin">Jelentkezzen be itt!</string>
     <string name="registerText">Vagy jelentkezzen be google-el!</string>
+    <string name="burned_calories">🔥 Elégetett kalória:</string>
 
     <!-- Profile -->
     <string name="password_changed_success">Jelszó sikeresen megváltoztatva!</string>
@@ -125,17 +132,22 @@
     <string name="error_no_food_selected">Nincs kiválasztva étel!</string>
 
     <string name="addFoodTitle">Új rögzítése</string>
+    <string name="addExerciseTitle">Új mozgás</string>
     <string name="addFoodString1">Válassz ételt:</string>
-    <string name="addExerciseString1">Válassz mozgást:</string>
+    <string name="addExerciseString1">Mozgás típusa:</string>
     <string name="addFoodString2">Mennyiség (gramm):</string>
     <string name="addExerciseString2">Időtartam (perc):</string>
     <string name="addFoodAmount">Adja meg a mennyiséget</string>
     <string name="addExerciseAmount">Adja meg az időtartamot</string>
-    <string name="addFoodDone">ÉTEL HOZZÁADÁSA</string>
-    <string name="addExerciseDone">MOZGÁS RÖGZÍTÉSE</string>
+    <string name="addFoodDone">Étel hozzáadása</string>
+    <string name="addExerciseDone">Mozgás hozzáadása</string>
     <string name="addFoodAiBtn">Azonosítás AI-val</string>
     <string name="ai_calc_calories">Kalória kiszámítása AI-val</string>
     <string name="ai_calc_result_format">Ezzel kb. %1$.0f kcal-t égettél el</string>
+    <string name="exercise_hint">pl. Futás</string>
+    <string name="food_hint">pl. Sült csirkeszárny</string>
+    <string name="unit_min_short">perc</string>
+    <string name="ai_result_placeholder">Eredmény...</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">Napi emlékeztető</string>

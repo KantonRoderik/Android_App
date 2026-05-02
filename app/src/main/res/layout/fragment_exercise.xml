@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/card_bg"
         app:cardCornerRadius="28dp"
         app:cardElevation="8dp"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,8 +25,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose Movement"
-                android:textColor="#555555"
+                android:text="@string/addExerciseString1"
+                android:textColor="@color/text_sub"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-medium" />
 
@@ -35,24 +35,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:hint="e.g., Running"
+                android:hint="@string/exercise_hint"
                 android:inputType="text"
                 android:paddingVertical="12dp"
-                android:textColor="#333333"
+                android:textColor="@color/text_main"
                 android:textSize="18sp"
                 android:completionThreshold="1" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#DDDDDD"
+                android:background="@color/gray"
                 android:layout_marginVertical="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duration (minutes):"
-                android:textColor="#555555"
+                android:text="@string/addExerciseString2"
+                android:textColor="@color/text_sub"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-medium" />
 
@@ -71,14 +71,14 @@
                     android:hint="0"
                     android:inputType="number"
                     android:paddingVertical="12dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/text_main"
                     android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="min"
-                    android:textColor="#757575"
+                    android:text="@string/unit_min_short"
+                    android:textColor="@color/text_sub"
                     android:textSize="16sp"
                     android:paddingHorizontal="12dp" />
             </LinearLayout>
@@ -92,9 +92,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="✨ Calculate Calories with AI"
+        android:text="@string/ai_calc_calories"
         android:textAllCaps="false"
-        android:textColor="#9C27B0"
+        android:textColor="@color/fat_purple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/exercise_card" />
 
@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
-        app:cardBackgroundColor="#1A9C27B0"
+        app:cardBackgroundColor="#339C27B0"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         android:visibility="gone"
@@ -115,8 +115,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Result..."
-            android:textColor="#9C27B0"
+            android:text="@string/ai_result_placeholder"
+            android:textColor="@color/fat_purple"
             android:textSize="14sp"
             android:textStyle="italic" />
     </androidx.cardview.widget.CardView>

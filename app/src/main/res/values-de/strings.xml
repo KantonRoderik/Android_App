@@ -31,6 +31,12 @@
     <string name="main_logout">Abmelden</string>
     <string name="app_title">Fitness-Tracker</string>
     <string name="label_consumed_food">Verzehrte Lebensmittel</string>
+    <string name="label_burned_calories">Verbrannt</string>
+    <string name="label_done_exercises">Protokollierte Übungen</string>
+    <string name="burned_calories_format">🔥 %1$s: %2$.0f kcal</string>
+    <string name="exercise_details_format">%1$d Min. • -%2$.0f kcal</string>
+    <string name="label_performed_prefix">durchgeführt:</string>
+    <string name="burned_calories">🔥 Verbrannte Kalorien:</string>
 
     <!-- Auth -->
     <string name="login_success">Anmeldung erfolgreich!</string>
@@ -91,7 +97,7 @@
     <string name="edit_profile_title">PROFIL BEARBEITEN</string>
     <string name="edit_daily_goals_title">TAGESZIELE BEARBEITEN</string>
     <string name="label_your_bmr">Dein BMR: %1$d kcal</string>
-    <string name="btn_use_this">DIES VERWENDEN</string>
+    <string name="btn_use_this">HASZNÁLD EZT</string>
     <string name="label_dietary_template">ERNÄHRUNGSVORLAGE</string>
     <string name="goals_footer_hint">Das Ändern dieser Werte aktualisiert die heutige und zukünftige Verfolgung.</string>
     <string name="error_calories_required">Bitte geben Sie zuerst einen Kalorienwert ein!</string>
@@ -114,7 +120,9 @@
     <string name="profileEditGender">Geschlecht</string>
     <string name="profileEditSave">Daten speichern</string>
 
-    <!-- Food -->
+    <!-- Food & Exercise -->
+    <string name="tab_food">Essen</string>
+    <string name="tab_exercise">Übung</string>
     <string name="food_load_error">Fehler beim Laden der Lebensmittel</string>
     <string name="food_add_success">Erfolgreich hinzugefügt!</string>
     <string name="food_add_error">Fehler beim Speichern</string>
@@ -122,12 +130,23 @@
     <string name="error_invalid_quantity">Menge darf nicht null oder negativ sein!</string>
     <string name="error_no_food_selected">Kein Lebensmittel ausgewählt!</string>
 
-    <string name="addFoodTitle">Neues Lebensmittel hinzufügen</string>
-    <string name="addFoodString1">Lebensmittel wählen:</string>
+    <string name="addFoodTitle">Neues Element hinzufügen</string>
+    <string name="addExerciseTitle">Neue Übung</string>
+    <string name="addFoodString1">Essen wählen:</string>
+    <string name="addExerciseString1">Art der Übung:</string>
     <string name="addFoodString2">Menge (Gramm):</string>
+    <string name="addExerciseString2">Dauer (Min.):</string>
     <string name="addFoodAmount">Geben Sie die Menge ein</string>
+    <string name="addExerciseAmount">Geben Sie die Dauer ein</string>
     <string name="addFoodDone">Essen hinzufügen</string>
-    <string name="addFoodAiBtn">✨ Mit KI identifizieren</string>
+    <string name="addExerciseDone">Übung hinzufügen</string>
+    <string name="addFoodAiBtn">Mit KI identifizieren</string>
+    <string name="ai_calc_calories">Kalorien mit KI berechnen</string>
+    <string name="ai_calc_result_format">Sie haben etwa %1$.0f kcal verbrannt</string>
+    <string name="exercise_hint">z.B. Laufen</string>
+    <string name="food_hint">z.B. Gegrillter Hähnchenflügel</string>
+    <string name="unit_min_short">min</string>
+    <string name="ai_result_placeholder">Ergebnis...</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">Tägliche Erinnerung</string>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEEEEE">
+    android:background="@color/background_start">
 
     <ImageButton
         android:id="@+id/back_button"
@@ -14,7 +14,7 @@
         android:layout_marginTop="32dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/baseline_arrow_back_24"
-        app:tint="@color/white"
+        app:tint="@color/text_main"
         android:contentDescription="@string/error_generic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,8 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="New Consumed Food"
-        android:textColor="@color/white"
+        android:text="@string/addFoodTitle"
+        android:textColor="@color/text_main"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="sans-serif-medium"
@@ -40,10 +40,10 @@
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/add_food_title"
-        app:tabIndicatorColor="#4CAF50"
+        app:tabIndicatorColor="@color/primary_green"
         app:tabIndicatorHeight="3dp"
-        app:tabSelectedTextColor="#4CAF50"
-        app:tabTextColor="#BDBDBD"
+        app:tabSelectedTextColor="@color/primary_green"
+        app:tabTextColor="@color/text_sub"
         app:tabRippleColor="@null"
         app:tabMode="fixed" />
 
@@ -60,9 +60,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="@color/primary_green"
         android:padding="16dp"
-        android:text="ADD FOOD"
+        android:text="@string/addFoodDone"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"

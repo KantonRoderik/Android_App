@@ -31,6 +31,12 @@
     <string name="main_logout">Déconnexion</string>
     <string name="app_title">Traqueur de Fitness</string>
     <string name="label_consumed_food">Aliments consommés</string>
+    <string name="label_burned_calories">Brûlées</string>
+    <string name="label_done_exercises">Exercices enregistrés</string>
+    <string name="burned_calories_format">🔥 %1$s : %2$.0f kcal</string>
+    <string name="exercise_details_format">%1$d min • -%2$.0f kcal</string>
+    <string name="label_performed_prefix">effectué :</string>
+    <string name="burned_calories">🔥 Calories brûlées :</string>
 
     <!-- Auth -->
     <string name="login_success">Connexion réussie !</string>
@@ -114,7 +120,9 @@
     <string name="profileEditGender">Genre</string>
     <string name="profileEditSave">Enregistrer les données</string>
 
-    <!-- Food -->
+    <!-- Food & Exercise -->
+    <string name="tab_food">Alimentation</string>
+    <string name="tab_exercise">Exercice</string>
     <string name="food_load_error">Erreur lors du chargement des aliments</string>
     <string name="food_add_success">Ajouté avec succès !</string>
     <string name="food_add_error">Erreur lors de l\'enregistrement</string>
@@ -122,12 +130,23 @@
     <string name="error_invalid_quantity">La quantité ne peut pas être nulle ou negatíve !</string>
     <string name="error_no_food_selected">Aucun aliment sélectionné !</string>
 
-    <string name="addFoodTitle">Ajouter un aliment</string>
+    <string name="addFoodTitle">Ajouter un élément</string>
+    <string name="addExerciseTitle">Nouvel exercice</string>
     <string name="addFoodString1">Choisir un aliment :</string>
+    <string name="addExerciseString1">Type d\'exercice :</string>
     <string name="addFoodString2">Quantité (grammes) :</string>
+    <string name="addExerciseString2">Durée (min) :</string>
     <string name="addFoodAmount">Entrez la quantité</string>
+    <string name="addExerciseAmount">Entrez la durée</string>
     <string name="addFoodDone">Ajouter l\'aliment</string>
-    <string name="addFoodAiBtn">✨ Identifier avec l\'IA</string>
+    <string name="addExerciseDone">Ajouter l\'exercice</string>
+    <string name="addFoodAiBtn">Identifier avec l\'IA</string>
+    <string name="ai_calc_calories">Calculer les calories avec l\'IA</string>
+    <string name="ai_calc_result_format">Vous avez brûlé environ %1$.0f kcal</string>
+    <string name="exercise_hint">ex: Course à pied</string>
+    <string name="food_hint">ex: Aile de poulet grillée</string>
+    <string name="unit_min_short">min</string>
+    <string name="ai_result_placeholder">Résultat...</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">Rappel quotidien</string>

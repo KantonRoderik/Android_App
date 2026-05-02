@@ -169,11 +169,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="🔥 Elégetve: 0 kcal"
                         android:textColor="@color/text_sub"
                         android:textSize="12sp"
                         android:layout_marginBottom="16dp"
-                        tools:text="🔥 Elégetve: 363 kcal" />
+                        tools:text="@string/burned_calories" />
 
                     <!-- Macro Row 1: Labels -->
                     <LinearLayout
@@ -324,7 +323,7 @@
                 android:id="@+id/done_exercises_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Elvégzett mozgások"
+                android:text="@string/label_done_exercises"
                 android:textColor="@color/text_main"
                 android:textSize="18sp"
                 android:textStyle="bold"

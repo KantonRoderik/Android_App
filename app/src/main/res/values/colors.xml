@@ -22,6 +22,7 @@
     <color name="background_start">#FFFFFF</color>
     <color name="background_end">#BDBDBD</color>
     <color name="card_bg">#CCFFFFFF</color>
+    <color name="input_bg">#F2F2F2</color>
     <color name="text_main">#000000</color>
     <color name="text_sub">#666666</color>
 </resources>

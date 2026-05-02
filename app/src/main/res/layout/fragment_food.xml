@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="@color/card_bg"
         app:cardCornerRadius="28dp"
         app:cardElevation="8dp"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pick a Food"
-                android:textColor="#555555"
+                android:textColor="@color/text_sub"
                 android:textSize="12sp"
                 android:fontFamily="sans-serif-medium" />
 
@@ -38,21 +38,21 @@
                 android:hint="Sült Csirkeszárny"
                 android:inputType="text"
                 android:paddingVertical="12dp"
-                android:textColor="#333333"
+                android:textColor="@color/text_main"
                 android:textSize="18sp"
                 android:completionThreshold="1" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#DDDDDD"
+                android:background="@color/gray"
                 android:layout_marginVertical="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantity (grams):"
-                android:textColor="#555555"
+                android:textColor="@color/text_sub"
                 android:textSize="12sp"
                 android:fontFamily="sans-serif-medium" />
 
@@ -71,14 +71,14 @@
                     android:hint="Enter the quantity"
                     android:inputType="numberDecimal"
                     android:paddingVertical="12dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/text_main"
                     android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/unit_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#757575" />
+                    android:backgroundTint="@color/text_sub" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -92,10 +92,10 @@
         android:layout_marginEnd="16dp"
         android:text="@string/addFoodAiBtn"
         android:textAllCaps="false"
-        android:textColor="#9C27B0"
+        android:textColor="@color/fat_purple"
         android:visibility="gone"
         app:icon="@drawable/baseline_bolt_24"
-        app:iconTint="#9C27B0"
+        app:iconTint="@color/fat_purple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/food_card_container" />
 

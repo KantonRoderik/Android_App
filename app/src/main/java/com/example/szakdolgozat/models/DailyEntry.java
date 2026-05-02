@@ -12,6 +12,8 @@ import java.util.Map;
 public class DailyEntry {
     private String date; // Format: "yyyy-MM-dd"
     private Map<String, ConsumedFood> consumedFoods = new HashMap<>();
+    
+    @PropertyName("exercisesDone")
     private Map<String, Map<String, Object>> exercisesDone = new HashMap<>();
     
     private double totalCalories;
