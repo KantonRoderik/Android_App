@@ -4,16 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a user's nutritional intake for a specific day.
+ * Represents a user's nutritional intake and exercise for a specific day.
  */
 public class DailyEntry {
     private String date; // Format: "yyyy-MM-dd"
     private Map<String, ConsumedFood> consumedFoods = new HashMap<>();
+    private Map<String, Exercise> loggedExercises = new HashMap<>();
     private double totalCalories;
     private double totalCarbs;
     private double totalFat;
     private double totalProtein;
     private double totalWater;
+    private double totalCaloriesBurned;
 
     public DailyEntry() {
         // Required for Firebase
@@ -37,6 +39,14 @@ public class DailyEntry {
 
     public void setConsumedFoods(Map<String, ConsumedFood> consumedFoods) {
         this.consumedFoods = consumedFoods;
+    }
+
+    public Map<String, Exercise> getLoggedExercises() {
+        return loggedExercises;
+    }
+
+    public void setLoggedExercises(Map<String, Exercise> loggedExercises) {
+        this.loggedExercises = loggedExercises;
     }
 
     public double getTotalWater() {
@@ -79,23 +89,37 @@ public class DailyEntry {
         this.totalProtein = totalProtein;
     }
 
+    public double getTotalCaloriesBurned() {
+        return totalCaloriesBurned;
+    }
+
+    public void setTotalCaloriesBurned(double totalCaloriesBurned) {
+        this.totalCaloriesBurned = totalCaloriesBurned;
+    }
+
     /**
-     * Recalculates all nutritional totals based on the consumed foods map.
+     * Recalculates all nutritional totals and burned calories based on the maps.
      */
     public void calculateTotals() {
         this.totalCalories = 0;
         this.totalCarbs = 0;
         this.totalFat = 0;
         this.totalProtein = 0;
-        // Note: totalWater is usually handled separately as it's often added directly
+        this.totalCaloriesBurned = 0;
         
-        if (consumedFoods == null) return;
+        if (consumedFoods != null) {
+            for (ConsumedFood food : consumedFoods.values()) {
+                this.totalCalories += food.getCalories();
+                this.totalCarbs += food.getCarbs();
+                this.totalFat += food.getFat();
+                this.totalProtein += food.getProtein();
+            }
+        }
 
-        for (ConsumedFood food : consumedFoods.values()) {
-            this.totalCalories += food.getCalories();
-            this.totalCarbs += food.getCarbs();
-            this.totalFat += food.getFat();
-            this.totalProtein += food.getProtein();
+        if (loggedExercises != null) {
+            for (Exercise ex : loggedExercises.values()) {
+                this.totalCaloriesBurned += ex.getCaloriesBurned();
+            }
         }
     }
 }

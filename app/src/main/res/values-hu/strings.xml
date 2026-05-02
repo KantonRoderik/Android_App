@@ -114,7 +114,9 @@
     <string name="profileEditGender">Nem</string>
     <string name="profileEditSave">Adatok mentése</string>
 
-    <!-- Food -->
+    <!-- Food & Exercise -->
+    <string name="tab_food">Étkezés</string>
+    <string name="tab_exercise">Mozgás</string>
     <string name="food_load_error">Hiba az ételek betöltésekor</string>
     <string name="food_add_success">Sikeresen hozzáadva!</string>
     <string name="food_add_error">Hiba a mentéskor</string>
@@ -122,12 +124,18 @@
     <string name="error_invalid_quantity">A mennyiség nem lehet nulla vagy negatív!</string>
     <string name="error_no_food_selected">Nincs kiválasztva étel!</string>
 
-    <string name="addFoodTitle">Új étel hozzáadása</string>
+    <string name="addFoodTitle">Új rögzítése</string>
     <string name="addFoodString1">Válassz ételt:</string>
+    <string name="addExerciseString1">Válassz mozgást:</string>
     <string name="addFoodString2">Mennyiség (gramm):</string>
+    <string name="addExerciseString2">Időtartam (perc):</string>
     <string name="addFoodAmount">Adja meg a mennyiséget</string>
-    <string name="addFoodDone">Étel hozzáadása</string>
+    <string name="addExerciseAmount">Adja meg az időtartamot</string>
+    <string name="addFoodDone">ÉTEL HOZZÁADÁSA</string>
+    <string name="addExerciseDone">MOZGÁS RÖGZÍTÉSE</string>
     <string name="addFoodAiBtn">Azonosítás AI-val</string>
+    <string name="ai_calc_calories">Kalória kiszámítása AI-val</string>
+    <string name="ai_calc_result_format">Ezzel kb. %1$.0f kcal-t égettél el</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">Napi emlékeztető</string>

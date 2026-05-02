@@ -4,6 +4,7 @@ import com.example.szakdolgozat.models.ConsumedFood;
 import com.example.szakdolgozat.models.DailyEntry;
 import com.example.szakdolgozat.models.DailyGoals;
 import com.example.szakdolgozat.models.DietaryTemplate;
+import com.example.szakdolgozat.models.Exercise;
 import com.example.szakdolgozat.models.FoodItem;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -213,6 +214,10 @@ public class FirestoreRepository {
         return db.collection("foods").get();
     }
 
+    public Task<QuerySnapshot> getAllExercises() {
+        return db.collection("exercises").get();
+    }
+
     public Task<QuerySnapshot> searchFoodByName(String name) {
         return db.collection("foods")
                 .whereEqualTo("name", name)
@@ -223,5 +228,39 @@ public class FirestoreRepository {
         // Sanitize name to avoid issues with slashes in document IDs
         String safeId = foodItem.getName().replace("/", "_").replace(".", "_");
         return db.collection("foods").document(safeId).set(foodItem);
+    }
+
+    public Task<Void> saveExerciseItemWithNameAsId(Exercise exercise) {
+        // Sanitize name to avoid issues with slashes in document IDs
+        String safeId = exercise.getName().replace("/", "_").replace(".", "_");
+        return db.collection("exercises").document(safeId).set(exercise);
+    }
+
+
+    public Task<QuerySnapshot> searchExerciseByName(String name) {
+        return db.collection("exercises")
+                .whereEqualTo("name", name)
+                .get();
+    }
+
+
+
+    public Task<Void> addExerciseToLog(String date, Exercise log) {
+        DocumentReference userDoc = getUserDoc();
+        if (userDoc == null) return Tasks.forException(new Exception("User not logged in"));
+        
+        DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        
+        WriteBatch batch = db.batch();
+        
+        Map<String, Object> initial = new HashMap<>();
+        initial.put("date", date);
+        batch.set(entryRef, initial, SetOptions.merge());
+        
+        batch.update(entryRef, "loggedExercises." + timestamp, log);
+        batch.update(entryRef, "totalCaloriesBurned", FieldValue.increment(log.getCaloriesBurned()));
+
+        return batch.commit();
     }
 }
