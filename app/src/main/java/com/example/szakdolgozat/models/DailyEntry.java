@@ -1,16 +1,19 @@
 package com.example.szakdolgozat.models;
 
+import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.PropertyName;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Represents a user's nutritional intake and exercise for a specific day.
  */
+@IgnoreExtraProperties
 public class DailyEntry {
     private String date; // Format: "yyyy-MM-dd"
     private Map<String, ConsumedFood> consumedFoods = new HashMap<>();
-    private Map<String, Exercise> loggedExercises = new HashMap<>();
-    private Map<String, Exercise> exercisesDone = new HashMap<>();
+    private Map<String, Map<String, Object>> exercisesDone = new HashMap<>();
+    
     private double totalCalories;
     private double totalCarbs;
     private double totalFat;
@@ -42,19 +45,13 @@ public class DailyEntry {
         this.consumedFoods = consumedFoods;
     }
 
-    public Map<String, Exercise> getLoggedExercises() {
-        return loggedExercises;
-    }
-
-    public void setLoggedExercises(Map<String, Exercise> loggedExercises) {
-        this.loggedExercises = loggedExercises;
-    }
-
-    public Map<String, Exercise> getExercisesDone() {
+    @PropertyName("exercisesDone")
+    public Map<String, Map<String, Object>> getExercisesDone() {
         return exercisesDone;
     }
 
-    public void setExercisesDone(Map<String, Exercise> exercisesDone) {
+    @PropertyName("exercisesDone")
+    public void setExercisesDone(Map<String, Map<String, Object>> exercisesDone) {
         this.exercisesDone = exercisesDone;
     }
 
@@ -118,26 +115,22 @@ public class DailyEntry {
         
         if (consumedFoods != null) {
             for (ConsumedFood food : consumedFoods.values()) {
-                intakeCalories += food.getCalories();
-                this.totalCarbs += food.getCarbs();
-                this.totalFat += food.getFat();
-                this.totalProtein += food.getProtein();
-            }
-        }
-
-        // Combine both maps of exercises
-        if (loggedExercises != null) {
-            for (Exercise ex : loggedExercises.values()) {
-                if (ex != null) {
-                    this.totalCaloriesBurned += ex.getCaloriesBurned();
+                if (food != null) {
+                    intakeCalories += food.getCalories();
+                    this.totalCarbs += food.getCarbs();
+                    this.totalFat += food.getFat();
+                    this.totalProtein += food.getProtein();
                 }
             }
         }
-        
+
         if (exercisesDone != null) {
-            for (Exercise ex : exercisesDone.values()) {
+            for (Map<String, Object> ex : exercisesDone.values()) {
                 if (ex != null) {
-                    this.totalCaloriesBurned += ex.getCaloriesBurned();
+                    Object cal = ex.get("caloriesBurned");
+                    if (cal instanceof Number) {
+                        this.totalCaloriesBurned += ((Number) cal).doubleValue();
+                    }
                 }
             }
         }

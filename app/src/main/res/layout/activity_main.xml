@@ -161,8 +161,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="12dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="8dp"
                         android:progressDrawable="@drawable/custom_progress_red" />
+
+                    <TextView
+                        android:id="@+id/textView_burned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="🔥 Elégetve: 0 kcal"
+                        android:textColor="@color/text_sub"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="16dp"
+                        tools:text="🔥 Elégetve: 363 kcal" />
 
                     <!-- Macro Row 1: Labels -->
                     <LinearLayout
@@ -302,20 +313,30 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- List Container to ensure visibility in NestedScrollView -->
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/consumedFoodsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="100dp"
-                android:orientation="vertical">
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_consumed_food" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/consumedFoodsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_consumed_food" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/done_exercises_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elvégzett mozgások"
+                android:textColor="@color/text_main"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/doneExercisesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_consumed_food" />
 
             <View android:layout_width="match_parent" android:layout_height="80dp"/>
 

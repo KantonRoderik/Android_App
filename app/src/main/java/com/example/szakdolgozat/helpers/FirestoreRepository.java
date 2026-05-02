@@ -283,10 +283,22 @@ public class FirestoreRepository {
         updates.put("totalCalories", FieldValue.increment(-caloriesBurned));
         updates.put("exercisesDone." + timestamp, exerciseData);
 
-        // Use set with Merge to ensure document exists, or update if you are sure it exists.
-        // The prompt says "use a single update() call". update() fails if doc doesn't exist.
-        // However, usually we ensure daily entry exists first.
-        // Given the requirement "single update() call", I will use update().
+        return entryRef.update(updates);
+    }
+
+    /**
+     * Removes an exercise from the daily log and adds back the burned calories.
+     */
+    public Task<Void> removeExerciseFromDailyLog(String date, String exerciseKey, double caloriesBurned) {
+        DocumentReference userDoc = getUserDoc();
+        if (userDoc == null) return Tasks.forException(new Exception("User not logged in"));
+
+        DocumentReference entryRef = userDoc.collection("dailyEntries").document(date);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("exercisesDone." + exerciseKey, FieldValue.delete());
+        updates.put("totalCalories", FieldValue.increment(caloriesBurned));
+
         return entryRef.update(updates);
     }
 }

@@ -42,6 +42,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private Calendar currentDate = Calendar.getInstance();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private ConsumedFoodAdapter foodAdapter;
+    private ExerciseAdapter exerciseAdapter;
     private OpenFoodFactsApi api;
     private GestureDetector gestureDetector;
     private ListenerRegistration dailyEntryListener;
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupRetrofit();
         initializeUI();
-        setupRecyclerView();
+        setupRecyclerViews();
         checkNotificationPermission();
         updateDateDisplay();
         setupSwipeGestures();
@@ -127,6 +129,14 @@ public class MainActivity extends AppCompatActivity {
                     entry.calculateTotals();
                     this.currentEntry = entry;
                     foodAdapter.updateData(entry.getConsumedFoods());
+                    
+                    if (entry.getExercisesDone() != null) {
+                        Log.d(TAG, "Edzések száma: " + entry.getExercisesDone().size());
+                        exerciseAdapter.updateData(entry.getExercisesDone());
+                    } else {
+                        exerciseAdapter.updateData(new HashMap<>());
+                    }
+                    
                     updateUI();
                 }
             }
@@ -298,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         binding.getRoot().postDelayed(this::startListeningToData, 1000);
     }
 
-    private void setupRecyclerView() {
+    private void setupRecyclerViews() {
         foodAdapter = new ConsumedFoodAdapter((key, food) -> {
             repository.removeConsumedFood(getFormattedDate(), key, food)
                     .addOnSuccessListener(aVoid -> Toast.makeText(this, R.string.update_success, Toast.LENGTH_SHORT).show())
@@ -306,6 +316,15 @@ public class MainActivity extends AppCompatActivity {
         });
         binding.consumedFoodsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.consumedFoodsRecyclerView.setAdapter(foodAdapter);
+
+        exerciseAdapter = new ExerciseAdapter((key, caloriesBurned) -> {
+            repository.removeExerciseFromDailyLog(getFormattedDate(), key, caloriesBurned)
+                    .addOnSuccessListener(aVoid -> Toast.makeText(this, "Mozgás törölve", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(this, "Hiba a törlés során", Toast.LENGTH_SHORT).show());
+        });
+        binding.doneExercisesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.doneExercisesRecyclerView.setAdapter(exerciseAdapter);
+        binding.doneExercisesRecyclerView.setNestedScrollingEnabled(false);
     }
 
     private void checkNotificationPermission() {
@@ -354,6 +373,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateTextViews(DailyEntry entry, DailyGoals goals) {
         binding.textViewKaloria.setText(UIUtils.formatNutritionText(getString(R.string.label_calories), entry.getTotalCalories(), goals.getCalories(), getString(R.string.unit_kcal)));
+        binding.textViewBurned.setText(String.format(Locale.getDefault(), "🔥 Elégetve: %.0f kcal", entry.getTotalCaloriesBurned()));
+        
         binding.textViewSzenhidrat.setText(UIUtils.formatNutritionText(getString(R.string.label_carbs), entry.getTotalCarbs(), goals.getCarbs(), getString(R.string.unit_g)));
         binding.textViewFeherje.setText(UIUtils.formatNutritionText(getString(R.string.label_protein), entry.getTotalProtein(), goals.getProtein(), getString(R.string.unit_g)));
         binding.textViewZsir.setText(UIUtils.formatNutritionText(getString(R.string.label_fat), entry.getTotalFat(), goals.getFat(), getString(R.string.unit_g)));
@@ -404,5 +425,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         stopListening();
+    }
+
+    private void setupRecyclerView() {
+        setupRecyclerViews();
     }
 }
