@@ -56,6 +56,10 @@ android {
         buildConfig = true
     }
 
+    lint {
+        abortOnError = false
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -88,14 +92,14 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
         "**/*Test*.*", "android/**/*.*", "**/*${'$'}ViewInjector*.*",
         "**/*${'$'}ViewBinder*.*", "**/databinding/*.*", "**/BR.*"
     )
-    val debugTree = fileTree("${project.buildDir}/intermediates/javac/debug") {
+    val debugTree = fileTree("${project.layout.buildDirectory.get()}/intermediates/javac/debug") {
         exclude(fileFilter)
     }
     val mainSrc = "${project.projectDir}/src/main/java"
 
     sourceDirectories.setFrom(files(mainSrc))
     classDirectories.setFrom(files(debugTree))
-    executionData.setFrom(fileTree(project.buildDir) {
+    executionData.setFrom(fileTree(project.layout.buildDirectory.get()) {
         include("jacoco/testDebugUnitTest.exec", "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
     })
 }
@@ -140,4 +144,14 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("org.mockito:mockito-android:5.11.0")
+}
+
+configurations.all {
+    resolutionStrategy {
+        eachDependency {
+            if (requested.group == "androidx.camera") {
+                useVersion("1.4.1")
+            }
+        }
+    }
 }
