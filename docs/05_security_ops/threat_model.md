@@ -1,0 +1,10 @@
+# Threat Model (STRIDE)
+
+| Fenyegetés (STRIDE) | Leírás | Hatás | Valószínűség | Mitigáció (Mit csinálunk ellene) | Verification |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **S**poofing (Hitelesítés) | Egy támadó más felhasználó nevében próbál adatot írni vagy lekérdezni. | Magas | Alacsony (Firebase Auth véd) | Firebase Authentication használata, a Firestore szabályok (Security Rules) csak a bejelentkezett user UID-jének megfelelő dokumentumok olvasását/írását engedik. | Manuális teszt: Más UID olvasási kísérlete Firestore-ban. |
+| **T**ampering (Adatmódosítás) | A hálózati adatforgalomba ékelődve megváltoztatják a letöltött makró adatokat. | Közepes | Alacsony | Minden API hívás (Firebase, OpenFoodFacts, Gemini) HTTPS (TLS) protokollon keresztül történik. | Retrofit config ellenőrzése. |
+| **R**epudiation (Letagadhatóság) | Egy felhasználó töröl egy ételt, majd azt állítja, elveszett az adat. | Alacsony | Alacsony | A Firebase naplózza az írásokat, azonban kliens oldali Audit log jelenleg nincs implementálva a személyes alkalmazás jellege miatt. | Elfogadott kockázat (Residual risk). |
+| **I**nformation Disclosure | Gemini API kulcs kiszivárgása a forráskódból. | Magas | Közepes | A `GEMINI_API_KEY` a `local.properties` fájlban van tárolva, ami ki van zárva a verziókezelőből (`.gitignore`). CI/CD-ben GitHub Secrets-ből jön. | Repo audit: A kulcs nem található a git history-ban. |
+| **D**enial of Service | Az alkalmazás túl sok lekérést indít a Gemini API felé, kimerítve a kvótát. | Közepes | Közepes | A kliens oldalon betöltés indikátor (Loading spinner) jelenik meg, amíg az AI dolgozik, és letiltja a gombot a többszörös kattintás ellen. | UI teszt: Dupla kattintás megakadályozása a `FoodFragment`-ben. |
+| **E**levation of Privilege | Rosszindulatú adatbevitel (pl. hatalmas számok) a Firestore-ba, ami kiakasztja az összesítőt. | Közepes | Magas | Kliens oldali input validáció (pl. `calculateSafeProgress`), ami megakadályozza a nullával osztást és az érvénytelen formátumokat. | Unit teszt: `calculateSafeProgress_ZeroOrNegativeGoal_ReturnsZero`. |

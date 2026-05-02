@@ -1,50 +1,49 @@
-# SZAKDOLGOZAT - Kalóriaszámláló (Calorie Tracker)
-An Android application for beginners to track daily nutrition and discover recipes.
+# SZAKDOLGOZAT - Fitness Tracker
+
+An AI-powered Android application for tracking daily nutrition and exercise, featuring offline-first synchronization.
 
 ## Main Features
-- **Firebase Auth**: Secure email/password and Google Sign-in.
-- **Dynamic Logging**: Track food intake, water, and weight with real-time Firestore sync.
-- **AI Food Recognition**: Integrated Gemini AI to calculate nutrition from text.
-- **Progress Visualization**: Dynamic progress bars for calories, macros, and daily streaks.
-- **Barcode Scanner**: Quickly add food items using the ML Kit barcode scanner.
-- **Offline Support**: Firestore persistence ensures data is saved without internet.
+- **AI Food & Exercise Identification**: Gemini API integration to estimate nutritional values and calculate MET for unknown foods and workouts.
+- **Barcode Scanner**: Quickly add store-bought products using the camera and the OpenFoodFacts API.
+- **Dynamic Daily Log**: Live tracking of calories, macros (carbs, protein, fat), and water intake with progress bars.
+- **Diet Templates & BMR Calculation**: Automatically generate daily goals based on body metrics and predefined templates (e.g., Keto, High Protein).
+- **Offline Mode**: Firestore persistence ensures you can log data even without an internet connection.
+- **Firebase Auth**: Secure email/password and google Sign-in.
+- **Progress Visualization**: Dynamic progress bars for calories, macros and daily streaks.
 
 ## Tech Stack
-- **Frontend**: Native Android (Java) with XML layouts.
-- **Database/Backend**: Firebase Firestore (NoSQL), Firebase Authentication.
-- **AI/ML**: Google Gemini AI (Generative AI SDK), ML Kit Barcode Scanning.
-- **Libraries**: MPAndroidChart, Retrofit, Glide.
+- **Frontend**: Android (Java), Material 3 Design, View Binding
+- **Backend**: Firebase Authentication, Cloud Firestore
+- **AI/API**: Google Gemini 1.5 Flash SDK, ML Kit, Retrofit 2, OkHttp
+- **Architecture**: Classic Activity + Repository Pattern
 
-## Architecture
-- **Pattern**: MVVM (Model-View-ViewModel)
-- **Data Layer**: Repository pattern for decoupling Firestore logic.
-- **View Binding**: Type-safe access to layout components.
-
-## Quickstart (Local)
-1. **Clone**: `git clone https://github.com/KantonRoderik/Android_App.git`
-2. **Setup SDK**: Open in Android Studio (Ladybug or newer recommended).
-3. **Firebase**: Place your `google-services.json` in the `app/` folder.
-4. **API Key**: Add `GEMINI_API_KEY=your_key` to `local.properties`.
-5. **Sync & Run**: Click "Sync Project with Gradle Files", then "Run" (Shift+F10).
-   - *Expected output*: App launches on emulator/device showing Login screen.
+## Quickstart (Local Run)
+1. Clone the repository: `git clone https://github.com/KantonRoderik/Android_App.git`
+2. Open the project folder in Android Studio (Iguana / Ladybug version recommended).
+3. Place your downloaded `google-services.json` file into the `app/` directory.
+4. Create a `local.properties` file in the root directory and add your Gemini API key:
+   `GEMINI_API_KEY="your_api_key_here"`
+5. Sync Project with Gradle Files, then click the **Run 'app'** button.
+   *Expected output:* The app launches on your emulator or physical device showing the Login screen.
 
 ## Test Run
-- **All Tests**: `./gradlew check`
-- **Unit Tests**: `./gradlew :app:testDebugUnitTest`
-- **Instrumented Tests**: `./gradlew :app:connectedDebugAndroidTest`
+The project contains Unit and Integration tests utilizing Mockito and MockWebServer.
+To run tests via the command line (Terminal):
+```bash
+./gradlew testDebugUnitTest
+```
+*Expected output:* `BUILD SUCCESSFUL` (~30 tests passing without errors).
 
 ## Configuration
-- **GEMINI_API_KEY**: Required in `local.properties` for AI features.
-- **google-services.json**: Required for Firebase Auth and Firestore.
-- **Java Version**: Uses JDK 17 (set in `build.gradle.kts`).
+- `google-services.json`: Required for Firebase Auth and Firestore to work. Download it from the Firebase Console.
+- `GEMINI_API_KEY`: Required environment variable in `local.properties`. Without it, the application will fail to compile.
+- **Environment:** Java 17 and Android SDK 35. No external server ports need to be opened.
 
-## Demo / Try It
-- **Test User**: `testuser@example.com` / `Password123!` (If pre-seeded in Firebase).
-- **Offline Mode**: Disable Wi-Fi to test local persistence. AI and Barcode scanner not available during offline mode.
+## Documentation
+The complete engineering and UX documentation is located in the `docs` folder using a Docs-as-Code approach.
+👉 **[Engineering Documentation Index](docs/00_index.md)**
 
 ## Troubleshooting
-- **Error: `Unresolved reference: ViewInjector`**: Escape `$` in `build.gradle.kts` as `\$`.
-- **Error: `Method myPid in android.os.Process not mocked`**: Ensure unit tests use the `FirestoreRepository(db, auth)` constructor with mocks.
-- **Firebase Not Working**: Verify `google-services.json` matches your Firebase project.
-- **Gradle Sync Failure**: Ensure `JAVA_HOME` points to JDK 17.
-- **AI Recognition Fails**: Check if `GEMINI_API_KEY` is valid and has "Generative AI API" enabled.
+- **Error: `google-services.json is missing`**: Download the file from your Firebase console and ensure it is placed exactly in the `app` folder.
+- **Error: `AI response cannot be processed`**: Check if your API key in `local.properties` is valid and if you have available quota in Google AI Studio.
+- **Progress bars stuck at zero after login**: No network connection. The Firebase offline cache is empty; please ensure internet access for the initial data sync.

@@ -11,7 +11,7 @@ graph TD
     S03 -->|Profil ikon| S04[S04 - Profile]
     S03 -->|Stats ikon| S07[S07 - Statistics]
     S03 -->|Plusz gomb| S08[S08 - Add Food]
-    S03 -->|Víz ikon| S09[S09 - Add Water]
+    S03 -->|Gyors víz gomb| S03
     S03 -->|Scan ikon| S10[♦ S10 - Barcode Scanner]
     S03 -->|Kijelentkezés| S01
 
@@ -28,6 +28,7 @@ graph TD
     S07 -->|Back gomb| S03
 
     S08 -->|Hozzáadás / Back| S03
+    S08 <-->|Tab váltás| S09[S09 - Add Exercise]
 
     S09 -->|Hozzáadás / Back| S03
 

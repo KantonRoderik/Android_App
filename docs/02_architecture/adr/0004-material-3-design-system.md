@@ -21,5 +21,7 @@ We chose **Material Design 3 (M3)** as the primary design system for the applica
 - **Refactoring**: Existing layouts using older components required updates to align with M3 specifications.
 - **Dark Mode**: Support for both light and dark themes became a priority to maintain design consistency.
 
+## Verification
+- Verified by checking standard Android Components styling and native TalkBack screen reader support on physical devices.
 ## Status
 Accepted
