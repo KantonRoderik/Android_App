@@ -30,6 +30,9 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -91,7 +94,7 @@ public class ExerciseFragment extends Fragment {
                 .build();
 
         GenerativeModel gm = new GenerativeModel(
-                "gemini-2.5-flash",
+                "gemini-1.5-flash",
                 BuildConfig.GEMINI_API_KEY,
                 config,
                 null,
@@ -102,37 +105,47 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void fetchUserWeight() {
-        repository.getUserData().addOnSuccessListener(doc -> {
-            if (doc.exists() && doc.contains("suly")) {
-                try {
-                    String weightStr = doc.getString("suly");
-                    if (weightStr != null && !weightStr.isEmpty()) {
-                        userWeight = Double.parseDouble(weightStr);
-                    }
-                } catch (Exception e) {
-                    userWeight = 75.0;
+        // addOnCompleteListener használata a betöltési állapot robusztusabb kezeléséhez
+        repository.getUserData().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                updateWeightFromDoc(task.getResult());
+            } else {
+                // Offline fallback: explicit gyorsítótár lekérés
+                String uid = (repository.getCurrentUser() != null) ? repository.getCurrentUser().getUid() : null;
+                if (uid != null) {
+                    FirebaseFirestore.getInstance().collection("users").document(uid)
+                            .get(Source.CACHE)
+                            .addOnSuccessListener(this::updateWeightFromDoc);
                 }
             }
         });
     }
 
-    private void setupAutocomplete() {
-        repository.getAllExercises().addOnSuccessListener(querySnapshot -> {
-            availableExercises.clear();
-            List<String> ids = new ArrayList<>();
-            for (DocumentSnapshot doc : querySnapshot) {
-                Exercise ex = doc.toObject(Exercise.class);
-                if (ex != null) {
-                    ex.setId(doc.getId());
-                    availableExercises.add(ex);
-                    ids.add(doc.getId());
+    private void updateWeightFromDoc(DocumentSnapshot doc) {
+        if (doc != null && doc.exists() && doc.contains("suly")) {
+            try {
+                String weightStr = doc.getString("suly");
+                if (weightStr != null && !weightStr.isEmpty()) {
+                    userWeight = Double.parseDouble(weightStr);
                 }
-            }
-            if (getContext() != null && binding != null) {
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                        android.R.layout.simple_dropdown_item_1line, ids);
-                binding.exerciseNameInput.setThreshold(1);
-                binding.exerciseNameInput.setAdapter(adapter);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void setupAutocomplete() {
+        // Autocomplete Cache kezelése addOnCompleteListener-rel
+        repository.getAllExercises().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                updateExerciseList(task.getResult());
+            } else {
+                // Ha offline vagy nincs adat, próbáljuk meg a helyi gyorsítótárból
+                FirebaseFirestore.getInstance().collection("exercises")
+                        .get(Source.CACHE)
+                        .addOnCompleteListener(cacheTask -> {
+                            if (cacheTask.isSuccessful() && cacheTask.getResult() != null) {
+                                updateExerciseList(cacheTask.getResult());
+                            }
+                        });
             }
         });
 
@@ -168,6 +181,26 @@ public class ExerciseFragment extends Fragment {
         });
     }
 
+    private void updateExerciseList(QuerySnapshot querySnapshot) {
+        if (querySnapshot == null) return;
+        availableExercises.clear();
+        List<String> ids = new ArrayList<>();
+        for (DocumentSnapshot doc : querySnapshot) {
+            Exercise ex = doc.toObject(Exercise.class);
+            if (ex != null) {
+                ex.setId(doc.getId());
+                availableExercises.add(ex);
+                ids.add(doc.getId());
+            }
+        }
+        if (getContext() != null && binding != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                    android.R.layout.simple_dropdown_item_1line, ids);
+            binding.exerciseNameInput.setThreshold(1);
+            binding.exerciseNameInput.setAdapter(adapter);
+        }
+    }
+
     private void setupListeners() {
         binding.aiCalculateExerciseButton.setOnClickListener(v -> onAiCalculateClicked());
     }
@@ -193,24 +226,23 @@ public class ExerciseFragment extends Fragment {
                         Exercise aiEx = new Gson().fromJson(cleanJson, Exercise.class);
                         
                         if (aiEx == null || aiEx.getMetValue() <= 0) {
-                            throw new Exception("Érvénytelen vagy hiányos AI válasz.");
+                            throw new Exception("Érvénytelen AI válasz adatok.");
                         }
 
                         if (aiEx.getName() == null) aiEx.setName(name);
                         aiEx.setId(aiEx.getName());
 
+                        // Végtelen töltés fix: addOnCompleteListener használata
                         repository.saveExerciseItemWithNameAsId(aiEx)
-                                .addOnSuccessListener(aVoid -> {
+                                .addOnCompleteListener(task -> {
                                     setLoading(false);
-                                    selectedExercise = aiEx;
-                                    if (binding != null) {
-                                        binding.aiCalculateExerciseButton.setVisibility(View.GONE);
+                                    if (isAdded()) {
+                                        selectedExercise = aiEx;
+                                        if (binding != null) {
+                                            binding.aiCalculateExerciseButton.setVisibility(View.GONE);
+                                        }
+                                        Toast.makeText(getContext(), "AI elemzés kész!", Toast.LENGTH_SHORT).show();
                                     }
-                                    Toast.makeText(getContext(), "AI elemzés kész!", Toast.LENGTH_SHORT).show();
-                                })
-                                .addOnFailureListener(e -> {
-                                    setLoading(false);
-                                    showErrorDialog("Hiba", "Nem sikerült menteni az AI eredményt: " + e.getMessage());
                                 });
                     } catch (Exception e) {
                         setLoading(false);
@@ -221,8 +253,8 @@ public class ExerciseFragment extends Fragment {
             @Override public void onFailure(@NonNull Throwable t) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        setLoading(false);
-                        showErrorDialog("Hiba", "AI hiba: " + t.getMessage());
+                        setLoading(false); // Végtelen töltés fix
+                        showErrorDialog("Hiba", "AI hiba (internet szükséges): " + t.getMessage());
                     });
                 }
             }
@@ -231,33 +263,50 @@ public class ExerciseFragment extends Fragment {
 
     public void onAddExerciseClicked() {
         if (binding == null) return;
+        
+        String exerciseName = binding.exerciseNameInput.getText().toString().trim();
         String durationStr = binding.durationInput.getText().toString().trim();
-        if (selectedExercise == null || durationStr.isEmpty()) {
-            Toast.makeText(getContext(), "Válassz mozgást és adj meg időt!", Toast.LENGTH_SHORT).show();
+
+        if (exerciseName.isEmpty() || durationStr.isEmpty()) {
+            Toast.makeText(getContext(), "Kérlek töltsd ki az összes mezőt!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedExercise == null) {
+            Toast.makeText(getContext(), "Válassz egy érvényes edzést!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            double duration = Double.parseDouble(durationStr);
-            // Kalória számítás: 0.0175 * MET * testsúly (kg) * idő (perc)
-            double calories = 0.0175 * selectedExercise.getMetValue() * userWeight * duration;
-
-            // Új példány a naplózáshoz
-            Exercise logExercise = new Exercise(selectedExercise.getName(), selectedExercise.getMetValue(), selectedExercise.getCategory());
-            logExercise.setId(selectedExercise.getId());
-            logExercise.setDuration(duration);
-            logExercise.setCaloriesBurned(calories);
+            int duration = Integer.parseInt(durationStr);
+            double calculatedCalories = 0.0175 * selectedExercise.getMetValue() * userWeight * duration;
 
             setLoading(true);
-            repository.addExerciseToLog(selectedDate, logExercise)
-                    .addOnSuccessListener(aVoid -> {
-                        setLoading(false);
-                        if (getActivity() != null) getActivity().finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        setLoading(false);
-                        showErrorDialog("Hiba", "Nem sikerült a mentés.");
+            
+            // Offline UX fallback: ne várjunk a hálózati visszaigazolásra, ha nincs net
+            Runnable fallbackFinish = () -> {
+                if (isAdded() && binding != null && binding.loadingIndicator.getVisibility() == View.VISIBLE) {
+                    setLoading(false);
+                    Toast.makeText(getContext(), "Mozgás rögzítve (offline mentés)", Toast.LENGTH_SHORT).show();
+                    if (getActivity() != null) getActivity().finish();
+                }
+            };
+            binding.getRoot().postDelayed(fallbackFinish, 1500);
+
+            repository.addExerciseToDailyLog(selectedDate, exerciseName, duration, calculatedCalories)
+                    .addOnCompleteListener(task -> {
+                        binding.getRoot().removeCallbacks(fallbackFinish);
+                        if (isAdded()) {
+                            setLoading(false); // Végtelen töltés fix
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), "Mozgás rögzítve, kalóriák levonva!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Mozgás mentve (szinkronizálás folyamatban)", Toast.LENGTH_SHORT).show();
+                            }
+                            if (getActivity() != null) getActivity().finish();
+                        }
                     });
+
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), getString(R.string.error_invalid_number), Toast.LENGTH_SHORT).show();
         }

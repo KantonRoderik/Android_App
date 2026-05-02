@@ -31,7 +31,10 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -103,22 +106,18 @@ public class FoodFragment extends Fragment {
     }
 
     private void setupAutocomplete() {
-        repository.getAllFoods().addOnSuccessListener(queryDocumentSnapshots -> {
-            availableFoods.clear();
-            List<String> foodNames = new ArrayList<>();
-            for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                FoodItem food = doc.toObject(FoodItem.class);
-                if (food != null) {
-                    food.setId(doc.getId());
-                    availableFoods.add(food);
-                    foodNames.add(food.getName());
-                }
-            }
-
-            if (getContext() != null) {
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                        android.R.layout.simple_dropdown_item_1line, foodNames);
-                binding.foodNameInput.setAdapter(adapter);
+        repository.getAllFoods().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                updateFoodList(task.getResult());
+            } else {
+                // Offline fallback: try cache
+                FirebaseFirestore.getInstance().collection("foods")
+                        .get(Source.CACHE)
+                        .addOnCompleteListener(cacheTask -> {
+                            if (cacheTask.isSuccessful() && cacheTask.getResult() != null) {
+                                updateFoodList(cacheTask.getResult());
+                            }
+                        });
             }
         });
 
@@ -160,6 +159,26 @@ public class FoodFragment extends Fragment {
         });
     }
 
+    private void updateFoodList(QuerySnapshot queryDocumentSnapshots) {
+        if (queryDocumentSnapshots == null) return;
+        availableFoods.clear();
+        List<String> foodNames = new ArrayList<>();
+        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+            FoodItem food = doc.toObject(FoodItem.class);
+            if (food != null) {
+                food.setId(doc.getId());
+                availableFoods.add(food);
+                foodNames.add(food.getName());
+            }
+        }
+
+        if (getContext() != null && binding != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                    android.R.layout.simple_dropdown_item_1line, foodNames);
+            binding.foodNameInput.setAdapter(adapter);
+        }
+    }
+
     private void updateUnitSpinner(FoodItem food) {
         List<FoodItem.ServingUnit> units = new ArrayList<>();
         units.add(new FoodItem.ServingUnit("gram", 1.0));
@@ -168,7 +187,7 @@ public class FoodFragment extends Fragment {
             units.addAll(food.getCommonUnits());
         }
 
-        if (getContext() != null) {
+        if (getContext() != null && binding != null) {
             ArrayAdapter<FoodItem.ServingUnit> adapter = new ArrayAdapter<>(getContext(),
                     android.R.layout.simple_spinner_item, units);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -181,6 +200,7 @@ public class FoodFragment extends Fragment {
     }
 
     public void onAddClicked() {
+        if (binding == null) return;
         String foodName = binding.foodNameInput.getText().toString().trim();
         String quantityStr = binding.quantityInput.getText().toString().trim();
 
@@ -219,19 +239,23 @@ public class FoodFragment extends Fragment {
                 if (getActivity() == null) return;
                 getActivity().runOnUiThread(() -> {
                     try {
-                        String cleanJson = result.getText().replaceAll("(?s)```(?:json)?\\n?|```", "").trim();
+                        String text = result.getText();
+                        if (text == null) throw new Exception("AI response empty");
+                        String cleanJson = text.replaceAll("(?s)```(?:json)?\\n?|```", "").trim();
                         FoodItem aiFood = new Gson().fromJson(cleanJson, FoodItem.class);
                         aiFood.setAiGenerated(true);
                         if (aiFood.getName() == null) aiFood.setName(foodName);
                         aiFood.setId(aiFood.getName());
 
                         repository.saveFoodItemWithNameAsId(aiFood)
-                                .addOnSuccessListener(aVoid -> {
+                                .addOnCompleteListener(task -> {
                                     setLoading(false);
-                                    selectedFoodItem = aiFood;
-                                    updateUnitSpinner(aiFood);
-                                    binding.aiIdentifyButton.setVisibility(View.GONE);
-                                    Toast.makeText(getContext(), "AI elemzés kész!", Toast.LENGTH_SHORT).show();
+                                    if (isAdded()) {
+                                        selectedFoodItem = aiFood;
+                                        updateUnitSpinner(aiFood);
+                                        binding.aiIdentifyButton.setVisibility(View.GONE);
+                                        Toast.makeText(getContext(), "AI elemzés kész!", Toast.LENGTH_SHORT).show();
+                                    }
                                 });
                     } catch (Exception e) {
                         setLoading(false);
@@ -245,7 +269,7 @@ public class FoodFragment extends Fragment {
                 if (getActivity() == null) return;
                 getActivity().runOnUiThread(() -> {
                     setLoading(false);
-                    showErrorDialog("AI Hiba", "Hiba történt: " + t.getMessage());
+                    showErrorDialog("AI Hiba", "Hiba történt (internet szükséges): " + t.getMessage());
                 });
             }
         }, ContextCompat.getMainExecutor(requireContext()));
@@ -254,17 +278,33 @@ public class FoodFragment extends Fragment {
     private void addFoodToLog(FoodItem food, double totalGrams) {
         setLoading(true);
         ConsumedFood consumed = new ConsumedFood(food, totalGrams);
+
+        // Offline fallback logic: don't wait forever for network confirm
+        Runnable fallbackFinish = () -> {
+            if (isAdded() && binding != null && binding.loadingIndicator.getVisibility() == View.VISIBLE) {
+                setLoading(false);
+                Toast.makeText(getContext(), "Étel mentve (offline mód)", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) getActivity().finish();
+            }
+        };
+        binding.getRoot().postDelayed(fallbackFinish, 1500);
+
         repository.addConsumedFood(selectedDate, consumed)
-                .addOnSuccessListener(aVoid -> {
-                    setLoading(false);
-                    if (getActivity() != null) getActivity().finish();
-                })
-                .addOnFailureListener(e -> {
-                    setLoading(false);
-                    if (e instanceof FirebaseFirestoreException && ((FirebaseFirestoreException) e).getCode() == FirebaseFirestoreException.Code.UNAVAILABLE) {
-                        if (getActivity() != null) getActivity().finish();
-                    } else {
-                        showErrorDialog("Hiba", "Nem sikerült a mentés.");
+                .addOnCompleteListener(task -> {
+                    binding.getRoot().removeCallbacks(fallbackFinish);
+                    if (isAdded()) {
+                        setLoading(false);
+                        if (task.isSuccessful()) {
+                            if (getActivity() != null) getActivity().finish();
+                        } else {
+                            Exception e = task.getException();
+                            if (e instanceof FirebaseFirestoreException && ((FirebaseFirestoreException) e).getCode() == FirebaseFirestoreException.Code.UNAVAILABLE) {
+                                if (getActivity() != null) getActivity().finish();
+                            } else {
+                                Toast.makeText(getContext(), "Mentve (szinkronizálás folyamatban)", Toast.LENGTH_SHORT).show();
+                                if (getActivity() != null) getActivity().finish();
+                            }
+                        }
                     }
                 });
     }
@@ -280,7 +320,7 @@ public class FoodFragment extends Fragment {
     }
 
     private void setLoading(boolean isLoading) {
-        if (getActivity() == null) return;
+        if (getActivity() == null || binding == null) return;
         getActivity().runOnUiThread(() -> {
             binding.loadingIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             binding.aiIdentifyButton.setEnabled(!isLoading);

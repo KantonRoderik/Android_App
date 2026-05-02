@@ -10,6 +10,7 @@ public class DailyEntry {
     private String date; // Format: "yyyy-MM-dd"
     private Map<String, ConsumedFood> consumedFoods = new HashMap<>();
     private Map<String, Exercise> loggedExercises = new HashMap<>();
+    private Map<String, Exercise> exercisesDone = new HashMap<>();
     private double totalCalories;
     private double totalCarbs;
     private double totalFat;
@@ -47,6 +48,14 @@ public class DailyEntry {
 
     public void setLoggedExercises(Map<String, Exercise> loggedExercises) {
         this.loggedExercises = loggedExercises;
+    }
+
+    public Map<String, Exercise> getExercisesDone() {
+        return exercisesDone;
+    }
+
+    public void setExercisesDone(Map<String, Exercise> exercisesDone) {
+        this.exercisesDone = exercisesDone;
     }
 
     public double getTotalWater() {
@@ -101,7 +110,7 @@ public class DailyEntry {
      * Recalculates all nutritional totals and burned calories based on the maps.
      */
     public void calculateTotals() {
-        this.totalCalories = 0;
+        double intakeCalories = 0;
         this.totalCarbs = 0;
         this.totalFat = 0;
         this.totalProtein = 0;
@@ -109,17 +118,31 @@ public class DailyEntry {
         
         if (consumedFoods != null) {
             for (ConsumedFood food : consumedFoods.values()) {
-                this.totalCalories += food.getCalories();
+                intakeCalories += food.getCalories();
                 this.totalCarbs += food.getCarbs();
                 this.totalFat += food.getFat();
                 this.totalProtein += food.getProtein();
             }
         }
 
+        // Combine both maps of exercises
         if (loggedExercises != null) {
             for (Exercise ex : loggedExercises.values()) {
-                this.totalCaloriesBurned += ex.getCaloriesBurned();
+                if (ex != null) {
+                    this.totalCaloriesBurned += ex.getCaloriesBurned();
+                }
             }
         }
+        
+        if (exercisesDone != null) {
+            for (Exercise ex : exercisesDone.values()) {
+                if (ex != null) {
+                    this.totalCaloriesBurned += ex.getCaloriesBurned();
+                }
+            }
+        }
+
+        // Net calories = Intake - Burned
+        this.totalCalories = intakeCalories - this.totalCaloriesBurned;
     }
 }
