@@ -75,7 +75,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     binding.addFoodTitle.setText(R.string.addFoodTitle);
                 } else {
                     binding.searchAddButton.setText(R.string.addExerciseDone);
-                    binding.addFoodTitle.setText("Új mozgás");
+                    binding.addFoodTitle.setText(R.string.addExerciseTitle);
                 }
             }
         });

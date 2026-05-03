@@ -4,7 +4,7 @@
 The application needs to provide intelligent feedback on user eating habits and automate nutritional calculations for complex or unknown foods. We needed a Large Language Model (LLM) that is fast, multimodal, and easy to integrate into a mobile environment.
 
 ## Decision
-We chose the **Google Gemini API** (specifically the **gemini-2.5-flash** model).
+We chose the **Google Gemini API** (specifically the **gemini-1.5-flash** model).
 
 ## Rationale
 - **Native Android SDK**: Google provides a direct Kotlin/Java SDK, removing the need for a middle-tier server proxy during prototyping.

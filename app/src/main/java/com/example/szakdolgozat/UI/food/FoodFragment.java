@@ -88,7 +88,8 @@ public class FoodFragment extends Fragment {
         GenerationConfig config = configBuilder.build();
 
         Content systemInstruction = new Content.Builder()
-                .addText("Act as a fitness and nutrition expert. Provide nutrition data for 100g and common units. Return ONLY a raw JSON object. Fields: name, calories, carbs, protein, fat, commonUnits (array).")
+                .addText("Act as a fitness and nutrition expert. Provide nutrition data for 100g and common units." +
+                        " Return ONLY a raw JSON object. Fields: name, calories, carbs, protein, fat, commonUnits (array).")
                 .build();
 
         GenerativeModel gm = new GenerativeModel(
